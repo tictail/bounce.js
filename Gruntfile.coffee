@@ -22,8 +22,14 @@ config =
         debug: true
         transform: ["coffeeify"]
         extensions: [".js", ".coffee"]
+        shim:
+          prefixfree:
+            path: "bower_components/prefixfree/prefixfree.min.js"
+            exports: "PrefixFree"
+
         alias: [
           "bower_components/jquery/jquery.js:jquery"
+          "bower_components/prefixfree/prefixfree.min.js:prefixfree"
         ]
 
   connect:

@@ -5,24 +5,43 @@
   <title>Document</title>
   <style>
     .box {
+      display: inline-block;
       background: green;
-      margin: 200px;
+      margin: 100px;
       width: 300px;
       height: 300px;
+      vertical-align: top;
     }
 
     .animate .box {
-      -webkit-animation: move 1s both linear;
+      -webkit-animation: animate 1s both linear;
+    }
+
+    textarea {
+      display: inline-block;
+      vertical-align: top;
     }
   </style>
 </head>
 <body>
   <label for="keyframes">Keyframes</label> <br>
-  <input type="text" name="keyframes" id="keyframes" value=10>
+  <input type="text" name="keyframes" id="keyframes" value=100> <br>
 
+  <label for="bounces">Bounces</label> <br>
+  <input type="text" name="bounces" id="bounces" value=4> <br>
 
+  <select id="type">
+    <option value="scale">Scale</option>
+    <option value="rotate">Rotate</option>
+  </select> <br>
+
+  <input type="text" id="start" value=0.5>
+  <input type="text" id="end" value=1>
+
+  <button id="play">Play</button>
 
   <div class="box"></div>
+  <textarea id="output" cols="80" rows="40"></textarea>
   <script src="scripts/app.js"></script>
 </body>
 </html>
