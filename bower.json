@@ -1,8 +1,9 @@
 {
-  "name": "springy-css",
+  "name": "bounce",
   "version": "0.0.0",
   "dependencies": {
     "jquery": "2.0.3",
+    "backbone": "1.1.0",
     "prefixfree": "LeaVerou/prefixfree#gh-pages"
   }
 }

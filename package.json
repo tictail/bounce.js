@@ -1,5 +1,5 @@
 {
-  "name": "springy-css",
+  "name": "bounce",
   "version": "0.0.0",
   "private": "true",
   "dependencies": {},
@@ -15,10 +15,12 @@
     "grunt-concurrent": "~0.3.0",
     "grunt-browserify": "~1.3.0",
     "coffeeify": "~0.5.2",
+    "hbsfy": "1.3.1",
     "load-grunt-tasks": "~0.1.0",
     "time-grunt": "~0.1.1",
     "eventemitter2": "~0.4.13",
     "coffee-script": "~1.6.3",
-    "underscore": "~1.5.2"
+    "underscore": "~1.5.2",
+    "gl-matrix": "2.0.0"
   }
 }

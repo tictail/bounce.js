@@ -1,7 +1,10 @@
 config =
   watch:
     browserify:
-      files: "app/scripts/**/*.coffee"
+      files: [
+        "app/scripts/**/*.coffee"
+        "app/templates/**/*.hbs"
+      ]
       tasks: ["browserify"]
 
     livereload:
@@ -14,14 +17,17 @@ config =
       ]
 
   browserify:
-    dist:
+    all:
       files:
-        ".tmp/scripts/app.js": "app/scripts/**/*.coffee"
+        ".tmp/scripts/app.js": [
+          "app/scripts/**/*.coffee"
+          "app/templates/**/*.hbs"
+        ]
 
       options:
         debug: true
-        transform: ["coffeeify"]
-        extensions: [".js", ".coffee"]
+        transform: ["coffeeify", "hbsfy"]
+        extensions: [".js", ".coffee", ".hbs"]
         shim:
           prefixfree:
             path: "bower_components/prefixfree/prefixfree.min.js"
@@ -29,7 +35,13 @@ config =
 
         alias: [
           "bower_components/jquery/jquery.js:jquery"
+          "bower_components/backbone/backbone.js:backbone"
           "bower_components/prefixfree/prefixfree.min.js:prefixfree"
+        ]
+        aliasMappings: [
+          cwd: "app/"
+          src: ["**/*.coffee", "**/*.js", "**/*.hbs"]
+          dest: ""
         ]
 
   connect:
