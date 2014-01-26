@@ -20,11 +20,17 @@ class App extends BaseView
     Events.on "playAnimation", @onPlayAnimation
 
   onPlayAnimation: ({keyframes, duration}) =>
-    @$style.text """
-    .animate .box { -webkit-animation-duration: #{duration}ms; }
-    #{PrefixFree.prefixCSS(keyframes, true)}
+    css = """
+    .animate .box { animation-duration: #{duration}ms; }
+    #{keyframes}
     """
-    $("body").removeClass "animate"
-    setTimeout (-> $("body").addClass "animate"), 0
+
+    @$style.text PrefixFree.prefixCSS(css, true)
+
+    $body = $ "body"
+
+    $body.removeClass "animate"
+    $body[0].offsetWidth
+    $body.addClass "animate"
 
 module.exports = App
