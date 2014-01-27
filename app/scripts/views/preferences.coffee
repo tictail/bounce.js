@@ -25,7 +25,7 @@ class PreferencesView extends BaseView
     @components.push component
 
   playAnimation: =>
-    numKeyframes = 100
+    numKeyframes = 25
     valueLists = @components.map (c) -> c.calculateValues(numKeyframes)
 
     keyframes = []
