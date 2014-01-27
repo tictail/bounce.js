@@ -8,9 +8,14 @@ class RotateInputView extends BaseView
   getInputValue: (name) =>
    parseFloat @$("input[name=#{name}]").val()
 
-  getTransformString: (value) ->
-    value = Math.round(value * 1e5) / 1e5
-    "rotate(#{value}deg)"
+  getTransformMatrix: (value) ->
+    radians = (value / 180) * Math.PI
+    c = Math.cos radians
+    s = Math.sin radians
+    [c, -s, 0, 0
+     s,  c, 0, 0
+     0,  0, 1, 0
+     0,  0, 0, 1]
 
   calculateValues: (easingValues) ->
     from = @getInputValue "from"
@@ -19,9 +24,9 @@ class RotateInputView extends BaseView
 
     values = []
     for easingVal in easingValues
-      values.push @getTransformString(from + easingVal * diff)
+      values.push @getTransformMatrix(from + easingVal * diff)
 
-    values.push @getTransformString(to)
+    values.push @getTransformMatrix(to)
     values
 
 module.exports = RotateInputView

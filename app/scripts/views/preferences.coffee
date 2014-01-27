@@ -1,3 +1,6 @@
+_ = require "underscore"
+glMatrix = require "gl-matrix"
+
 BaseView = require "scripts/views/base"
 ComponentView = require "scripts/views/component"
 Events = require "scripts/events"
@@ -30,11 +33,16 @@ class PreferencesView extends BaseView
 
     keyframes = []
     for i in [0..numKeyframes]
-      transforms = []
-      for valueList in valueLists
-        transforms.push valueList[i]
+      matrix = []
+      glMatrix.mat4.identity matrix
 
-      transformString = transforms.join " "
+      for valueList in valueLists
+        glMatrix.mat4.multiply matrix, valueList[i], matrix[..]
+
+      glMatrix.mat4.transpose matrix, matrix[..]
+      matrix = _.map matrix, (value) -> Math.round(value * 1e5) / 1e5
+
+      transformString = "matrix3d(#{matrix.join ","})"
       keyframe = i * 100 / numKeyframes
       keyframes.push "#{keyframe}% { transform: #{transformString}; }"
 

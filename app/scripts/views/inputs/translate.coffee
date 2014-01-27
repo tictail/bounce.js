@@ -9,9 +9,13 @@ class TranslateInputView extends BaseView
   getInputValue: (name) =>
    parseFloat @$("input[name=#{name}]").val()
 
-  getTransformString: (value) ->
-    value = value.map (n) -> Math.round(n * 1e5) / 1e5
-    "translate(#{value.join "px ,"}px)"
+  getTransformMatrix: (values) ->
+    [x, y] = values
+    z = 0
+    [1, 0, 0, x
+     0, 1, 0, y
+     0, 0, 1, z
+     0, 0, 0, 1]
 
   calculateValues: (easingValues) ->
     from = ["from_x", "from_y"].map @getInputValue
@@ -26,9 +30,9 @@ class TranslateInputView extends BaseView
       glMatrix.vec2.scale val, diff, easingVal
       res = []
       glMatrix.vec2.add res, val, from
-      values.push @getTransformString(res)
+      values.push @getTransformMatrix(res)
 
-    values.push @getTransformString(to)
+    values.push @getTransformMatrix(to)
     values
 
 module.exports = TranslateInputView
