@@ -1,6 +1,7 @@
 _ = require "underscore"
 glMatrix = require "gl-matrix"
 
+Bounce = require "bounce"
 BaseView = require "scripts/views/base"
 ComponentView = require "scripts/views/component"
 Events = require "scripts/events"
@@ -21,7 +22,6 @@ class PreferencesView extends BaseView
     @appendComponent()
     @$duration = @$ "#duration"
 
-
   appendComponent: =>
     component = new ComponentView
     @$el.append component.$el
@@ -29,21 +29,12 @@ class PreferencesView extends BaseView
 
   playAnimation: =>
     numKeyframes = 25
-    valueLists = @components.map (c) -> c.calculateValues(numKeyframes)
+    bounce = new Bounce
+    @components.map (c) -> c.addToBounce bounce
 
     keyframes = []
-    for i in [0..numKeyframes]
-      matrix = []
-      glMatrix.mat4.identity matrix
-
-      for valueList in valueLists
-        glMatrix.mat4.multiply matrix, valueList[i], matrix[..]
-
-      glMatrix.mat4.transpose matrix, matrix[..]
-      matrix = _.map matrix, (value) -> Math.round(value * 1e5) / 1e5
-
-      transformString = "matrix3d(#{matrix.join ","})"
-      keyframe = i * 100 / numKeyframes
+    for keyframe, matrix of bounce.getKeyframes()
+      transformString = "matrix3d#{matrix}"
       keyframes.push "#{keyframe}% { transform: #{transformString}; }"
 
     css = "@keyframes animation { \n  #{keyframes.join("\n  ")} \n}"

@@ -8,24 +8,11 @@ class SkewInputView extends BaseView
   getInputValue: (name) =>
    parseFloat @$("input[name=#{name}]").val()
 
-  getTransformMatrix: (value) ->
-    radians = (value / 180) * Math.PI
-    t = Math.tan radians
-    [1, t, 0, 0
-     0, 1, 0, 0
-     0, 0, 1, 0
-     0, 0, 0, 1]
-
-  calculateValues: (easingValues) ->
-    from = @getInputValue "from"
-    to = @getInputValue "to"
-    diff = to - from
-
-    values = []
-    for easingVal in easingValues
-      values.push @getTransformMatrix(from + easingVal * diff)
-
-    values.push @getTransformMatrix(to)
-    values
+  addToBounce: (bounce, options) ->
+    bounce.skew
+      bounces: options.bounces
+      shake: options.shake
+      from: @getInputValue "from"
+      to: @getInputValue "to"
 
 module.exports = SkewInputView

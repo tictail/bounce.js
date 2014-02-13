@@ -14,21 +14,6 @@ class Component extends BaseView
     @renderInputs()
     @$type.on "change", @renderInputs
 
-  getEasingValues: ({keyframes, bounces, shake}) ->
-    a = 0.05
-    limit = Math.floor(Math.log(0.0005) / -a)
-    w = bounces * Math.PI / limit
-
-    circFunc = if shake then "sin" else "cos"
-
-    values = []
-    for i in [0...keyframes]
-      t = i * limit / keyframes
-      values.push 1 - Math.pow(Math.E, -a*t) * Math[circFunc](w*t)
-
-    values
-
-
   renderInputs: =>
     selected = @$type.val()
 
@@ -37,13 +22,10 @@ class Component extends BaseView
 
     @$inputs.html @inputView.$el
 
-  calculateValues: (keyframes) ->
-    bounces =
-    easingValues = @getEasingValues
-      keyframes: keyframes
+  addToBounce: (bounce) ->
+    @inputView.addToBounce bounce, {
       bounces: parseInt @$bounces.val(), 10
       shake: @$shake.prop("checked")
-
-    values = @inputView.calculateValues easingValues
+    }
 
 module.exports = Component
