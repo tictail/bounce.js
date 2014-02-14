@@ -9,6 +9,7 @@ class Component extends BaseView
     @$type = @$ "#type"
     @$bounces = @$ "#bounces"
     @$shake = @$ "#shake"
+    @$stiffness = @$ "#stiffness"
     @$inputs = @$ "#inputs"
 
     @renderInputs()
@@ -26,6 +27,7 @@ class Component extends BaseView
     @inputView.addToBounce bounce, {
       bounces: parseInt @$bounces.val(), 10
       shake: @$shake.prop("checked")
+      stiffness: parseInt @$stiffness.val(), 10
     }
 
 module.exports = Component

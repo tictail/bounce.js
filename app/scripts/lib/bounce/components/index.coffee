@@ -9,7 +9,7 @@ class Component
     options ||= {}
     @from = options.from or @from
     @to = options.to or @to
-    @easing = new Easing bounces: options.bounces, shake: options.shake
+    @easing = new Easing options
 
   getMatrix: ->
     new Matrix4D().identity()

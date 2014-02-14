@@ -1,3 +1,5 @@
+_ = require "underscore"
+
 BaseView = require "scripts/views/base"
 glMatrix = require "gl-matrix"
 
@@ -10,14 +12,14 @@ class TranslateInputView extends BaseView
    parseFloat @$("input[name=#{name}]").val()
 
   addToBounce: (bounce, options) ->
-    bounce.translate
-      bounces: options.bounces
-      shake: options.shake
+    options = _.extend {}, options,
       from:
         x: @getInputValue "from_x"
         y: @getInputValue "from_y"
       to:
         x: @getInputValue "to_x"
         y: @getInputValue "to_y"
+
+    bounce.translate options
 
 module.exports = TranslateInputView
