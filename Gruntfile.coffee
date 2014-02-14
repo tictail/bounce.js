@@ -45,6 +45,17 @@ config =
           "app/templates/**/*.hbs"
         ]
 
+    bounce:
+      options:
+        debug: false
+        alias: []
+        aliasMappings: []
+        shim: {}
+        standalone: "bounce"
+
+      files:
+        ".tmp/bounce.js": ["app/scripts/lib/bounce/index.coffee"]
+
     test:
       files:
         ".tmp/scripts/tests.js": [
