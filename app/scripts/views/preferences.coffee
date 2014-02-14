@@ -1,5 +1,4 @@
 _ = require "underscore"
-glMatrix = require "gl-matrix"
 
 Bounce = require "bounce"
 BaseView = require "scripts/views/base"
@@ -32,14 +31,8 @@ class PreferencesView extends BaseView
     bounce = new Bounce
     @components.map (c) -> c.addToBounce bounce
 
-    keyframes = []
-    for keyframe, matrix of bounce.getKeyframes()
-      transformString = "matrix3d#{matrix}"
-      keyframes.push "#{keyframe}% { transform: #{transformString}; }"
-
-    css = "@keyframes animation { \n  #{keyframes.join("\n  ")} \n}"
     Events.trigger "playAnimation",
-      keyframes: css
+      bounce: bounce
       duration: @$duration.val()
 
 module.exports = PreferencesView
