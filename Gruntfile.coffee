@@ -51,7 +51,7 @@ config =
         alias: []
         aliasMappings: []
         shim: {}
-        standalone: "bounce"
+        standalone: "Bounce"
 
       files:
         ".tmp/bounce.js": ["app/scripts/lib/bounce/index.coffee"]
