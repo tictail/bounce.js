@@ -7,8 +7,8 @@ class Component
 
   constructor: (options) ->
     options ||= {}
-    @from = options.from or @from
-    @to = options.to or @to
+    @from = if options.from? then options.from else @from
+    @to = if options.to? then options.to else @to
     @easing = new Easing options
 
   getMatrix: ->

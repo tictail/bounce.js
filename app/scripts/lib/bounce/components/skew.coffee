@@ -27,4 +27,4 @@ class Skew extends Component
     easedAngle = @from + @diff * easedRatio
     @getMatrix easedAngle
 
-module.exports =Skew
+module.exports = Skew
