@@ -51,6 +51,20 @@ class Bounce
 
     prefixes
 
+  isSupported: ->
+    style = document.createElement("dummy").style
+
+    propertyLists = [
+      ["transform", "webkitTransform"],
+      ["animation", "webkitAnimation"]
+    ]
+    for propertyList in propertyLists
+      propertyIsSupported = false
+      for property in propertyList
+        propertyIsSupported ||= property of style
+
+      return false unless propertyIsSupported
+
   getKeyframeCSS: (options = {}) ->
     @name = options.name or Bounce.generateName()
 
