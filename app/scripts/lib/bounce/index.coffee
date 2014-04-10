@@ -36,6 +36,9 @@ class Bounce
     document.body.appendChild @styleElement
     this
 
+  remove: ->
+    @styleElement?.remove()
+
   getPrefixes: ->
     prefixes =
       transform: ""
@@ -98,5 +101,7 @@ class Bounce
         propertyIsSupported ||= property of style
 
       return false unless propertyIsSupported
+
+    true
 
 module.exports = Bounce
