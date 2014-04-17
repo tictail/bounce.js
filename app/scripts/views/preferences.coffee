@@ -14,7 +14,6 @@ class PreferencesView extends BaseView
 
   events:
     "click #add": "appendComponent"
-    "click #play": "playAnimation"
 
   initialize: ->
     super
@@ -26,13 +25,12 @@ class PreferencesView extends BaseView
     @$el.append component.$el
     @components.push component
 
-  playAnimation: =>
-    numKeyframes = 25
+  getAnimationDuration: ->
+    @$duration.val()
+
+  getBounceObject: =>
     bounce = new Bounce
     @components.map (c) -> c.addToBounce bounce
-
-    Events.trigger "playAnimation",
-      bounce: bounce
-      duration: @$duration.val()
+    bounce
 
 module.exports = PreferencesView

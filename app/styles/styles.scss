@@ -1,32 +1,131 @@
-.box {
+@import "animations";
+
+$main-color: #26a9df;
+$body-font: "Gotham Rounded SSm A", "Gotham Rounded SSm B", Helvetica, Arial, sans-serif;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: $main-color;
+  color: white;
+  font-family: $body-font;
+  font-size: 13px;
+}
+
+input, button {
+  font-family: $body-font;
+}
+
+button {
+  appearance: none;
+  border: none;
+  outline: none;
+  border-radius: 2px;
+  padding: 18px 36px;
+
+  background: white;
+  color: #1c323b;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 500;
+  cursor: pointer;
+
+  transition: transform 0.15s;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  &:active {
+    position: relative;
+    top: 1px;
+  }
+}
+
+a, a:visited {
+  text-decoration: none;
+  color: #1c323b;
+}
+
+.column {
   display: inline-block;
-  background: green;
-  margin: 100px;
-  width: 200px;
-  height: 200px;
-  position: absolute;
-  top: 100px;
-  right: 400px;
   vertical-align: top;
+}
+
+.preference-bar {
+  width: 300px;
+}
+
+.main-view {
+  width: 760px;
+  padding: 80px;
+}
+
+.intro {
+  h1 {
+    font-size: 40px;
+    margin-top: 0;
+    margin-bottom: 15px;
+  }
+
+  h2 {
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 1.8em;
+    width: 350px;
+    margin: 0;
+  }
+}
+
+#result {
+  width: 600px;
+  height: 410px;
+  background: #25a4d9;
+  border-radius: 2px;
+  margin-top: 35px;
+  position: relative;
+  overflow: hidden;
+
+  .box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -30px;
+    margin-top: -30px;
+    width: 60px;
+    height: 60px;
+
+    background: white;
+    border-radius: 2px;
+
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+  }
+
+  &.spin {
+    .box {
+      animation-name: bounce-spin;
+      animation-duration: 1s;
+    }
+  }
+}
+
+.actions {
+  width: 300px;
+  margin: -24px auto;
+  position: relative;
+  z-index: 10;
+  text-align: center;
+}
+
+.play-button i {
+  margin-right: 5px;
 }
 
 .animate .box {
-  -webkit-animation-name: animation;
-  -webkit-animation-timing-function: linear;
-  -webkit-animation-fill-mode: both;
-
   animation-name: animation;
-  animation-timing-function: linear;
-  animation-fill-mode: both;
-}
-
-textarea {
-  display: inline-block;
-  vertical-align: top;
-}
-
-#preferences {
-  width: 400px;
 }
 
 input[type="text"] {

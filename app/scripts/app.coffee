@@ -1,5 +1,6 @@
 require "scripts/setup"
 
+_ = require "underscore"
 PrefixFree = require "prefixfree"
 
 BaseView = require "scripts/views/base"
@@ -12,24 +13,38 @@ class App extends BaseView
   el: ".app"
   template: template
 
+  events:
+    "click .spin-link": "animateSpin"
+    "click .play-button": "playAnimation"
+
   initialize: ->
     super
-    new PreferencesView
-    @$style = $ "#animation"
-    Events.on "playAnimation", @onPlayAnimation
+    @preferences = new PreferencesView
 
-  onPlayAnimation: ({bounce, duration}) =>
+    @$style = $ "#animation"
+    @$result = $ "#result"
+
+    console.log $ ".play-button"
+
+  playAnimation: =>
+    bounce = @preferences.getBounceObject()
+
     css = """
-    .animate .box { animation-duration: #{duration}ms; }
+    .animate .box {
+      animation-duration: #{@preferences.getAnimationDuration()}ms;
+    }
     #{bounce.getKeyframeCSS(name: "animation")}
     """
 
     @$style.text PrefixFree.prefixCSS(css, true)
 
-    $body = $ "body"
+    @$result.removeClass "animate spin"
+    _.defer => @$result.addClass "animate"
 
-    $body.removeClass "animate"
-    $body[0].offsetWidth
-    $body.addClass "animate"
+  animateSpin: (e) ->
+    e.preventDefault()
+    @$result.removeClass "spin animate"
+    _.defer => @$result.addClass "spin"
+
 
 module.exports = App
