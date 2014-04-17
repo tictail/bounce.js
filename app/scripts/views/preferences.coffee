@@ -1,3 +1,6 @@
+_ = require "underscore"
+
+Bounce = require "bounce"
 BaseView = require "scripts/views/base"
 ComponentView = require "scripts/views/component"
 Events = require "scripts/events"
@@ -18,29 +21,18 @@ class PreferencesView extends BaseView
     @appendComponent()
     @$duration = @$ "#duration"
 
-
   appendComponent: =>
     component = new ComponentView
     @$el.append component.$el
     @components.push component
 
   playAnimation: =>
-    numKeyframes = 100
-    valueLists = @components.map (c) -> c.calculateValues(numKeyframes)
+    numKeyframes = 25
+    bounce = new Bounce
+    @components.map (c) -> c.addToBounce bounce
 
-    keyframes = []
-    for i in [0..numKeyframes]
-      transforms = []
-      for valueList in valueLists
-        transforms.push valueList[i]
-
-      transformString = transforms.join " "
-      keyframe = i * 100 / numKeyframes
-      keyframes.push "#{keyframe}% { transform: #{transformString}; }"
-
-    css = "@keyframes animation { \n  #{keyframes.join("\n  ")} \n}"
     Events.trigger "playAnimation",
-      keyframes: css
+      bounce: bounce
       duration: @$duration.val()
 
 module.exports = PreferencesView

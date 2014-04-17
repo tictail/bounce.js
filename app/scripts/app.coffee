@@ -9,7 +9,6 @@ Events = require "scripts/events"
 template = require "templates/app"
 
 class App extends BaseView
-  PRESET_ALPHA: 0.05
   el: ".app"
   template: template
 
@@ -19,10 +18,10 @@ class App extends BaseView
     @$style = $ "#animation"
     Events.on "playAnimation", @onPlayAnimation
 
-  onPlayAnimation: ({keyframes, duration}) =>
+  onPlayAnimation: ({bounce, duration}) =>
     css = """
     .animate .box { animation-duration: #{duration}ms; }
-    #{keyframes}
+    #{bounce.getKeyframeCSS(name: "animation")}
     """
 
     @$style.text PrefixFree.prefixCSS(css, true)

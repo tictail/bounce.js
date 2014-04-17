@@ -7,7 +7,7 @@
     "grunt": "~0.4.1",
     "grunt-contrib-coffee": "~0.7.0",
     "grunt-contrib-copy": "~0.4.1",
-    "grunt-contrib-compass": "~0.5.0",
+    "grunt-contrib-compass": "~0.7.2",
     "grunt-contrib-cssmin": "~0.6.0",
     "grunt-contrib-connect": "~0.5.0",
     "grunt-contrib-clean": "~0.5.0",
@@ -21,6 +21,9 @@
     "eventemitter2": "~0.4.13",
     "coffee-script": "~1.6.3",
     "underscore": "~1.5.2",
-    "gl-matrix": "2.0.0"
+    "gl-matrix": "2.0.0",
+    "mocha": "~1.17.1",
+    "chai": "~1.9.0",
+    "grunt-mocha": "~0.4.10"
   }
 }

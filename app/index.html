@@ -2,51 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Document</title>
-  <style>
-    .box {
-      display: inline-block;
-      background: green;
-      margin: 100px;
-      width: 200px;
-      height: 200px;
-      position: absolute;
-      top: 100px;
-      right: 400px;
-      vertical-align: top;
-    }
-
-    .animate .box {
-      -webkit-animation-name: animation;
-      -webkit-animation-timing-function: linear;
-      -webkit-animation-fill-mode: both;
-
-      animation-name: animation;
-      animation-timing-function: linear;
-      animation-fill-mode: both;
-    }
-
-    textarea {
-      display: inline-block;
-      vertical-align: top;
-    }
-
-    #preferences {
-      width: 400px;
-    }
-
-    input[type="text"] {
-      width: 50px;
-    }
-  </style>
+  <title>Bounce.js</title>
+  <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
   <div class="app">
   </div>
   <script src="scripts/app.js"></script>
   <script>
-    var App = require("scripts/app")
-    window.App = new App()
+    var App = require("scripts/app");
+    window.App = new App();
   </script>
 </body>
 </html>

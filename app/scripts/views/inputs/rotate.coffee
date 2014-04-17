@@ -1,3 +1,5 @@
+_ = require "underscore"
+
 BaseView = require "scripts/views/base"
 
 template = require "templates/inputs/rotate"
@@ -8,20 +10,11 @@ class RotateInputView extends BaseView
   getInputValue: (name) =>
    parseFloat @$("input[name=#{name}]").val()
 
-  getTransformString: (value) ->
-    value = Math.round(value * 1e5) / 1e5
-    "rotate(#{value}deg)"
+  addToBounce: (bounce, options) ->
+    options = _.extend {}, options,
+      from: @getInputValue "from"
+      to: @getInputValue "to"
 
-  calculateValues: (easingValues) ->
-    from = @getInputValue "from"
-    to = @getInputValue "to"
-    diff = to - from
-
-    values = []
-    for easingVal in easingValues
-      values.push @getTransformString(from + easingVal * diff)
-
-    values.push @getTransformString(to)
-    values
+    bounce.rotate options
 
 module.exports = RotateInputView
