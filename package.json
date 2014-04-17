@@ -7,7 +7,7 @@
     "grunt": "~0.4.1",
     "grunt-contrib-coffee": "~0.7.0",
     "grunt-contrib-copy": "~0.4.1",
-    "grunt-contrib-compass": "~0.5.0",
+    "grunt-contrib-compass": "~0.7.2",
     "grunt-contrib-cssmin": "~0.6.0",
     "grunt-contrib-connect": "~0.5.0",
     "grunt-contrib-clean": "~0.5.0",

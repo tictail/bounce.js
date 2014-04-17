@@ -7,6 +7,12 @@ config =
       ]
       tasks: ["browserify"]
 
+    compass:
+      files: [
+        "app/styles/styles.scss"
+      ]
+      tasks: ["compass"]
+
     livereload:
       options:
         livereload: "<%= connect.options.livereload %>"
@@ -95,6 +101,14 @@ config =
         reporter: "Spec"
         urls: ["http://localhost:9001/test.html"]
 
+  compass:
+    app:
+      options:
+        sassDir: "app/styles"
+        imagesDir: "app/images"
+        cssDir: ".tmp/styles"
+        specify: ["app/styles/styles.scss"]
+
 
 module.exports = (grunt) ->
   require("time-grunt") grunt
@@ -104,6 +118,7 @@ module.exports = (grunt) ->
 
   grunt.registerTask "serve", [
     "browserify:all"
+    "compass"
     "connect:livereload"
     "watch"
   ]

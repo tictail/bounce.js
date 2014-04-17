@@ -1,0 +1,34 @@
+.box {
+  display: inline-block;
+  background: green;
+  margin: 100px;
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  top: 100px;
+  right: 400px;
+  vertical-align: top;
+}
+
+.animate .box {
+  -webkit-animation-name: animation;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-fill-mode: both;
+
+  animation-name: animation;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+
+textarea {
+  display: inline-block;
+  vertical-align: top;
+}
+
+#preferences {
+  width: 400px;
+}
+
+input[type="text"] {
+  width: 50px;
+}
