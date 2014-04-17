@@ -12,6 +12,15 @@ body {
   color: white;
   font-family: $body-font;
   font-size: 13px;
+
+  &.dragging {
+    user-select: none;
+    cursor: inline-image("dragging_cursor.gif"), grab;
+
+    .box {
+      cursor: inline-image("dragging_cursor.gif"), grab !important;
+    }
+  }
 }
 
 input, button {
@@ -19,18 +28,19 @@ input, button {
 }
 
 button {
-  appearance: none;
-  border: none;
-  outline: none;
   border-radius: 2px;
   padding: 18px 36px;
 
+  appearance: none;
+  border: none;
+  outline: none;
   background: white;
   color: #1c323b;
   text-transform: uppercase;
   font-size: 10px;
   font-weight: 500;
   cursor: pointer;
+  user-select: none;
 
   transition: transform 0.15s;
 
@@ -104,6 +114,9 @@ a, a:visited {
 
     animation-timing-function: linear;
     animation-fill-mode: both;
+
+    cursor: pointer;
+    cursor: grab;
   }
 
   &.spin {
