@@ -7,11 +7,11 @@ config =
       ]
       tasks: ["browserify"]
 
-    compass:
+    styles:
       files: [
         "app/styles/styles.scss"
       ]
-      tasks: ["compass"]
+      tasks: ["compileStyles"]
 
     livereload:
       options:
@@ -109,6 +109,12 @@ config =
         cssDir: ".tmp/styles"
         specify: ["app/styles/styles.scss"]
 
+  autoprefixer:
+    options:
+      browsers: ["last 2 versions"]
+    app:
+      src: ".tmp/styles/styles.css"
+
 
 module.exports = (grunt) ->
   require("time-grunt") grunt
@@ -118,7 +124,7 @@ module.exports = (grunt) ->
 
   grunt.registerTask "serve", [
     "browserify:all"
-    "compass"
+    "compileStyles"
     "connect:livereload"
     "watch"
   ]
@@ -137,3 +143,8 @@ module.exports = (grunt) ->
 
     grunt.config "watch", config
     grunt.task.run "watch"
+
+  grunt.registerTask "compileStyles", [
+    "compass",
+    "autoprefixer"
+  ]
