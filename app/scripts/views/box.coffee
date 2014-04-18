@@ -93,6 +93,8 @@ class BoxView extends BaseView
     distance = Math.sqrt(delta.x ** 2 + delta.y ** 2)
     dampenedDistance = 250 * (1 - Math.E ** (-0.002 * distance))
 
+    angle = Math.atan2 delta.y, delta.x
+
     if @grabDistance > 10
       centerDelta =
         x: e.clientX - @boxStartPos.x
