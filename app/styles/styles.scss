@@ -117,12 +117,18 @@ a, a:visited {
 
     cursor: pointer;
     cursor: grab;
-  }
 
-  &.spin {
-    .box {
+    &.spin {
       animation-name: bounce-spin;
       animation-duration: 1s;
+    }
+
+    &.animate {
+      animation-name: animation;
+    }
+
+    &.spin, &.animate {
+      transform-origin: 50% 50% !important;
     }
   }
 }
@@ -137,10 +143,6 @@ a, a:visited {
 
 .play-button i {
   margin-right: 5px;
-}
-
-.animate .box {
-  animation-name: animation;
 }
 
 input[type="text"] {
