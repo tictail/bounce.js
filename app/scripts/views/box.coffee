@@ -109,12 +109,12 @@ class BoxView extends BaseView
       @dragAngle = 0
 
     @dragOffset =
-      x: Math.cos(angle) * dampenedDistance
-      y: Math.sin(angle) * dampenedDistance
+      x: Math.round(Math.cos(angle) * dampenedDistance)
+      y: Math.round(Math.sin(angle) * dampenedDistance)
 
     @$el.css "transform", """
-      translate(#{@dragOffset.x}px, #{@dragOffset.y}px)
-      rotate(#{@dragAngle}rad)
+      translate(#{Math.round(@dragOffset.x)}px, #{Math.round(@dragOffset.y)}px)
+      rotate(#{@dragAngle.toPrecision(2)}rad)
     """
 
 module.exports = BoxView
