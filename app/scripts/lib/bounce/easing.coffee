@@ -16,7 +16,7 @@ class Easing
     @omega = @bounces * Math.PI / @limit
 
   calculate: (ratio) ->
-    return 1 if ratio is 1
+    return 1 if ratio >= 1
 
     t = ratio * @limit
     1 - Math.pow(Math.E, -@alpha*t) * @circFunc(@omega*t)

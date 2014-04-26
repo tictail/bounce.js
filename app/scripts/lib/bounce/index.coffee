@@ -8,6 +8,7 @@ Skew = require "./components/skew"
 class Bounce
   @counter: 1
   components: null
+  duration: 0
 
   constructor: ->
     @components = []
@@ -26,7 +27,13 @@ class Bounce
 
   addComponent: (component) ->
     @components.push component
+    @updateDuration()
     this
+
+  updateDuration: ->
+    @duration = @components
+      .map (component) -> component.duration + component.delay
+      .reduce (a, b) -> Math.max a, b
 
   define: (name) ->
     @name = name or Bounce.generateName()
@@ -64,29 +71,46 @@ class Bounce
     if options.prefix
       prefixes = @getPrefixes()
 
-    keyframes = []
-    for keyframe, matrix of @getKeyframes()
+    keyframeList = []
+    keyframes = @getKeyframes()
+    for key in @keys
+      matrix = keyframes[key]
       transformString = "matrix3d#{matrix}"
-      keyframes.push \
-        "#{keyframe}% { #{prefixes.transform}transform: #{transformString}; }"
+      keyframeList.push \
+        "#{Math.round(key * 100 * 1e6) / 1e6}% { #{prefixes.transform}transform: #{transformString}; }"
 
-    "@#{prefixes.animation}keyframes #{@name} { \n  #{keyframes.join("\n  ")} \n}"
+    "@#{prefixes.animation}keyframes #{@name} { \n  #{keyframeList.join("\n  ")} \n}"
 
   getKeyframes: ->
+    keys = [0]
+    for component in @components
+      startKey = (component.delay / @duration) * 100
+      endKey = ((component.delay + component.duration) / @duration) * 100
+
+      keys.push(startKey + (i / 25) * (endKey - startKey)) for i in [0..25]
+      keys.push(startKey - 0.01) unless startKey is 0
+
+    keys = keys.sort((a, b) -> a - b).map((i) -> i / 100)
+
+    @keys = @_unique(keys)
+
     keyframes = {}
-    for i in [0..100] by 4
+    for i in @keys
       matrix = new Matrix4D().identity()
 
       for component in @components
-        matrix.multiply component.getEasedMatrix(i / 100)
+        currentTime = i * @duration
+        continue if (component.delay - currentTime) > 1e-8 # Account for rounding errors
+        ratio = (i - component.delay / @duration) / (component.duration / @duration)
+        matrix.multiply \
+          component.getEasedMatrix(ratio)
 
-      keyframes["#{i}"] = matrix.transpose().toFixed 5
+      keyframes[i] = matrix.transpose().toFixed 5
 
     keyframes
 
   @generateName: ->
     "animation-#{Bounce.counter++}"
-
 
   @isSupported: ->
     style = document.createElement("dummy").style
@@ -103,5 +127,12 @@ class Bounce
       return false unless propertyIsSupported
 
     true
+
+  _unique: (list) ->
+    seen = {}
+    list.filter (i) ->
+      isUnique = not seen[i]
+      seen[i] = true
+      isUnique
 
 module.exports = Bounce

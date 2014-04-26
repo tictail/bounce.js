@@ -18,15 +18,11 @@ class PreferencesView extends BaseView
   initialize: ->
     super
     @appendComponent()
-    @$duration = @$ "#duration"
 
   appendComponent: =>
     component = new ComponentView
     @$el.append component.$el
     @components.push component
-
-  getAnimationDuration: ->
-    @$duration.val()
 
   getBounceObject: =>
     bounce = new Bounce

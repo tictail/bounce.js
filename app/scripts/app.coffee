@@ -25,17 +25,22 @@ class App extends BaseView
     @preferences = new PreferencesView
     @boxView = new BoxView
 
-    @$style = $ "#animation"
-    @$result = $ "#result"
+    @$style = @$ "#animation"
+    @$result = @$ "#result"
     @$box = @$result.find ".box"
+    @$loop = @$ ".actions .loop-input"
 
   playAnimation: (options = {}) =>
     bounce = options.bounceObject or @preferences.getBounceObject()
-    duration = options.duration or @preferences.getAnimationDuration()
+    duration = options.duration or bounce.duration
+
+    properties = []
+    properties.push "animation-duration: #{duration}ms"
+    properties.push("animation-iteration-count: infinite") if @$loop.prop("checked")
 
     css = """
     .box.animate {
-      animation-duration: #{duration}ms;
+      #{properties.join(";\n  ")};
     }
     #{bounce.getKeyframeCSS(name: "animation")}
     """

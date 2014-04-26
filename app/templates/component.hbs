@@ -1,20 +1,26 @@
 <div class="component">
   <label for="type">Type</label> <br>
-  <select id="type">
+  <select class="type-input" name="type">
     <option value="scale" selected>Scale</option>
     <option value="translate">Translate</option>
     <option value="rotate">Rotate</option>
     <option value="skew">Skew</option>
   </select> <br>
 
-  <label for="bounces">Bounces</label> <br>
-  <input type="text" name="bounces" id="bounces" value=4> <br>
+  <label for="duration">Duration</label> <br>
+  <input type="text" value="1000" name="duration" class="duration-input"> <br>
 
-  <input type="checkbox" id="shake">Shake <br>
+  <label for="delay">Delay</label> <br>
+  <input type="text" value="0" name="delay" class="delay-input"> <br>
+
+  <label for="bounces">Bounces</label> <br>
+  <input type="text" name="bounces" class="bounces-input" value=4> <br>
+
+  <input type="checkbox" class="shake-input">Shake <br>
 
   <label for="stiffness">Stiffness</label> <br>
-  <input type="range" id="stiffness" min="1" max="5" step="1" value="3">
+  <input type="range" class="stiffness-input" min="1" max="5" step="1" value="3">
 
-  <div id="inputs"></div>
+  <div class="inputs"></div>
 </div>
 <hr>

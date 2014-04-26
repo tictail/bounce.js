@@ -9,11 +9,13 @@ class Component extends BaseView
   initialize: ->
     super
 
-    @$type = @$ "#type"
-    @$bounces = @$ "#bounces"
-    @$shake = @$ "#shake"
-    @$stiffness = @$ "#stiffness"
-    @$inputs = @$ "#inputs"
+    @$type = @$ ".type-input"
+    @$bounces = @$ ".bounces-input"
+    @$duration = @$ ".duration-input"
+    @$delay = @$ ".delay-input"
+    @$shake = @$ ".shake-input"
+    @$stiffness = @$ ".stiffness-input"
+    @$inputs = @$ ".inputs"
 
     _.defer @setupInputElements
 
@@ -33,6 +35,8 @@ class Component extends BaseView
 
   addToBounce: (bounce) ->
     @inputView.addToBounce bounce, {
+      duration: parseInt @$duration.val(), 10
+      delay: parseInt @$delay.val(), 10
       bounces: parseInt @$bounces.val(), 10
       shake: @$shake.prop("checked")
       stiffness: parseInt @$stiffness.val(), 10
