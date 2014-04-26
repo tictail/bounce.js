@@ -9,7 +9,7 @@ config =
 
     styles:
       files: [
-        "app/styles/styles.scss"
+        "app/styles/*.scss"
       ]
       tasks: ["compileStyles"]
 
@@ -34,6 +34,7 @@ config =
 
       alias: [
         "bower_components/jquery/jquery.js:jquery"
+        "bower_components/chosen/chosen.jquery.js:chosen"
         "bower_components/backbone/backbone.js:backbone"
         "bower_components/prefixfree/prefixfree.min.js:prefixfree"
         "app/scripts/lib/bounce/index.coffee:bounce"
@@ -109,6 +110,11 @@ config =
         cssDir: ".tmp/styles"
         specify: ["app/styles/styles.scss"]
 
+  concat:
+    css:
+      src: ["bower_components/chosen/chosen.min.css", ".tmp/styles/styles.css"]
+      dest: ".tmp/styles/styles.css"
+
   autoprefixer:
     options:
       browsers: ["last 2 versions"]
@@ -145,6 +151,7 @@ module.exports = (grunt) ->
     grunt.task.run "watch"
 
   grunt.registerTask "compileStyles", [
-    "compass",
+    "compass"
     "autoprefixer"
+    "concat:css"
   ]

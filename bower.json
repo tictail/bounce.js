@@ -4,6 +4,7 @@
   "dependencies": {
     "jquery": "2.0.3",
     "backbone": "1.1.0",
-    "prefixfree": "LeaVerou/prefixfree#gh-pages"
+    "prefixfree": "LeaVerou/prefixfree#gh-pages",
+    "chosen": "https://github.com/harvesthq/chosen/releases/download/v1.1.0/chosen_v1.1.0.zip"
   }
 }

@@ -1,8 +1,11 @@
+_ = require "underscore"
+
 BaseView = require "scripts/views/base"
 template = require "templates/component"
 
 class Component extends BaseView
   template: template
+
   initialize: ->
     super
 
@@ -12,8 +15,13 @@ class Component extends BaseView
     @$stiffness = @$ "#stiffness"
     @$inputs = @$ "#inputs"
 
+    _.defer @setupInputElements
+
     @renderInputs()
     @$type.on "change", @renderInputs
+
+  setupInputElements: =>
+    @$type.chosen disable_search: true
 
   renderInputs: =>
     selected = @$type.val()

@@ -1,0 +1,113 @@
+$input-border: 2px solid #259dce;
+$input-padding: 7px 12px;
+
+@mixin input-styles {
+  border: $input-border;
+  border-radius: 2px;
+  background: transparent;
+  appearance: none;
+}
+
+input, button {
+  font-family: $body-font;
+}
+
+input[type="text"], select {
+  @include input-styles;
+  padding: $input-padding;
+}
+
+button {
+  border-radius: 2px;
+  padding: 18px 36px;
+
+  appearance: none;
+  border: none;
+  outline: none;
+  background: white;
+  color: #1c323b;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+
+  transition: transform 0.15s;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  &:active {
+    position: relative;
+    top: 1px;
+  }
+
+  i {
+    margin-right: 8px;
+  }
+}
+
+.chosen-container {
+  .chosen-drop {
+    color: $text-dark;
+    font-size: 12px;
+    background: white;
+    box-shadow: none;
+    border: none;
+
+    margin-top: 5px;
+    border-radius: 2px;
+  }
+
+  .chosen-results {
+    padding: 8px;
+    overflow: hidden;
+    li {
+      position: relative;
+
+      &.highlighted {
+        background: none;
+        color: $text-dark;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.chosen-container-single .chosen-single div b {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  margin-top: -2px;
+  width: 0;
+  height: 0;
+  display: block;
+  border: 5px solid transparent;
+  border-top: 5px solid $text-dark;
+  background: none;
+}
+
+.chosen-container-single .chosen-single,
+.chosen-container-active.chosen-with-drop .chosen-single {
+  @include input-styles;
+  border: $input-border;
+  border-radius: 2px;
+  background: transparent;
+  box-shadow: none;
+  box-sizing: content-box;
+  padding: $input-padding;
+  font-size: 12px;
+  font-weight: 500;
+  color: $text-dark;
+
+  transition: border-color 0.1s;
+
+  &:hover {
+    border-color: transparentize($text-dark, 0.8);
+  }
+}
+
+.chosen-with-drop .chosen-drop {
+  animation: chosen-drop 0.5s both;
+}

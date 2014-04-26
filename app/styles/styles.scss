@@ -1,7 +1,10 @@
+$main-color: #26a9df;
+$text-dark: #162a30;
+$body-font: "Gotham Rounded SSm A", "Gotham Rounded SSm B", Helvetica, Arial, sans-serif;
+
+@import "inputs";
 @import "animations";
 
-$main-color: #26a9df;
-$body-font: "Gotham Rounded SSm A", "Gotham Rounded SSm B", Helvetica, Arial, sans-serif;
 
 * {
   box-sizing: border-box;
@@ -23,37 +26,6 @@ body {
   }
 }
 
-input, button {
-  font-family: $body-font;
-}
-
-button {
-  border-radius: 2px;
-  padding: 18px 36px;
-
-  appearance: none;
-  border: none;
-  outline: none;
-  background: white;
-  color: #1c323b;
-  text-transform: uppercase;
-  font-size: 10px;
-  font-weight: 500;
-  cursor: pointer;
-  user-select: none;
-
-  transition: transform 0.15s;
-
-  &:hover {
-    transform: scale(1.02);
-  }
-
-  &:active {
-    position: relative;
-    top: 1px;
-  }
-}
-
 a, a:visited {
   text-decoration: none;
   color: #1c323b;
@@ -66,6 +38,15 @@ a, a:visited {
 
 .preference-bar {
   width: 300px;
+
+  #add {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  #type {
+    width: 180px;
+  }
 }
 
 .main-view {
@@ -139,10 +120,6 @@ a, a:visited {
   position: relative;
   z-index: 10;
   text-align: center;
-}
-
-.play-button i {
-  margin-right: 5px;
 }
 
 input[type="text"] {
