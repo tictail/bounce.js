@@ -4,6 +4,7 @@ _ = require "underscore"
 PrefixFree = require "prefixfree"
 Bounce = require "bounce"
 
+Events = require "scripts/events"
 BaseView = require "scripts/views/base"
 PreferencesView = require "scripts/views/preferences"
 BoxView = require "scripts/views/box"
@@ -29,6 +30,8 @@ class App extends BaseView
     @$result = @$ "#result"
     @$box = @$result.find ".box"
     @$loop = @$ ".actions .loop-input"
+
+    Events.on "animationOptionsChanged", @playAnimation
 
     @readURL()
 

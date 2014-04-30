@@ -1,5 +1,6 @@
 _ = require "underscore"
 
+Events = require "scripts/events"
 BaseView = require "scripts/views/base"
 template = require "templates/component"
 
@@ -17,6 +18,7 @@ class Component extends BaseView
     @$stiffness = @$ ".stiffness-input"
     @$inputs = @$ ".inputs"
 
+
     if options.component
       @setValues(options.component)
     else
@@ -24,6 +26,9 @@ class Component extends BaseView
 
     _.defer @setupInputElements
     @$type.on "change", @renderInputs
+
+    @$("input").on "keypress", @onDebouncedInputChanged
+    @$("select, .stiffness-input").on "change", @onInputChanged
 
   setValues: (component) ->
     serialized = component.serialize()
@@ -74,5 +79,17 @@ class Component extends BaseView
 
   remove: ->
     @$type.off "change"
+    @$("input").off "keypress"
+    @$("select, .stiffness-input").off "change"
+
+
+  onDebouncedInputChanged: =>
+    unless @debouncedInputChanged
+      @debouncedInputChanged = _.debounce @onInputChanged, 300
+
+    @debouncedInputChanged()
+
+  onInputChanged: ->
+    Events.trigger "animationOptionsChanged"
 
 module.exports = Component
