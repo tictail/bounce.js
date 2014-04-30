@@ -82,12 +82,15 @@ class Bounce
     "@#{prefixes.animation}keyframes #{@name} { \n  #{keyframeList.join("\n  ")} \n}"
 
   getKeyframes: ->
+    # TODO: Clean this up, move logic to components
     keys = [0]
     for component in @components
       startKey = (component.delay / @duration) * 100
       endKey = ((component.delay + component.duration) / @duration) * 100
 
-      keys.push(startKey + (i / 25) * (endKey - startKey)) for i in [0..25]
+      numKeyframes = component.easingObject.bounces * 8
+
+      keys.push(startKey + (i / numKeyframes) * (endKey - startKey)) for i in [0..numKeyframes]
       keys.push(startKey - 0.01) unless startKey is 0
 
     keys = keys.sort((a, b) -> a - b).map((i) -> i / 100)
