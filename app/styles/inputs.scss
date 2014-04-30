@@ -1,5 +1,5 @@
 $input-border: 2px solid #259dce;
-$input-padding: 7px 12px;
+$input-padding: 10px 12px;
 
 @mixin input-styles {
   border: $input-border;
@@ -15,6 +15,13 @@ input, button {
 input[type="text"], select {
   @include input-styles;
   padding: $input-padding;
+  font-weight: 500;
+  font-size: 11px;
+
+  &:focus {
+    outline: none;
+    border: $input-border;
+  }
 }
 
 button {
@@ -96,7 +103,7 @@ button {
   background: transparent;
   box-shadow: none;
   box-sizing: content-box;
-  padding: $input-padding;
+  padding: 6px 12px;
   font-size: 12px;
   font-weight: 500;
   color: $text-dark;

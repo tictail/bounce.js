@@ -5,6 +5,8 @@ $body-font: "Gotham Rounded SSm A", "Gotham Rounded SSm B", Helvetica, Arial, sa
 @import "inputs";
 @import "animations";
 
+@import "preference-bar";
+
 
 * {
   box-sizing: border-box;
@@ -34,19 +36,6 @@ a, a:visited {
 .column {
   display: inline-block;
   vertical-align: top;
-}
-
-.preference-bar {
-  width: 300px;
-
-  #add {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
-  .type-input {
-    width: 180px;
-  }
 }
 
 .main-view {
@@ -120,8 +109,4 @@ a, a:visited {
   position: relative;
   z-index: 10;
   text-align: center;
-}
-
-input[type="text"] {
-  width: 50px;
 }

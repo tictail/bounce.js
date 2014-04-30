@@ -1,0 +1,40 @@
+.preference-bar {
+  width: 300px;
+
+  #add {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  input[type="text"], .type-input {
+    width: 170px;
+  }
+
+  label {
+    display: block;
+    font-weight: 400;
+    font-size: 10px;
+    text-transform: uppercase;
+    color: $text-dark;
+    margin: 20px 0 9px 0;
+  }
+
+  .inputs {
+    color: $text-dark;
+
+    input[type="text"] {
+      width: 55px;
+      margin: 0 5px;
+    }
+
+    label {
+      margin-bottom: 12px;
+    }
+  }
+
+  .component {
+    width: 190px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #259dce;
+  }
+}
