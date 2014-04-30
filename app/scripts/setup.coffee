@@ -3,3 +3,4 @@ $ = require "jquery"
 Backbone.$ = $
 
 require "chosen"
+require "nouislider"

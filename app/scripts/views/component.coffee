@@ -24,6 +24,22 @@ class Component extends BaseView
 
   setupInputElements: =>
     @$type.chosen disable_search: true
+    @$stiffness.noUiSlider(
+      start: 3
+      step: 1
+      range:
+        min: 1
+        max: 5
+      serialization:
+        lower: [
+          $.Link(
+            target: @$ ".stiffness-value"
+            format:
+              decimals: 0
+          )
+        ]
+
+    )
 
   renderInputs: =>
     selected = @$type.val()

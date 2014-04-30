@@ -118,3 +118,34 @@ button {
 .chosen-with-drop .chosen-drop {
   animation: chosen-drop 0.5s both;
 }
+
+.noUi-background {
+  background: #2390bc;
+  box-shadow: none;
+  border: none;
+}
+
+.noUi-horizontal {
+  height: 6px;
+  border-radius: 6px;
+
+  .noUi-handle {
+    background: #162a30;
+    border-radius: 100%;
+    height: 14px;
+    width: 14px;
+    box-shadow: none;
+    border: none;
+    top: -4px;
+    left: -7px;
+
+    &:after, &:before {
+      display: none;
+    }
+  }
+}
+
+.noUi-state-tap .noUi-origin {
+  transition: left 0.2s cubic-bezier(.29,.71,.64,1.19);
+}
+

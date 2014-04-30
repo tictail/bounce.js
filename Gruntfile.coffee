@@ -35,6 +35,7 @@ config =
       alias: [
         "bower_components/jquery/jquery.js:jquery"
         "bower_components/chosen/chosen.jquery.js:chosen"
+        "bower_components/nouislider/jquery.nouislider.min.js:nouislider"
         "bower_components/backbone/backbone.js:backbone"
         "bower_components/prefixfree/prefixfree.min.js:prefixfree"
         "app/scripts/lib/bounce/index.coffee:bounce"
@@ -112,7 +113,11 @@ config =
 
   concat:
     css:
-      src: ["bower_components/chosen/chosen.min.css", ".tmp/styles/styles.css"]
+      src: [
+        "bower_components/chosen/chosen.min.css"
+        "bower_components/nouislider/jquery.nouislider.css"
+        ".tmp/styles/styles.css"
+      ]
       dest: ".tmp/styles/styles.css"
 
   autoprefixer:

@@ -25,6 +25,8 @@
     input[type="text"] {
       width: 55px;
       margin: 0 5px;
+      text-align: center;
+      padding: 10px 5px;
     }
 
     label {
@@ -36,5 +38,16 @@
     width: 190px;
     padding-bottom: 20px;
     border-bottom: 2px solid #259dce;
+
+    .stiffness-input {
+      display: inline-block;
+      width: 135px;
+    }
+
+    .stiffness-value {
+      width: 38px;
+      margin-left: 8px;
+      text-align: center;
+    }
   }
 }
