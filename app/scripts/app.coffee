@@ -30,6 +30,8 @@ class App extends BaseView
     @$box = @$result.find ".box"
     @$loop = @$ ".actions .loop-input"
 
+    @readURL()
+
   playAnimation: (options = {}) =>
     bounce = options.bounceObject or @preferences.getBounceObject()
     duration = options.duration or bounce.duration
@@ -50,9 +52,87 @@ class App extends BaseView
     @$box.removeClass "animate spin"
     _.defer => @$box.addClass "animate"
 
+    @updateURL(bounce) unless options.fromURL
+
   animateSpin: (e) ->
     e.preventDefault()
     @$box.removeClass "spin animate"
     _.defer => @$box.addClass "spin"
+
+  updateURL: (bounce) ->
+    window.location.hash = @_encodeURL bounce.serialize()
+
+  readURL: ->
+    return unless window.location.hash
+    bounce = new Bounce
+    options = null
+    try
+      options = @_decodeURL(window.location.hash[1..])
+      bounce.deserialize options.serialized
+    catch e
+      return
+
+    if options.loop
+      @$loop.prop "checked", true
+
+    @playAnimation bounceObject: bounce, fromURL: true
+    @preferences.setFromBounceObject bounce
+
+  @_shortKeys:
+    "type": "T"
+    "easing": "e"
+    "duration": "d"
+    "delay": "D"
+    "from": "f"
+    "to": "t"
+    "bounces": "b"
+    "stiffness": "s"
+
+  @_shortValues:
+    "bounce": "b"
+    "sway": "s"
+    "hardbounce": "B"
+    "hardsway": "S"
+    "scale": "c"
+    "skew": "k"
+    "translate": "t"
+    "rotate": "r"
+
+  @_longKeys: _.invert App._shortKeys
+  @_longValues: _.invert App._shortValues
+
+  _encodeURL: (serialized) ->
+    encoded = {}
+    encoded.l = 1 if @$loop.prop("checked")
+    encoded.s = for options in serialized
+      shortKeys = {}
+      for key, value of options
+        shortKeys[App._shortKeys[key] or key] =
+          App._shortValues[value] or value
+
+      shortKeys
+
+    stringified = JSON.stringify(encoded)
+    # Remove double quotes in properties
+    stringified
+      .replace(/(\{|,)"([a-z0-9]+)"(:)/gi, "$1$2$3")
+
+
+  _decodeURL: (str) ->
+    # Add back the double quotes in properties
+    json = str.replace(/(\{|,)([a-z0-9]+)(:)/gi, "$1\"$2\"$3")
+    decoded = JSON.parse(json)
+    unshortened = for options in decoded.s
+      longKeys = {}
+      for key, value of options
+        longKeys[App._longKeys[key] or key] =
+          App._longValues[value] or value
+
+      longKeys
+
+    {
+      serialized: unshortened
+      loop: decoded.l
+    }
 
 module.exports = App

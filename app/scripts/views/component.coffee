@@ -6,7 +6,7 @@ template = require "templates/component"
 class Component extends BaseView
   template: template
 
-  initialize: ->
+  initialize: (options = {}) ->
     super
 
     @$type = @$ ".type-input"
@@ -17,17 +17,29 @@ class Component extends BaseView
     @$stiffness = @$ ".stiffness-input"
     @$inputs = @$ ".inputs"
 
+    if options.component
+      @setValues(options.component)
+    else
+      @renderInputs()
+
     _.defer @setupInputElements
+    @$type.on "change", @renderInputs
+
+  setValues: (component) ->
+    serialized = component.serialize()
+
+    for input in ["type", "easing", "bounces", "duration", "delay", "stiffness"]
+      @["$#{input}"].val(serialized[input]).data("val", serialized[input])
 
     @renderInputs()
-    @$type.on "change", @renderInputs
+    @inputView.setValues component
 
   setupInputElements: =>
     @$type.chosen disable_search: true
     @$easing.chosen disable_search: true
 
     @$stiffness.noUiSlider(
-      start: 3
+      start: @$stiffness.data("val") or 3
       step: 1
       range:
         min: 1
@@ -59,5 +71,8 @@ class Component extends BaseView
       bounces: parseInt @$bounces.val(), 10
       stiffness: parseInt @$stiffness.val(), 10
     }
+
+  remove: ->
+    @$type.off "change"
 
 module.exports = Component

@@ -1,20 +1,8 @@
-_ = require "underscore"
-InputView = require "./index"
+VectorInputView = require "./vector"
 template = require "templates/inputs/skew"
 
-class SkewInputView extends InputView
+class SkewInputView extends VectorInputView
   template: template
-
-  addToBounce: (bounce, options) ->
-    options = _.extend {}, options,
-      from:
-        x: @getInputValue "from_x"
-        y: @getInputValue "from_y"
-
-      to:
-        x: @getInputValue "to_x"
-        y: @getInputValue "to_y"
-
-    bounce.skew options
+  type: "skew"
 
 module.exports = SkewInputView

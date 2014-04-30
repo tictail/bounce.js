@@ -1,5 +1,5 @@
 Matrix4D = require "../math/matrix4d"
-EasingObjects =
+EasingClasses =
   bounce: require "../easing/bounce"
   sway: require "../easing/sway"
   hardbounce: require "../easing/hardbounce"
@@ -20,7 +20,7 @@ class Component
     @from = options.from if options.from?
     @to = options.to if options.to?
 
-    @easingObject = new EasingObjects[@easing] options
+    @easingObject = new EasingClasses[@easing] options
 
   calculateEase: (ratio) ->
     @easingObject.calculate ratio
@@ -30,5 +30,19 @@ class Component
 
   getEasedMatrix: (ratio) ->
     @getMatrix()
+
+  serialize: ->
+    serialized =
+      type: @constructor.name.toLowerCase()
+      easing: @easing
+      duration: @duration
+      delay: @delay
+      from: @from
+      to: @to
+
+    for key, value of @easingObject.serialize()
+      serialized[key] = value
+
+    serialized
 
 module.exports = Component

@@ -13,20 +13,36 @@ class PreferencesView extends BaseView
   components: []
 
   events:
-    "click #add": "appendComponent"
+    "click #add": "onClickAdd"
 
   initialize: ->
     super
+    @$components = @$ ".components"
     @appendComponent()
 
-  appendComponent: =>
-    component = new ComponentView
-    @$el.append component.$el
-    @components.push component
+  onClickAdd: ->
+    @appendComponent()
+
+  appendComponent: (component) ->
+    componentView = new ComponentView component: component
+    @$components.append componentView.$el
+    @components.push componentView
+
+  clearComponents: ->
+    component.remove() for component in @components
+    @$components.empty()
+    @components = []
 
   getBounceObject: =>
     bounce = new Bounce
     @components.map (c) -> c.addToBounce bounce
     bounce
+
+  setFromBounceObject: (bounce) ->
+    @clearComponents()
+    for component in bounce.components
+      @appendComponent component
+
+
 
 module.exports = PreferencesView

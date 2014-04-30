@@ -1,9 +1,10 @@
 Matrix4D = require "./math/matrix4d"
 
-Scale = require "./components/scale"
-Rotate = require "./components/rotate"
-Translate = require "./components/translate"
-Skew = require "./components/skew"
+ComponentClasses =
+  scale: require "./components/scale"
+  rotate: require "./components/rotate"
+  translate: require "./components/translate"
+  skew: require "./components/skew"
 
 class Bounce
   @counter: 1
@@ -14,20 +15,31 @@ class Bounce
     @components = []
 
   scale: (options) ->
-    @addComponent new Scale(options)
+    @addComponent new ComponentClasses["scale"](options)
 
   rotate: (options) ->
-    @addComponent new Rotate(options)
+    @addComponent new ComponentClasses["rotate"](options)
 
   translate: (options) ->
-    @addComponent new Translate(options)
+    @addComponent new ComponentClasses["translate"](options)
 
   skew: (options) ->
-    @addComponent new Skew(options)
+    @addComponent new ComponentClasses["skew"](options)
 
   addComponent: (component) ->
     @components.push component
     @updateDuration()
+    this
+
+  serialize: ->
+    serialized = []
+    serialized.push(component.serialize()) for component in @components
+    serialized
+
+  deserialize: (serialized) ->
+    for options in serialized
+      @addComponent new ComponentClasses[options.type](options)
+
     this
 
   updateDuration: ->

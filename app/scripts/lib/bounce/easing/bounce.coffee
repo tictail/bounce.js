@@ -27,4 +27,8 @@ class BounceEasing extends Easing
   oscillation: (t) ->
     Math.cos @omega * t
 
+  serialize: ->
+    stiffness: @stiffness
+    bounces: @bounces
+
 module.exports = BounceEasing

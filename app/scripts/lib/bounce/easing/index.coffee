@@ -1,5 +1,8 @@
 class Easing
   calculate: (ratio) ->
-    return ratio
+    ratio
+
+  serialize: ->
+    {}
 
 module.exports = Easing

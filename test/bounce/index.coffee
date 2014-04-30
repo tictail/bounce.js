@@ -31,6 +31,22 @@ describe "Bounce", ->
       bounce.rotate()
       bounce.components[0].should.be.an.instanceof Rotate
 
+  describe "#serialize", ->
+    it "serializes into JSON", ->
+      bounce.scale().translate()
+      serialized = bounce.serialize()
+
+      serialized.length.should.equal 2
+      serialized[0].type.should.equal "scale"
+      serialized[1].type.should.equal "translate"
+
+  describe "#deserialize", ->
+    it "builds a Bounce object from the given JSON", ->
+      bounce.scale().translate()
+      deserialized = (new Bounce()).deserialize bounce.serialize()
+      deserialized.components[0].should.be.an.instanceof Scale
+      deserialized.components[1].should.be.an.instanceof Translate
+
   describe "#getKeyframes", ->
     it "returns an object with matrices", ->
       bounce.scale()
@@ -38,4 +54,3 @@ describe "Bounce", ->
       keyframes.should.be.an.object
       keyframes[0].should.be.an.instanceof Matrix4D
 
-bounce = new Bounce
