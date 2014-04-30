@@ -1,7 +1,6 @@
 Matrix4D = require "../math/matrix4d"
 Vector2D = require "../math/vector2d"
 
-Easing = require "../easing"
 Component = require "./index"
 
 class Rotate extends Component
@@ -24,7 +23,7 @@ class Rotate extends Component
     ]
 
   getEasedMatrix: (ratio) ->
-    easedRatio = @easing.calculate ratio
+    easedRatio = @calculateEase ratio
     easedAngle = @from + @diff * easedRatio
     @getMatrix easedAngle
 

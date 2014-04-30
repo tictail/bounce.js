@@ -10,10 +10,10 @@ class Component extends BaseView
     super
 
     @$type = @$ ".type-input"
+    @$easing = @$ ".easing-input"
     @$bounces = @$ ".bounces-input"
     @$duration = @$ ".duration-input"
     @$delay = @$ ".delay-input"
-    @$shake = @$ ".shake-input"
     @$stiffness = @$ ".stiffness-input"
     @$inputs = @$ ".inputs"
 
@@ -24,6 +24,8 @@ class Component extends BaseView
 
   setupInputElements: =>
     @$type.chosen disable_search: true
+    @$easing.chosen disable_search: true
+
     @$stiffness.noUiSlider(
       start: 3
       step: 1
@@ -51,10 +53,10 @@ class Component extends BaseView
 
   addToBounce: (bounce) ->
     @inputView.addToBounce bounce, {
+      easing: @$easing.val()
       duration: parseInt @$duration.val(), 10
       delay: parseInt @$delay.val(), 10
       bounces: parseInt @$bounces.val(), 10
-      shake: @$shake.prop("checked")
       stiffness: parseInt @$stiffness.val(), 10
     }
 
