@@ -114,8 +114,7 @@ class App extends BaseView
 
     stringified = JSON.stringify(encoded)
     # Remove double quotes in properties
-    stringified
-      .replace(/(\{|,)"([a-z0-9]+)"(:)/gi, "$1$2$3")
+    stringified.replace(/(\{|,)"([a-z0-9]+)"(:)/gi, "$1$2$3")
 
 
   _decodeURL: (str) ->
