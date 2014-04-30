@@ -1,14 +1,9 @@
 _ = require "underscore"
-
-BaseView = require "scripts/views/base"
-
+InputView = require "./index"
 template = require "templates/inputs/rotate"
 
-class RotateInputView extends BaseView
+class RotateInputView extends InputView
   template: template
-
-  getInputValue: (name) =>
-   parseFloat @$("input[name=#{name}]").val()
 
   addToBounce: (bounce, options) ->
     options = _.extend {}, options,

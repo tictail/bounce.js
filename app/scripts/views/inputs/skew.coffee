@@ -1,19 +1,19 @@
 _ = require "underscore"
-
-BaseView = require "scripts/views/base"
-
+InputView = require "./index"
 template = require "templates/inputs/skew"
 
-class SkewInputView extends BaseView
+class SkewInputView extends InputView
   template: template
-
-  getInputValue: (name) =>
-   parseFloat @$("input[name=#{name}]").val()
 
   addToBounce: (bounce, options) ->
     options = _.extend {}, options,
-      from: @getInputValue "from"
-      to: @getInputValue "to"
+      from:
+        x: @getInputValue "from_x"
+        y: @getInputValue "from_y"
+
+      to:
+        x: @getInputValue "to_x"
+        y: @getInputValue "to_y"
 
     bounce.skew options
 

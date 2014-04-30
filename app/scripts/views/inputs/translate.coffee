@@ -1,15 +1,9 @@
 _ = require "underscore"
-
-BaseView = require "scripts/views/base"
-glMatrix = require "gl-matrix"
-
+InputView = require "./index"
 template = require "templates/inputs/translate"
 
-class TranslateInputView extends BaseView
+class TranslateInputView extends InputView
   template: template
-
-  getInputValue: (name) =>
-   parseFloat @$("input[name=#{name}]").val()
 
   addToBounce: (bounce, options) ->
     options = _.extend {}, options,
