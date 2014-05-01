@@ -31,7 +31,9 @@ class App extends BaseView
     @$box = @$result.find ".box"
     @$loop = @$ ".actions .loop-input"
 
-    Events.on "animationOptionsChanged", @playAnimation
+    Events.on
+      "animationOptionsChanged": @playAnimation
+      "selectedPresetAnimation": @deserializeBounce
 
     @readURL()
 
@@ -53,7 +55,8 @@ class App extends BaseView
     @$style.text PrefixFree.prefixCSS(css, true)
 
     @$box.removeClass "animate spin"
-    _.defer => @$box.addClass "animate"
+    @$box[0].offsetWidth
+    @$box.addClass "animate"
 
     @updateURL(bounce) unless options.fromURL
 
@@ -67,10 +70,13 @@ class App extends BaseView
 
   readURL: ->
     return unless window.location.hash
+    @deserializeBounce window.location.hash[1..]
+
+  deserializeBounce: (str) =>
     bounce = new Bounce
     options = null
     try
-      options = @_decodeURL(window.location.hash[1..])
+      options = @_decodeURL(str)
       bounce.deserialize options.serialized
     catch e
       return

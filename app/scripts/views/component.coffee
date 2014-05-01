@@ -68,7 +68,12 @@ class Component extends BaseView
 
     @$("input")
       .off ".animationInputChange"
-      .on "keydown.animationInputChange", @onDebouncedInputChanged
+      .on "keydown.animationInputChange", (e) =>
+        _.defer @onDebouncedInputChanged, $(e.target)
+
+    @$("input").each ->
+      $this = $ this
+      $this.data("prev-val", $this.val())
 
   addToBounce: (bounce) ->
     @inputView.addToBounce bounce, {
@@ -81,12 +86,15 @@ class Component extends BaseView
 
   remove: ->
     @$type.off "change"
-    @$("input").off "keypress"
+    @$("input").off ".animationInputChange"
     @$("select, .stiffness-input").off "change"
 
-  onDebouncedInputChanged: =>
+  onDebouncedInputChanged: ($target) =>
+    return if $target.data("prev-val") is $target.val()
+    $target.data("prev-val", $target.val())
+
     unless @debouncedInputChanged
-      @debouncedInputChanged = _.debounce @onInputChanged, 300
+      @debouncedInputChanged = _.debounce @onInputChanged, 150
 
     @debouncedInputChanged()
 

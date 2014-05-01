@@ -4,6 +4,7 @@
   #add {
     padding-left: 20px;
     padding-right: 20px;
+    margin-bottom: 10px;
   }
 
   input[type="text"], .type-input, .easing-input {
@@ -32,6 +33,11 @@
     label {
       margin-bottom: 12px;
     }
+  }
+
+  .preset-input {
+    display: block;
+    width: 158px;
   }
 
   .component {
