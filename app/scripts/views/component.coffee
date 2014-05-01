@@ -26,8 +26,6 @@ class Component extends BaseView
 
     _.defer @setupInputElements
     @$type.on "change", @renderInputs
-
-    @$("input").on "keypress", @onDebouncedInputChanged
     @$("select, .stiffness-input").on "change", @onInputChanged
 
   setValues: (component) ->
@@ -68,6 +66,10 @@ class Component extends BaseView
 
     @$inputs.html @inputView.$el
 
+    @$("input")
+      .off ".animationInputChange"
+      .on "keydown.animationInputChange", @onDebouncedInputChanged
+
   addToBounce: (bounce) ->
     @inputView.addToBounce bounce, {
       easing: @$easing.val()
@@ -81,7 +83,6 @@ class Component extends BaseView
     @$type.off "change"
     @$("input").off "keypress"
     @$("select, .stiffness-input").off "change"
-
 
   onDebouncedInputChanged: =>
     unless @debouncedInputChanged
