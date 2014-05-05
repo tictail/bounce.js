@@ -62,8 +62,7 @@ class App extends BaseView
 
   animateSpin: (e) ->
     e.preventDefault()
-    @$box.removeClass "spin animate"
-    _.defer => @$box.addClass "spin"
+    @preferences.selectPreset "spin"
 
   updateURL: (bounce) ->
     window.location.hash = @_encodeURL bounce.serialize()
@@ -73,6 +72,7 @@ class App extends BaseView
     @deserializeBounce window.location.hash[1..]
 
   deserializeBounce: (str) =>
+    return unless str
     bounce = new Bounce
     options = null
     try

@@ -14,7 +14,7 @@ class PreferencesView extends BaseView
 
   events:
     "click #add": "onClickAdd"
-    "change .preset-input": "onChoosePreset"
+    "chosen:updated": "onChoosePreset"
 
   initialize: ->
     super
@@ -49,9 +49,15 @@ class PreferencesView extends BaseView
       @appendComponent component
 
   onChoosePreset: ->
+
     Events.trigger "selectedPresetAnimation", @$presets.val()
     Events.off ".presetEvent"
     Events.once "animationOptionsChanged", @clearPreset
+
+  selectPreset: (preset) ->
+    $preset = @$presets.find "option[data-name=\"#{preset}\"]"
+    console.log "preset", $preset, preset
+    @$presets.val($preset.attr("value")).trigger "chosen:updated"
 
   clearPreset: =>
     Events.off "animationOptionsChanged", @clearPreset
