@@ -14,7 +14,7 @@ class PreferencesView extends BaseView
 
   events:
     "click #add": "onClickAdd"
-    "chosen:updated": "onChoosePreset"
+    "change .preset-input": "onChoosePreset"
 
   initialize: ->
     super
@@ -22,6 +22,7 @@ class PreferencesView extends BaseView
     @$presets = @$ ".preset-input"
 
     @$presets.chosen disable_search: true
+    @$presets.on "chosen:updated", @onChoosePreset
 
     @appendComponent()
 
@@ -48,15 +49,13 @@ class PreferencesView extends BaseView
     for component in bounce.components
       @appendComponent component
 
-  onChoosePreset: ->
-
+  onChoosePreset: =>
     Events.trigger "selectedPresetAnimation", @$presets.val()
     Events.off ".presetEvent"
     Events.once "animationOptionsChanged", @clearPreset
 
   selectPreset: (preset) ->
     $preset = @$presets.find "option[data-name=\"#{preset}\"]"
-    console.log "preset", $preset, preset
     @$presets.val($preset.attr("value")).trigger "chosen:updated"
 
   clearPreset: =>
