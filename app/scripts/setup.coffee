@@ -4,3 +4,4 @@ Backbone.$ = $
 
 require "chosen"
 require "nouislider"
+require "icheck"

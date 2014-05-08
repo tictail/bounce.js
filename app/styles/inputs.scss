@@ -18,9 +18,12 @@ input[type="text"], select {
   font-weight: 500;
   font-size: 11px;
 
+  transition: border 0.15s;
+
   &:focus {
     outline: none;
     border: $input-border;
+    border-color: transparentize($text-dark, 0.8);
   }
 }
 
@@ -118,7 +121,7 @@ button {
 }
 
 .chosen-with-drop .chosen-drop {
-  animation: chosen-drop 0.5s both;
+  animation: chosen-drop 0.5s linear both;
 }
 
 .noUi-background {
@@ -149,5 +152,25 @@ button {
 
 .noUi-state-tap .noUi-origin {
   transition: left 0.2s cubic-bezier(.29,.71,.64,1.19);
+}
+
+.icheckbox {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    border: $input-border;
+    cursor: pointer;
+
+    .fa-check {
+      opacity: 0;
+    }
+
+    &.checked .fa-check {
+      opacity: 1;
+      animation: checkbox-check 0.75s linear both;
+    }
 }
 

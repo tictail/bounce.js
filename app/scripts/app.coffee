@@ -31,6 +31,8 @@ class App extends BaseView
     @$box = @$result.find ".box"
     @$loop = @$ ".actions .loop-input"
 
+    @$loop.iCheck insert: "<i class=\"fa fa-check\"></i>"
+
     Events.on
       "animationOptionsChanged": @playAnimation
       "selectedPresetAnimation": @deserializeBounce

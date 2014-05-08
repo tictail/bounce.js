@@ -109,4 +109,20 @@ a, a:visited {
   position: relative;
   z-index: 10;
   text-align: center;
+
+  .loop-input-container {
+    display: inline-block;
+    width: 185px;
+    margin-top: 10px;
+
+    .icheckbox {
+      margin-right: 5px;
+      margin-left: -25px;
+    }
+
+    label {
+      user-select: none;
+      cursor: pointer;
+    }
+  }
 }

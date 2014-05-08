@@ -6,6 +6,7 @@
     "backbone": "1.1.0",
     "prefixfree": "LeaVerou/prefixfree#gh-pages",
     "chosen": "https://github.com/harvesthq/chosen/releases/download/v1.1.0/chosen_v1.1.0.zip",
-    "nouislider": "https://github.com/leongersen/noUiSlider/releases/download/6.1.0/6.1.0.zip"
+    "nouislider": "https://github.com/leongersen/noUiSlider/releases/download/6.1.0/6.1.0.zip",
+    "jquery-icheck": "~1.0.2"
   }
 }

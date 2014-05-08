@@ -35,6 +35,7 @@ config =
       alias: [
         "bower_components/jquery/jquery.js:jquery"
         "bower_components/chosen/chosen.jquery.js:chosen"
+        "bower_components/jquery-icheck/icheck.js:icheck"
         "bower_components/nouislider/jquery.nouislider.min.js:nouislider"
         "bower_components/backbone/backbone.js:backbone"
         "bower_components/prefixfree/prefixfree.min.js:prefixfree"
