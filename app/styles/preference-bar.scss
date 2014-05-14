@@ -1,10 +1,16 @@
 .preference-bar {
+  padding: 50px 55px;
   width: 300px;
 
   #add {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 19px;
+    padding-right: 9px;
     margin-bottom: 10px;
+
+    i {
+      margin-left: 26px;
+      font-size: 12px;
+    }
   }
 
   input[type="text"], .type-input, .easing-input {
@@ -35,15 +41,40 @@
     }
   }
 
-  .preset-input {
-    display: block;
-    width: 158px;
+  .presets {
+    .preset-input {
+      display: block;
+      width: 172px;
+    }
+
+    .chosen-container-single .chosen-single {
+      padding: 10px 16px;
+      text-transform: uppercase;
+      font-size: 10px;
+    }
+
+    padding-bottom: 40px;
+    border-bottom: 2px solid #259dce;
+  }
+
+  .components {
+    overflow: auto;
+    width: 210px;
   }
 
   .component {
     width: 190px;
     padding-bottom: 20px;
     border-bottom: 2px solid #259dce;
+
+    .header {
+      color: $text-dark;
+      padding: 15px 0;
+
+      & + label {
+        margin-top: 7px;
+      }
+    }
 
     .stiffness-input {
       display: inline-block;

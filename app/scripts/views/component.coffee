@@ -18,7 +18,6 @@ class Component extends BaseView
     @$stiffness = @$ ".stiffness-input"
     @$inputs = @$ ".inputs"
 
-
     if options.component
       @setValues(options.component)
     else
@@ -70,6 +69,8 @@ class Component extends BaseView
       .off ".animationInputChange"
       .on "keydown.animationInputChange", (e) =>
         _.defer @onDebouncedInputChanged, $(e.target)
+
+    @$(".header").text @$type.find("option[value=\"#{@$type.val()}\"]").text()
 
     @$("input").each ->
       $this = $ this

@@ -24,6 +24,8 @@ class PreferencesView extends BaseView
     @$presets.chosen disable_search: true
     @$presets.on "chosen:updated", @onChoosePreset
 
+    $(window).on "resize", @setHeight
+
     @appendComponent()
 
   onClickAdd: ->
@@ -33,11 +35,18 @@ class PreferencesView extends BaseView
     componentView = new ComponentView component: component
     @$components.append componentView.$el
     @components.push componentView
+    @setHeight()
 
   clearComponents: ->
     component.remove() for component in @components
     @$components.empty()
     @components = []
+
+  setHeight: =>
+    offsetTop = @$components.offset().top
+    windowHeight = $(window).height()
+
+    @$components.css "max-height", windowHeight - offsetTop - 50
 
   getBounceObject: =>
     bounce = new Bounce
