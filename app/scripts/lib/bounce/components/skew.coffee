@@ -9,7 +9,7 @@ class Skew extends Component
     y: 0
 
   to:
-    x: 10
+    x: 20
     y: 0
 
   constructor: ->
