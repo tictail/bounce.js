@@ -1,4 +1,7 @@
 .preference-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
   padding: 50px 55px;
   width: 300px;
 
@@ -28,6 +31,7 @@
 
   .inputs {
     color: $text-dark;
+    padding-bottom: 20px;
 
     input[type="text"] {
       width: 55px;
@@ -58,8 +62,10 @@
   }
 
   .components {
-    overflow: auto;
+    overflow-y: auto;
     width: 210px;
+    padding-left: 10px;
+    margin-left: -10px;
   }
 
   .component {

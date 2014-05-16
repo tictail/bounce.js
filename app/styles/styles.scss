@@ -17,7 +17,9 @@ html, body {
   height: 100%;
   max-height: 100%;
   max-width: 100%;
-  overflow: hidden;
+  min-width: 1200px;
+  padding: 0;
+  margin: 0;
 }
 
 body {
@@ -41,13 +43,9 @@ a, a:visited {
   color: #1c323b;
 }
 
-.column {
-  display: inline-block;
-  vertical-align: top;
-}
-
 .main-view {
   width: 760px;
+  margin: 0 auto;
   padding: 80px;
 }
 

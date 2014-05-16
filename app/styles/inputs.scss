@@ -42,10 +42,10 @@ button {
   cursor: pointer;
   user-select: none;
 
-  transition: transform 0.15s;
+  transition: background-color 0.15s;
 
   &:hover {
-    transform: scale(1.02);
+    background-color: #fafafa;
   }
 
   &:active {
@@ -155,22 +155,27 @@ button {
 }
 
 .icheckbox {
-    display: inline-block;
-    vertical-align: middle;
-    margin: 0;
-    padding: 0;
-    width: 20px;
-    height: 20px;
-    border: $input-border;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  border: $input-border;
+  transition: border-color 0.1s;
+
+  &.hover {
     cursor: pointer;
+    border-color: transparentize($text-dark, 0.8);
+  }
 
-    .fa-check {
-      opacity: 0;
-    }
+  .fa-check {
+    opacity: 0;
+  }
 
-    &.checked .fa-check {
-      opacity: 1;
-      animation: checkbox-check 0.75s linear both;
-    }
+  &.checked .fa-check {
+    opacity: 1;
+    animation: checkbox-check 0.75s linear both;
+  }
 }
 
