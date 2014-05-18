@@ -60,7 +60,7 @@ class PreferencesView extends BaseView
     offsetTop = @$components.offset().top
     windowHeight = $(window).height()
 
-    @$components.css "max-height", windowHeight - offsetTop - 50
+    @$components.css "max-height", windowHeight - offsetTop
 
   getBounceObject: =>
     bounce = new Bounce

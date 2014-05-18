@@ -2,7 +2,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  padding: 50px 55px;
+  padding: 50px 55px 0 55px;
   width: 300px;
 
   #add {
@@ -62,9 +62,10 @@
 
   .components {
     overflow-y: auto;
-    width: 230px;
+    width: 240px;
     padding-left: 30px;
     margin-left: -30px;
+    padding-right: 40px;
   }
 
   .component {
