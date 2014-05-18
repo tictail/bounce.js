@@ -76,7 +76,7 @@ class App extends BaseView
     @deserializeBounce window.location.hash[1..]
 
   onSelectPreset: (preset) =>
-    window.location.hash = preset
+    window.location.hash = preset if preset
     @readURL()
 
   deserializeBounce: (str) =>

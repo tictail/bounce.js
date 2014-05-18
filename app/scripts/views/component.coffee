@@ -14,7 +14,7 @@ class Component extends BaseView
     "click .header": "toggleOpen"
     "click .remove": "onClickRemove"
 
-  isOpen: true
+  isOpen: false
 
   initialize: (options = {}) ->
     super
@@ -32,6 +32,9 @@ class Component extends BaseView
       @setValues(options.component)
     else
       @renderInputs()
+
+    unless options.collapsed
+      _.defer => @toggleOpen()
 
     _.defer @setupInputElements
 

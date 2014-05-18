@@ -31,8 +31,11 @@ class PreferencesView extends BaseView
   onClickAdd: ->
     @appendComponent()
 
-  appendComponent: (component) ->
-    componentView = new ComponentView component: component
+  appendComponent: (component, options = {}) ->
+    componentView = new ComponentView
+      component: component
+      collapsed: options.collapsed
+
     componentView.on "remove", @onRemoveComponent
     @$components.append componentView.$el
     @components.push componentView
@@ -67,7 +70,7 @@ class PreferencesView extends BaseView
   setFromBounceObject: (bounce) ->
     @clearComponents()
     for component in bounce.components
-      @appendComponent component
+      @appendComponent component, collapsed: true
 
   onChoosePreset: =>
     Events.trigger "selectedPresetAnimation", @$presets.val()

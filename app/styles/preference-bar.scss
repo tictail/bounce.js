@@ -71,15 +71,17 @@
     width: 220px;
     overflow: hidden;
     padding-bottom: 20px;
-    max-height: 800px;
+    max-height: 45px;
     padding-left: 30px;
     margin-left: -30px;
+
+    transition: max-height 0.25s cubic-bezier(.3,1.05,.48,1.03);
 
     .header {
       position: relative;
       padding: 17px 0 15px 0;
       font-weight: 500;
-      color: white;
+      color: $text-dark;
       cursor: pointer;
       transition: color 0.1s;
       padding-left: 30px;
@@ -101,6 +103,7 @@
         background-size: 144px 10px;
         background-image: inline-image("arrow_sprite_sheet.png");
         background-repeat: no-repeat;
+        background-position: -72px;
       }
 
       .remove {
@@ -139,8 +142,10 @@
 
     &.open {
       transition: max-height 0.25s;
+      max-height: 800px;
 
       .header {
+        color: white;
         .arrow {
           animation: arrow-up 0.15s steps(5) both;
         }
@@ -148,11 +153,7 @@
     }
 
     &.closed {
-      max-height: 45px;
-      transition: max-height 0.25s cubic-bezier(.3,1.05,.48,1.03);
-
       .header {
-        color: $text-dark;
         .arrow {
           animation: arrow-down 0.15s steps(5) both;
         }
