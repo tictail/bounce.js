@@ -70,17 +70,38 @@
 
   .component {
     width: 190px;
+    overflow: hidden;
     padding-bottom: 20px;
     border-bottom: 2px solid #259dce;
+    max-height: 800px;
 
     .header {
-      color: $text-dark;
+      position: relative;
       padding: 15px 0;
+      font-weight: 500;
+      color: white;
+      cursor: pointer;
+      transition: color 0.1s;
+
+      user-select: none;
 
       & + label {
         margin-top: 7px;
       }
+
+      .arrow {
+        position: absolute;
+        right: 0;
+        top: 16px;
+        display: inline-block;
+        width: 12px;
+        height: 10px;
+        background-size: 144px 10px;
+        background-image: inline-image("arrow_sprite_sheet.png");
+        background-repeat: no-repeat;
+      }
     }
+
 
     .stiffness-input {
       display: inline-block;
@@ -91,6 +112,28 @@
       width: 38px;
       margin-left: 8px;
       text-align: center;
+    }
+
+    &.open {
+      transition: max-height 0.25s;
+
+      .header {
+        .arrow {
+          animation: arrow-up 0.15s steps(5) both;
+        }
+      }
+    }
+
+    &.closed {
+      max-height: 45px;
+      transition: max-height 0.25s cubic-bezier(.3,1.05,.48,1.03);
+
+      .header {
+        color: $text-dark;
+        .arrow {
+          animation: arrow-down 0.15s steps(5) both;
+        }
+      }
     }
   }
 }

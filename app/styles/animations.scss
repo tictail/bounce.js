@@ -123,3 +123,13 @@
   97.916667% { transform: matrix3d(0.99456, 0, 0, 0, 0, 0.9948, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
   100% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
 }
+
+@keyframes arrow-down {
+  from { background-position: 0px; }
+  to { background-position: -60px; }
+}
+
+@keyframes arrow-up {
+ from { background-position: -72px; }
+ to { background-position: -132px; }
+}

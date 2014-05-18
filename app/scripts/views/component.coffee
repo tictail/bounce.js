@@ -6,10 +6,19 @@ template = require "templates/component"
 
 class Component extends BaseView
   template: template
+  className: "component"
+
+  events:
+    "change .type-input": "renderInputs"
+    "change select, stiffness-input": "onInputChanged"
+    "click .header": "toggleOpen"
+
+  isOpen: true
 
   initialize: (options = {}) ->
     super
 
+    @$header = @$ ".header"
     @$type = @$ ".type-input"
     @$easing = @$ ".easing-input"
     @$bounces = @$ ".bounces-input"
@@ -24,8 +33,6 @@ class Component extends BaseView
       @renderInputs()
 
     _.defer @setupInputElements
-    @$type.on "change", @renderInputs
-    @$("select, .stiffness-input").on "change", @onInputChanged
 
   setValues: (component) ->
     serialized = component.serialize()
@@ -70,11 +77,20 @@ class Component extends BaseView
       .on "keydown.animationInputChange", (e) =>
         _.defer @onDebouncedInputChanged, $(e.target)
 
-    @$(".header").text @$type.find("option[value=\"#{@$type.val()}\"]").text()
+    @$header.find(".name").text \
+      @$type.find("option[value=\"#{@$type.val()}\"]").text()
 
     @$("input").each ->
       $this = $ this
       $this.data("prev-val", $this.val())
+
+  toggleOpen: ->
+    if @isOpen
+      @$el.addClass("closed").removeClass "open"
+    else
+      @$el.addClass("open").removeClass "closed"
+
+    @isOpen = !@isOpen
 
   addToBounce: (bounce) ->
     @inputView.addToBounce bounce, {
