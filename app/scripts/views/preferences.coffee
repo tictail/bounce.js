@@ -33,14 +33,25 @@ class PreferencesView extends BaseView
 
   appendComponent: (component) ->
     componentView = new ComponentView component: component
+    componentView.on "remove", @onRemoveComponent
     @$components.append componentView.$el
     @components.push componentView
     @setHeight()
 
   clearComponents: ->
-    component.remove() for component in @components
+    component.remove(silent: true) for component in @components
     @$components.empty()
     @components = []
+
+  onRemoveComponent: (component) =>
+    component.off "remove", @onRemoveComponent
+    for comp, index in @components
+      @components.splice(index, 1) if comp is component
+
+    @appendComponent() if @components.length is 0
+
+    _.defer ->
+      Events.trigger "componentRemoved"
 
   setHeight: =>
     offsetTop = @$components.offset().top

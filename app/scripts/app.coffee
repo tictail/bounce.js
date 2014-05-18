@@ -35,7 +35,8 @@ class App extends BaseView
 
     Events.on
       "animationOptionsChanged": @playAnimation
-      "selectedPresetAnimation": @deserializeBounce
+      "selectedPresetAnimation": @onSelectPreset
+      "componentRemoved": @playAnimation
 
     @readURL()
 
@@ -73,6 +74,10 @@ class App extends BaseView
     return unless window.location.hash
     @deserializeBounce window.location.hash[1..]
 
+  onSelectPreset: (preset) =>
+    window.location.hash = preset
+    @readURL()
+
   deserializeBounce: (str) =>
     return unless str
     bounce = new Bounce
@@ -83,8 +88,7 @@ class App extends BaseView
     catch e
       return
 
-    if options.loop
-      @$loop.prop "checked", true
+    @$loop.iCheck(if options.loop then "check" else "uncheck")
 
     @playAnimation bounceObject: bounce, fromURL: true
     @preferences.setFromBounceObject bounce

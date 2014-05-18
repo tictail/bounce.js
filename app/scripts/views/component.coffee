@@ -12,6 +12,7 @@ class Component extends BaseView
     "change .type-input": "renderInputs"
     "change select, stiffness-input": "onInputChanged"
     "click .header": "toggleOpen"
+    "click .remove": "onClickRemove"
 
   isOpen: true
 
@@ -92,6 +93,15 @@ class Component extends BaseView
 
     @isOpen = !@isOpen
 
+  onClickRemove: (e) ->
+    e.preventDefault()
+    e.stopPropagation()
+    @remove()
+
+  remove: (options = {}) ->
+    @$el.remove()
+    @trigger("remove", this) unless options.silent
+
   addToBounce: (bounce) ->
     @inputView.addToBounce bounce, {
       easing: @$easing.val()
@@ -100,11 +110,6 @@ class Component extends BaseView
       bounces: parseInt @$bounces.val(), 10
       stiffness: parseInt @$stiffness.val(), 10
     }
-
-  remove: ->
-    @$type.off "change"
-    @$("input").off ".animationInputChange"
-    @$("select, .stiffness-input").off "change"
 
   onDebouncedInputChanged: ($target) =>
     return if $target.data("prev-val") is $target.val()
