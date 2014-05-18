@@ -93,7 +93,9 @@ class App extends BaseView
     catch e
       return
 
+    @undelegateEvents()
     @$loop.iCheck(if options.loop then "check" else "uncheck")
+    @delegateEvents @events
 
     @playAnimation bounceObject: bounce, fromURL: true
     @preferences.setFromBounceObject bounce
