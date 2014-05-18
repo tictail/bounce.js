@@ -116,19 +116,33 @@ a, a:visited {
   z-index: 10;
   text-align: center;
 
-  .loop-input-container {
+  .icheckbox {
+    margin-right: 5px;
+    margin-left: -25px;
+  }
+
+  label {
+    user-select: none;
+    cursor: pointer;
+  }
+
+  .checkbox-container {
+    width: 180px;
     display: inline-block;
-    width: 185px;
-    margin-top: 10px;
+    padding-top: 10px;
+    text-align: left;
+  }
 
-    .icheckbox {
-      margin-right: 5px;
-      margin-left: -25px;
-    }
+  .loop-input-container, .slow-input-container {
+    text-align: center;
+    display: inline-block;
+  }
 
-    label {
-      user-select: none;
-      cursor: pointer;
-    }
+  .loop-input-container {
+    margin-left: 25px;
+  }
+
+  .slow-input-container {
+    margin-left: 40px;
   }
 }

@@ -20,7 +20,7 @@ class App extends BaseView
     "click .spin-link": "animateSpin"
     "click .play-button": "playAnimation"
     "mousedown .box": "startBoxDrag"
-    "ifChanged .loop-input": "playAnimation"
+    "ifChanged .loop-input, .slow-input": "playAnimation"
 
   initialize: ->
     super
@@ -31,8 +31,10 @@ class App extends BaseView
     @$result = @$ "#result"
     @$box = @$result.find ".box"
     @$loop = @$ ".actions .loop-input"
+    @$slow = @$ ".actions .slow-input"
 
-    @$loop.iCheck insert: "<i class=\"fa fa-check\"></i>"
+    for checkbox in [@$loop, @$slow]
+      checkbox.iCheck insert: "<i class=\"fa fa-check\"></i>"
 
     Events.on
       "animationOptionsChanged": @playAnimation
@@ -44,6 +46,8 @@ class App extends BaseView
   playAnimation: (options = {}) =>
     bounce = options.bounceObject or @preferences.getBounceObject()
     duration = options.duration or bounce.duration
+
+    duration *= 10 if @$slow.prop("checked")
 
     properties = []
     properties.push "animation-duration: #{duration}ms"
