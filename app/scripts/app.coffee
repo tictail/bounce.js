@@ -20,6 +20,7 @@ class App extends BaseView
     "click .spin-link": "animateSpin"
     "click .play-button": "playAnimation"
     "mousedown .box": "startBoxDrag"
+    "ifChanged .loop-input": "playAnimation"
 
   initialize: ->
     super
