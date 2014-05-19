@@ -7,7 +7,9 @@ ComponentClasses =
   skew: require "./components/skew"
 
 class Bounce
+  @FPS: 60
   @counter: 1
+
   components: null
   duration: 0
 
@@ -94,33 +96,22 @@ class Bounce
     "@#{prefixes.animation}keyframes #{@name} { \n  #{keyframeList.join("\n  ")} \n}"
 
   getKeyframes: ->
-    # TODO: Clean this up, move logic to components
-    keys = [0]
-    for component in @components
-      startKey = (component.delay / @duration) * 100
-      endKey = ((component.delay + component.duration) / @duration) * 100
-
-      numKeyframes = component.easingObject.bounces * 8
-
-      keys.push(startKey + (i / numKeyframes) * (endKey - startKey)) for i in [0..numKeyframes]
-      keys.push(startKey - 0.01) unless startKey is 0
-
-    keys = keys.sort((a, b) -> a - b).map((i) -> i / 100)
-
-    @keys = @_unique(keys)
+    frames = Math.round((@duration / 1000) * Bounce.FPS)
+    @keys = []
+    @keys.push(i / frames) for i in [0..frames]
 
     keyframes = {}
-    for i in @keys
+    for key in @keys
       matrix = new Matrix4D().identity()
 
       for component in @components
-        currentTime = i * @duration
+        currentTime = key * @duration
         continue if (component.delay - currentTime) > 1e-8 # Account for rounding errors
-        ratio = (i - component.delay / @duration) / (component.duration / @duration)
+        ratio = (key - component.delay / @duration) / (component.duration / @duration)
         matrix.multiply \
           component.getEasedMatrix(ratio)
 
-      keyframes[i] = matrix.transpose().toFixed 5
+      keyframes[key] = matrix.transpose().toFixed 5
 
     keyframes
 
