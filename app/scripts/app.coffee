@@ -47,7 +47,7 @@ class App extends BaseView
     bounce = options.bounceObject or @preferences.getBounceObject()
     duration = options.duration or bounce.duration
 
-    duration *= 10 if @$slow.prop("checked")
+    duration *= 10 if @$slow.prop("checked") and not options.duration
 
     properties = []
     properties.push "animation-duration: #{duration}ms"
