@@ -78,7 +78,11 @@ class BoxView extends BaseView
         to: deg
       )
 
-      window.App.playAnimation bounceObject: bounce, duration: 600
+      window.App.playAnimation
+        bounceObject: bounce
+        duration: 600
+        updateURL: false
+
       _.defer => @$el.css "transform", ""
       setTimeout (=> @$el.removeClass "animate"), 610
 

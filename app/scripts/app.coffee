@@ -66,7 +66,7 @@ class App extends BaseView
     @$box[0].offsetWidth
     @$box.addClass "animate"
 
-    @updateURL(bounce) unless options.fromURL
+    @updateURL(bounce) unless options.updateURL is false
 
   animateSpin: (e) ->
     e.preventDefault()
@@ -97,7 +97,7 @@ class App extends BaseView
     @$loop.iCheck(if options.loop then "check" else "uncheck")
     @delegateEvents @events
 
-    @playAnimation bounceObject: bounce, fromURL: true
+    @playAnimation bounceObject: bounce, updateURL: false
     @preferences.setFromBounceObject bounce
 
   @_shortKeys:
