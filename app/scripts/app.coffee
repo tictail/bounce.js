@@ -49,7 +49,8 @@ class App extends BaseView
     else
       $body = $ "body"
       $body.addClass "play-empty"
-      setTimeout (-> $body.removeClass "play-empty"), 1000
+      clearTimeout(@playEmptyTimeout) if @playEmptyTimeout
+      @playEmptyTimeout = setTimeout (-> $body.removeClass "play-empty"), 1000
 
   playAnimation: (options = {}) =>
     bounce = options.bounceObject or @preferences.getBounceObject()
