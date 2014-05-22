@@ -7,7 +7,7 @@ $body-font: "Gotham Rounded SSm A", "Gotham Rounded SSm B", Helvetica, Arial, sa
 @import "animations";
 
 @import "preference-bar";
-
+@import "intro-animation";
 
 * {
   box-sizing: border-box;
@@ -48,23 +48,24 @@ a, a:visited {
   width: 760px;
   margin: 0 auto;
   padding: 80px;
-}
 
-.intro {
-  h1 {
-    font-size: 40px;
-    margin-top: 0;
-    margin-bottom: 15px;
-    font-family: "AvenirLTStd-Black", $body-font;
-    font-weight: normal;
-  }
+  header {
+    h1 {
+      width: 185px;
+      font-size: 40px;
+      margin-top: 0;
+      margin-bottom: 15px;
+      font-family: "AvenirLTStd-Black", $body-font;
+      font-weight: normal;
+    }
 
-  h2 {
-    font-size: 16px;
-    font-weight: normal;
-    line-height: 1.8em;
-    width: 350px;
-    margin: 0;
+    h2 {
+      font-size: 16px;
+      font-weight: normal;
+      line-height: 1.8em;
+      width: 350px;
+      margin: 0;
+    }
   }
 }
 

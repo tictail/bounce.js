@@ -1,3 +1,8 @@
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 @keyframes chosen-drop {
   0% { transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, -10, 0, 1); opacity: 0; }
   4% { transform: matrix3d(0.96758, 0, 0, 0, 0, 0.96758, 0, 0, 0, 0, 1, 0, 0, -6.46592, 0, 1); }

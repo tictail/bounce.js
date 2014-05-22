@@ -13,6 +13,14 @@
   </div>
   <script src="scripts/app.js"></script>
   <script>
+    if (window.location.hash === "" && !localStorage["seenIntro"]) {
+      $("body").addClass("play-intro");
+      setTimeout(function() {
+        localStorage["seenIntro"] = true;
+        $("body").removeClass("play-intro");
+      }, 5000);
+    }
+
     var App = require("scripts/app");
     window.App = new App();
   </script>
