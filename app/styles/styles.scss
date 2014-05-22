@@ -94,7 +94,7 @@ a, a:visited {
     animation-fill-mode: both;
 
     cursor: pointer;
-    cursor: grab;
+    cursor: inline-image("draggable_cursor.gif"), grab;
 
     &.spin {
       animation-name: bounce-spin;
