@@ -1,9 +1,10 @@
+$width: 300px;
 .preference-bar {
   position: absolute;
   top: 0;
   left: 0;
   padding: 50px 55px 0 55px;
-  width: 300px;
+  width: $width;
 
   #add {
     padding-left: 19px;
@@ -120,7 +121,7 @@
         width: 190px;
         right: 0;
         top: 0;
-        border-top: 2px solid #259dce;
+        border-top: 2px solid $border-color;
       }
 
       &:hover .remove {
@@ -160,4 +161,19 @@
       }
     }
   }
+}
+
+.preference-bar-separator {
+  display: block;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: $width;
+  height: 100%;
+  border-right: 2px solid $border-color;
+  transition: opacity 0.25s;
+}
+
+body.preferences-overflown .preference-bar-separator {
+  opacity: 1;
 }

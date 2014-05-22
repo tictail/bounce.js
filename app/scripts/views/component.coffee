@@ -95,6 +95,7 @@ class Component extends BaseView
       @$el.addClass("open").removeClass "closed"
 
     @isOpen = !@isOpen
+    setTimeout (-> Events.trigger "preferencesHeightChanged"), 300
 
   onClickRemove: (e) ->
     e.preventDefault()

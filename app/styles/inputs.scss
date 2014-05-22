@@ -1,4 +1,4 @@
-$input-border: 2px solid #259dce;
+$input-border: 2px solid $border-color;
 $input-padding: 10px 12px;
 
 @mixin input-styles {

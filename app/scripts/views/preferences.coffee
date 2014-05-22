@@ -20,13 +20,17 @@ class PreferencesView extends BaseView
     super
     @$components = @$ ".components"
     @$presets = @$ ".preset-input"
+    @$separator = $ ".preference-bar-separator"
 
     @$presets.chosen disable_search: true
     @$presets.on "chosen:updated", @onChoosePreset
 
+    @setHeight()
     $(window).on "resize", @setHeight
 
     @appendComponent()
+
+    Events.on "preferencesHeightChanged", @checkHeight
 
   onClickAdd: ->
     @appendComponent()
@@ -39,7 +43,6 @@ class PreferencesView extends BaseView
     componentView.on "remove", @onRemoveComponent
     @$components.append componentView.$el
     @components.push componentView
-    @setHeight()
 
   clearComponents: ->
     component.remove(silent: true) for component in @components
@@ -62,6 +65,16 @@ class PreferencesView extends BaseView
 
     @$components.css "max-height", windowHeight - offsetTop
 
+  checkHeight: =>
+    $body = $ "body"
+    if @$components.outerHeight() is parseInt(@$components.css("max-height"), 10)
+      $body.addClass "preferences-overflown"
+      console.log "add"
+    else
+      $body.removeClass "preferences-overflown"
+      console.log "remove"
+
+
   getBounceObject: =>
     bounce = new Bounce
     @components.map (c) -> c.addToBounce bounce
@@ -76,6 +89,7 @@ class PreferencesView extends BaseView
     Events.trigger "selectedPresetAnimation", @$presets.val()
     Events.off ".presetEvent"
     Events.once "animationOptionsChanged", @clearPreset
+    _.defer @checkHeight
 
   selectPreset: (preset) ->
     $preset = @$presets.find "option[data-name=\"#{preset}\"]"
