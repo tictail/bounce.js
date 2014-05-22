@@ -28,8 +28,6 @@ class PreferencesView extends BaseView
     @setHeight()
     $(window).on "resize", @setHeight
 
-    @appendComponent()
-
     Events.on "preferencesHeightChanged", @checkHeight
 
   onClickAdd: ->
@@ -44,6 +42,8 @@ class PreferencesView extends BaseView
     @$components.append componentView.$el
     @components.push componentView
 
+    $("body").removeClass "components-empty"
+
   clearComponents: ->
     component.remove(silent: true) for component in @components
     @$components.empty()
@@ -54,10 +54,10 @@ class PreferencesView extends BaseView
     for comp, index in @components
       @components.splice(index, 1) if comp is component
 
-    @appendComponent() if @components.length is 0
+    $("body").addClass("components-empty") unless @components.length
+    @checkHeight()
 
-    _.defer ->
-      Events.trigger "componentRemoved"
+    _.defer -> Events.trigger "componentRemoved"
 
   setHeight: =>
     offsetTop = @$components.offset().top
@@ -84,9 +84,17 @@ class PreferencesView extends BaseView
       @appendComponent component, collapsed: true
 
   onChoosePreset: =>
+    return unless @$presets.val()
+
     Events.trigger "selectedPresetAnimation", @$presets.val()
-    Events.off ".presetEvent"
-    Events.once "animationOptionsChanged", @clearPreset
+    callback = =>
+      @stopListening Events, "animationOptionsChanged"
+      @stopListening Events, "componentRemoved"
+      @clearPreset()
+
+    @listenTo Events, "animationOptionsChanged", callback
+    @listenTo Events, "componentRemoved", callback
+
     _.defer @checkHeight
 
   selectPreset: (preset) ->
@@ -94,7 +102,6 @@ class PreferencesView extends BaseView
     @$presets.val($preset.attr("value")).trigger "chosen:updated"
 
   clearPreset: =>
-    Events.off "animationOptionsChanged", @clearPreset
     @$presets.val("").trigger "chosen:updated"
 
 module.exports = PreferencesView

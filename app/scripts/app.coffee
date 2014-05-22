@@ -18,7 +18,7 @@ class App extends BaseView
 
   events:
     "click .spin-link": "animateSpin"
-    "click .play-button": "playAnimation"
+    "click .play-button": "onClickPlay"
     "mousedown .box": "startBoxDrag"
     "ifChanged .loop-input, .slow-input": "playAnimation"
 
@@ -43,10 +43,22 @@ class App extends BaseView
 
     @readURL()
 
+  onClickPlay: ->
+    if @preferences.getBounceObject().components.length
+      @playAnimation()
+    else
+      $body = $ "body"
+      $body.addClass "play-empty"
+      setTimeout (-> $body.removeClass "play-empty"), 1000
+
   playAnimation: (options = {}) =>
     bounce = options.bounceObject or @preferences.getBounceObject()
-    duration = options.duration or bounce.duration
+    unless bounce.components.length
+      window.location.hash = ""
+      @$box.removeClass "animate"
+      return
 
+    duration = options.duration or bounce.duration
     duration *= 10 if @$slow.prop("checked") and not options.duration
 
     properties = []
@@ -62,7 +74,7 @@ class App extends BaseView
 
     @$style.text PrefixFree.prefixCSS(css, true)
 
-    @$box.removeClass "animate spin"
+    @$box.removeClass "animate"
     @$box[0].offsetWidth
     @$box.addClass "animate"
 

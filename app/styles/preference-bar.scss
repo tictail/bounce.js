@@ -163,6 +163,37 @@ $width: 300px;
   }
 }
 
+.empty-message {
+  display: none;
+  opacity: 0.8;
+  margin-top: -15px;
+  animation: point-up 2.5s linear infinite both;
+  line-height: 1.2em;
+
+  i {
+    display: inline-block;
+    font-size: 18px;
+    vertical-align: middle;
+    margin: -2px 5px 0 12px;
+  }
+
+  p {
+    display: inline-block;
+    width: 140px;
+    vertical-align: middle;
+    margin: 0;
+  }
+
+}
+
+body.play-empty .empty-message {
+  animation: scale-shake 1s linear;
+}
+
+body.components-empty .empty-message {
+  display: block;
+}
+
 .preference-bar-separator {
   display: block;
   opacity: 0;
