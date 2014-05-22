@@ -69,10 +69,8 @@ class PreferencesView extends BaseView
     $body = $ "body"
     if @$components.outerHeight() is parseInt(@$components.css("max-height"), 10)
       $body.addClass "preferences-overflown"
-      console.log "add"
     else
       $body.removeClass "preferences-overflown"
-      console.log "remove"
 
 
   getBounceObject: =>
