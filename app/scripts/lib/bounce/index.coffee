@@ -60,18 +60,18 @@ class Bounce
   remove: ->
     @styleElement?.remove()
 
-  getPrefixes: ->
+  getPrefixes: (force) ->
     prefixes =
-      transform: ""
-      animation: ""
+      transform: [""]
+      animation: [""]
 
     style = document.createElement("dummy").style
 
-    if not ("transform" of style) and "webkitTransform" of style
-      prefixes.transform = "-webkit-"
+    if force or (not ("transform" of style) and "webkitTransform" of style)
+      prefixes.transform = ["-webkit-", ""]
 
-    if not ("animation" of style) and "webkitAnimation" of style
-      prefixes.animation = "-webkit-"
+    if force or (not ("animation" of style) and "webkitAnimation" of style)
+      prefixes.animation = ["-webkit-", ""]
 
     prefixes
 
@@ -79,21 +79,30 @@ class Bounce
     @name = options.name or Bounce.generateName()
 
     prefixes =
-      transform: ""
-      animation: ""
+      transform: [""]
+      animation: [""]
 
-    if options.prefix
-      prefixes = @getPrefixes()
+    if options.prefix or options.forcePrefix
+      prefixes = @getPrefixes(options.forcePrefix)
 
     keyframeList = []
     keyframes = @getKeyframes()
     for key in @keys
       matrix = keyframes[key]
       transformString = "matrix3d#{matrix}"
-      keyframeList.push \
-        "#{Math.round(key * 100 * 1e6) / 1e6}% { #{prefixes.transform}transform: #{transformString}; }"
+      transforms = []
+      for prefix in prefixes.transform
+        transforms.push "#{prefix}transform: #{transformString};"
 
-    "@#{prefixes.animation}keyframes #{@name} { \n  #{keyframeList.join("\n  ")} \n}"
+      keyframeList.push \
+        "#{Math.round(key * 100 * 1e6) / 1e6}% { #{transforms.join " "} }"
+
+    animations = []
+    for prefix in prefixes.animation
+      animations.push \
+        "@#{prefix}keyframes #{@name} { \n  #{keyframeList.join("\n  ")} \n}"
+
+    animations.join "\n\n"
 
   getKeyframes: ->
     frames = Math.round((@duration / 1000) * Bounce.FPS)

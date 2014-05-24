@@ -7,6 +7,7 @@ $body-font: "Gotham Rounded SSm A", "Gotham Rounded SSm B", Helvetica, Arial, sa
 @import "animations";
 
 @import "preference-bar";
+@import "export";
 @import "intro-animation";
 
 * {
@@ -42,6 +43,16 @@ body {
 a, a:visited {
   text-decoration: none;
   color: #1c323b;
+  transition: box-shadow 0.1s;
+
+  &:hover {
+    box-shadow: 0 1px 0 #1c323b;
+  }
+}
+
+label {
+  user-select: none;
+  cursor: pointer;
 }
 
 .main-view {
@@ -60,11 +71,22 @@ a, a:visited {
     }
 
     h2 {
+      display: inline-block;
       font-size: 16px;
       font-weight: normal;
       line-height: 1.8em;
       width: 350px;
       margin: 0;
+    }
+
+    .header-actions {
+      text-transform: uppercase;
+      display: inline-block;
+      width: 245px;
+      font-size: 11px;
+      font-weight: 500;
+      text-align: right;
+      line-height: 2.6em;
     }
   }
 }
@@ -121,11 +143,6 @@ a, a:visited {
   .icheckbox {
     margin-right: 5px;
     margin-left: -25px;
-  }
-
-  label {
-    user-select: none;
-    cursor: pointer;
   }
 
   .checkbox-container {

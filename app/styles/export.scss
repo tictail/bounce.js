@@ -1,0 +1,72 @@
+.export {
+  display: none;
+  position: absolute;
+  z-index: 9999;
+  width: 600px;
+  height: 90%;
+  top: 5%;
+  left: 50%;
+  margin-left: -300px;
+  min-height: 300px;
+  padding-bottom: 70px;
+
+  background: white;
+  color: $text-dark;
+
+  &.in {
+    display: block;
+    animation: export-in 0.75s linear both;
+  }
+
+  .code {
+    padding: 40px 50px;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    border: none;
+    resize: none;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    line-height: 1.4em;
+    cursor: text;
+    word-break: break-all;
+
+    &:focus {
+      border: none;
+      outline: none;
+      box-shadow: none;
+    }
+  }
+
+  .footer {
+    position: absolute;
+    height: 70px;
+    padding: 20px;
+    bottom: 0;
+    width: 100%;
+    border-top: 2px solid #ddd;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .icheckbox {
+    border-color: #ddd;
+    width: 30px;
+    height: 30px;
+
+    .fa-check {
+      padding: 7px 6px;
+    }
+  }
+
+  label {
+    margin-left: 8px;
+    position: relative;
+    top: 1px;
+  }
+
+  .tutorial-link {
+    float: right;
+    margin-right: 10px;
+    margin-top: 7px;
+  }
+}

@@ -8,6 +8,7 @@ Events = require "scripts/events"
 BaseView = require "scripts/views/base"
 PreferencesView = require "scripts/views/preferences"
 BoxView = require "scripts/views/box"
+ExportView = require "scripts/views/export"
 Events = require "scripts/events"
 
 template = require "templates/app"
@@ -19,6 +20,7 @@ class App extends BaseView
   events:
     "click .spin-link": "animateSpin"
     "click .play-button": "onClickPlay"
+    "click .export-link": "onClickExport"
     "mousedown .box": "startBoxDrag"
     "ifChanged .loop-input, .slow-input": "playAnimation"
 
@@ -26,6 +28,7 @@ class App extends BaseView
     super
     @preferences = new PreferencesView
     @boxView = new BoxView
+    @exportView = new ExportView
 
     @$style = @$ "#animation"
     @$result = @$ "#result"
@@ -47,10 +50,23 @@ class App extends BaseView
     if @preferences.getBounceObject().components.length
       @playAnimation()
     else
+      @onPlayEmpty()
+
+  onPlayEmpty: ->
       $body = $ "body"
       $body.addClass "play-empty"
       clearTimeout(@playEmptyTimeout) if @playEmptyTimeout
       @playEmptyTimeout = setTimeout (-> $body.removeClass "play-empty"), 1000
+
+  onClickExport: (e) ->
+    e.preventDefault()
+
+    bounce = @preferences.getBounceObject()
+    if bounce.components.length
+      @exportView.setBounceObject @preferences.getBounceObject()
+      @exportView.show()
+    else
+      @onPlayEmpty()
 
   playAnimation: (options = {}) =>
     bounce = options.bounceObject or @preferences.getBounceObject()
