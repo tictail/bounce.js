@@ -167,7 +167,7 @@ $width: 300px;
   display: none;
   opacity: 0.8;
   margin-top: -15px;
-  animation: point-up 2.5s linear infinite both;
+  animation: point-up-down 1s linear infinite alternate;
   line-height: 1.2em;
 
   i {
