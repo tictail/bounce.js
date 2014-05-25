@@ -10,7 +10,7 @@ class Component extends BaseView
 
   events:
     "change .type-input": "renderInputs"
-    "change select, stiffness-input": "onInputChanged"
+    "change select, .stiffness-input": "onInputChanged"
     "click .header": "toggleOpen"
     "click .remove": "onClickRemove"
 
