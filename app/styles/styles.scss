@@ -12,6 +12,7 @@ $body-font: "Gotham Rounded SSm A", "Gotham Rounded SSm B", Helvetica, Arial, sa
 
 * {
   box-sizing: border-box;
+  font-smoothing: antialiased;
 }
 
 html, body {
