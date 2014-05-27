@@ -39,6 +39,9 @@ class PreferencesView extends BaseView
       collapsed: options.collapsed
 
     componentView.on "remove", @onRemoveComponent
+
+    component.close() for component in @components
+
     @$components.append componentView.$el
     @components.push componentView
 

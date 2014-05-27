@@ -90,11 +90,20 @@ class Component extends BaseView
 
   toggleOpen: ->
     if @isOpen
-      @$el.addClass("closed").removeClass "open"
+      @close()
     else
-      @$el.addClass("open").removeClass "closed"
+      @open()
 
-    @isOpen = !@isOpen
+  open: ->
+    return if @isOpen
+    @$el.addClass("open").removeClass "closed"
+    @isOpen = true
+    setTimeout (-> Events.trigger "preferencesHeightChanged"), 300
+
+  close: ->
+    return unless @isOpen
+    @$el.addClass("closed").removeClass "open"
+    @isOpen = false
     setTimeout (-> Events.trigger "preferencesHeightChanged"), 300
 
   onClickRemove: (e) ->
