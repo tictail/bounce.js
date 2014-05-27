@@ -75,7 +75,7 @@ label {
 .main-view {
   width: 760px;
   margin: 0 auto;
-  padding: 60px 80px 20px 80px;
+  padding: 60px 80px 40px 80px;
 
   header {
     h1 {
@@ -151,34 +151,37 @@ label {
 }
 
 .actions {
-  width: 300px;
+  width: 400px;
   margin: -24px auto;
   position: relative;
   z-index: 10;
   text-align: center;
 
-  .icheckbox {
-    margin-right: 5px;
-    margin-left: -25px;
-  }
-
-  .checkbox-container {
-    width: 180px;
+  .toggle {
+    position: relative;
+    top: 3px;
     display: inline-block;
-    padding-top: 15px;
+    color: black;
     text-align: center;
+    width: 48px;
+    height: 48px;
+    font-size: 18px;
+    line-height: 50px;
+    background: white;
+    border-radius: 2px;
+    opacity: 0.5;
+    cursor: pointer;
+    transition: opacity 0.1s;
+    user-select: none;
+
+    &.on {
+      opacity: 1;
+    }
   }
 
-  .loop-input-container, .slow-input-container {
-    text-align: center;
-    display: inline-block;
+  .slow-input {
+    font-size: 20px;
+    top: 4px;
   }
 
-  .loop-input-container {
-    margin-left: 25px;
-  }
-
-  .slow-input-container {
-    margin-left: 45px;
-  }
 }

@@ -22,7 +22,7 @@ class App extends BaseView
     "click .play-button": "onClickPlay"
     "click .export-link": "onClickExport"
     "mousedown .box": "startBoxDrag"
-    "ifChanged .loop-input, .slow-input": "playAnimation"
+    "toggle .loop-input, .slow-input": "playAnimation"
 
   initialize: ->
     super
@@ -33,11 +33,9 @@ class App extends BaseView
     @$style = @$ "#animation"
     @$result = @$ "#result"
     @$box = @$result.find ".box"
-    @$loop = @$ ".actions .loop-input"
-    @$slow = @$ ".actions .slow-input"
 
-    for checkbox in [@$loop, @$slow]
-      checkbox.iCheck insert: "<i class=\"fa fa-check\"></i>"
+    @$loop = @$(".actions .loop-input").toggleButton()
+    @$slow = @$(".actions .slow-input").toggleButton()
 
     Events.on
       "animationOptionsChanged": @playAnimation
@@ -76,11 +74,13 @@ class App extends BaseView
       return
 
     duration = options.duration or bounce.duration
-    duration *= 10 if @$slow.prop("checked") and not options.duration
+    duration *= 10 if @$slow.toggleButton("isOn") and not options.duration
 
     properties = []
     properties.push "animation-duration: #{duration}ms"
-    properties.push("animation-iteration-count: infinite") if @$loop.prop("checked")
+
+    if @$loop.toggleButton("isOn")
+      properties.push("animation-iteration-count: infinite")
 
     css = """
     .box.animate {
@@ -122,9 +122,9 @@ class App extends BaseView
     catch e
       return
 
-    @undelegateEvents()
-    @$loop.iCheck(if options.loop then "check" else "uncheck")
-    @delegateEvents @events
+    console.log @$loop, @
+
+    @$loop.toggleButton (if options.loop then "on" else "off"), silent: true
 
     @playAnimation bounceObject: bounce, updateURL: false
     @preferences.setFromBounceObject bounce
