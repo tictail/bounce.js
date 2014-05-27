@@ -1,4 +1,10 @@
 $width: 300px;
+.preferences-container {
+  position: fixed;
+  height: 100%;
+  width: $width;
+}
+
 .preference-bar {
   position: absolute;
   top: 0;
@@ -175,7 +181,7 @@ $width: 300px;
     display: inline-block;
     font-size: 18px;
     vertical-align: middle;
-    margin: -2px 5px 0 23px;
+    margin: -2px 5px 0 21px;
   }
 
   p {
