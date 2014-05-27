@@ -26,10 +26,12 @@ class ExportView extends BaseView
 
   show: ->
     @$el.addClass "in"
+    $("body").addClass "dimmed"
     _.defer => $(document).one "click.export", @hide
 
   hide: =>
     $(document).off ".export"
+    $("body").removeClass "dimmed"
     @$el.removeClass "in"
 
   setBounceObject: (bounce) ->
