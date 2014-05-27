@@ -11,7 +11,7 @@ class BounceEasing extends Easing
     @bounces = options.bounces if options.bounces?
     @alpha = @stiffness / 100
 
-    threshold = 0.05 / Math.pow(10, @stiffness)
+    threshold = 0.005 / Math.pow(10, @stiffness)
     @limit = Math.floor(Math.log(threshold) / -@alpha)
     @omega = @bounces * Math.PI / @limit
 
