@@ -26,14 +26,21 @@ class App extends BaseView
 
   initialize: ->
     super
-    @preferences = new PreferencesView
-    @boxView = new BoxView
-    @exportView = new ExportView
 
     @$style = @$ "#animation"
     @$result = @$ "#result"
     @$box = @$result.find ".box"
+    @$main = @$ ".main-view"
+
+    @centerView()
+    $(window).on "resize", @centerView
+
     @playIntro()
+
+    @preferences = new PreferencesView
+    @boxView = new BoxView
+    @exportView = new ExportView
+
 
     @$loop = @$(".actions .loop-input").toggleButton()
     @$slow = @$(".actions .slow-input").toggleButton()
@@ -53,6 +60,10 @@ class App extends BaseView
       localStorage["seenIntro"] = true
       $body.removeClass "play-intro"
     , 5000
+
+  centerView: =>
+    padding = Math.floor(($(window).outerHeight() - @$main.outerHeight()) / 2)
+    @$main.css "padding-top", Math.max(padding, 60)
 
   onClickPlay: ->
     if @preferences.getBounceObject().components.length
