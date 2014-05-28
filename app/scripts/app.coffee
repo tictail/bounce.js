@@ -73,9 +73,11 @@ class App extends BaseView
 
   onPlayEmpty: ->
       $body = $ "body"
-      $body.addClass "play-empty"
-      clearTimeout(@playEmptyTimeout) if @playEmptyTimeout
-      @playEmptyTimeout = setTimeout (-> $body.removeClass "play-empty"), 1000
+      $body.removeClass("play-empty")
+      _.defer =>
+        $body.addClass "play-empty"
+        clearTimeout(@playEmptyTimeout) if @playEmptyTimeout
+        @playEmptyTimeout = setTimeout (-> $body.removeClass "play-empty"), 1000
 
   onClickExport: (e) ->
     e.preventDefault()
