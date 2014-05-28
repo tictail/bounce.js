@@ -122,8 +122,6 @@ class App extends BaseView
     catch e
       return
 
-    console.log @$loop, @
-
     @$loop.toggleButton (if options.loop then "on" else "off"), silent: true
 
     @playAnimation bounceObject: bounce, updateURL: false
@@ -154,7 +152,7 @@ class App extends BaseView
 
   _encodeURL: (serialized) ->
     encoded = {}
-    encoded.l = 1 if @$loop.prop("checked")
+    encoded.l = 1 if @$loop.toggleButton("isOn")
     encoded.s = for options in serialized
       shortKeys = {}
       for key, value of options
