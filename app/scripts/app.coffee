@@ -62,7 +62,7 @@ class App extends BaseView
     , 5000
 
   centerView: =>
-    padding = Math.floor(($(window).outerHeight() - @$main.outerHeight()) / 2)
+    padding = Math.floor(($(window).outerHeight() - @$main.outerHeight()) / 2 - 45)
     @$main.css "padding-top", Math.max(padding, 60)
 
   onClickPlay: ->
