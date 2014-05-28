@@ -116,10 +116,12 @@ $width: 300px;
 
       .remove {
         position: absolute;
-        left: 10px;
+        left: 0;
         top: 13px;
-        margin-left: -5px;
-        padding: 5px;
+        top: 8px;
+        margin-left: -12px;
+        padding: 10px;
+        padding-left: 20px;
         opacity: 0;
       }
 
