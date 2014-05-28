@@ -19,6 +19,8 @@ class Component extends BaseView
   initialize: (options = {}) ->
     super
 
+    @number = options.number
+
     @$header = @$ ".header"
     @$type = @$ ".type-input"
     @$easing = @$ ".easing-input"
@@ -81,8 +83,10 @@ class Component extends BaseView
       .on "keydown.animationInputChange", (e) =>
         _.defer @onDebouncedInputChanged, $(e.target)
 
-    @$header.find(".name").text \
-      @$type.find("option[value=\"#{@$type.val()}\"]").text()
+    @$header.find(".name").html """
+         #{@$type.find("option[value=\"#{@$type.val()}\"]").text()}
+      <span class=\"num\">##{@number}</span>
+    """
 
     @$("input").each ->
       $this = $ this

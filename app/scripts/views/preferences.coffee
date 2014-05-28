@@ -11,6 +11,7 @@ class PreferencesView extends BaseView
   el: "#preferences"
   template: template
   components: []
+  componentCounter: 0
 
   events:
     "click #add": "onClickAdd"
@@ -34,9 +35,11 @@ class PreferencesView extends BaseView
     @appendComponent()
 
   appendComponent: (component, options = {}) ->
+    @componentCounter++
     componentView = new ComponentView
       component: component
       collapsed: options.collapsed
+      number: @componentCounter
 
     componentView.on "remove", @onRemoveComponent
 
@@ -51,6 +54,7 @@ class PreferencesView extends BaseView
     component.remove(silent: true) for component in @components
     @$components.empty()
     @components = []
+    @componentCounter = 0
 
   onRemoveComponent: (component) =>
     component.off "remove", @onRemoveComponent
@@ -59,6 +63,8 @@ class PreferencesView extends BaseView
 
     $("body").addClass("components-empty") unless @components.length
     @checkHeight()
+
+    @componentCounter = 0 if @components.length is 0
 
     _.defer -> Events.trigger "componentRemoved"
 
