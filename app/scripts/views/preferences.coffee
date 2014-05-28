@@ -22,12 +22,15 @@ class PreferencesView extends BaseView
     @$components = @$ ".components"
     @$presets = @$ ".preset-input"
     @$separator = $ ".preference-bar-separator"
+    @$container = $ ".preferences-container"
 
     @$presets.chosen disable_search: true
     @$presets.on "chosen:updated", @onChoosePreset
 
     @setHeight()
+    _.defer @checkHeight
     $(window).on "resize", @setHeight
+    $(window).on "resize", @checkHeight
 
     Events.on "preferencesHeightChanged", @checkHeight
 
@@ -76,6 +79,11 @@ class PreferencesView extends BaseView
 
   checkHeight: =>
     $body = $ "body"
+    height = @$components.outerHeight() + @$components.offset().top
+    height = Math.max $(window).outerHeight(), height
+    height = Math.max $(".main-view").outerHeight(), height
+    @$separator.height height
+
     if @$components.outerHeight() is parseInt(@$components.css("max-height"), 10)
       $body.addClass "preferences-overflown"
     else
