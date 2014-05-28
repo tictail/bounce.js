@@ -1,4 +1,6 @@
 body.play-intro {
+  overflow: hidden;
+
   .preferences-container {
       animation: preference-bar-in 1s 3.5s linear both;
   }
