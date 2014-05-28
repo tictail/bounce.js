@@ -33,6 +33,7 @@ class App extends BaseView
     @$style = @$ "#animation"
     @$result = @$ "#result"
     @$box = @$result.find ".box"
+    @playIntro()
 
     @$loop = @$(".actions .loop-input").toggleButton()
     @$slow = @$(".actions .slow-input").toggleButton()
@@ -43,6 +44,15 @@ class App extends BaseView
       "componentRemoved": @playAnimation
 
     @readURL()
+
+  playIntro: ->
+    return unless window.location.hash is "" and not localStorage["seenIntro"]
+    $body = $ "body"
+    $body.addClass "play-intro"
+    setTimeout ->
+      localStorage["seenIntro"] = true
+      $body.removeClass "play-intro"
+    , 5000
 
   onClickPlay: ->
     if @preferences.getBounceObject().components.length
