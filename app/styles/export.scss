@@ -1,7 +1,4 @@
 .export {
-  display: none;
-  position: absolute;
-  z-index: 9999;
   width: 600px;
   height: 90%;
   top: 5%;
@@ -12,11 +9,6 @@
 
   background: white;
   color: $text-dark;
-
-  &.in {
-    display: block;
-    animation: export-in 0.75s linear both;
-  }
 
   .code {
     padding: 40px 50px;

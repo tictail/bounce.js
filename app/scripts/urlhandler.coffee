@@ -1,6 +1,9 @@
+$ = require "jquery"
 _ = require "underscore"
 
 class URLHandler
+  GOOGLE_PUBLIC_API_KEY: "AIzaSyAtc-2VrI5oKvel7KWTqviHD6LaguPGw70"
+
   @_shortKeys:
     "type": "T"
     "easing": "e"
@@ -24,8 +27,6 @@ class URLHandler
   @_longKeys: _.invert URLHandler._shortKeys
   @_longValues: _.invert URLHandler._shortValues
 
-  constructor: ->
-
   encodeURL: (serialized, options = {}) ->
     encoded = {}
     encoded.l = 1 if options.loop
@@ -39,12 +40,14 @@ class URLHandler
 
     stringified = JSON.stringify(encoded)
     # Remove double quotes in properties
-    stringified = stringified.replace(/(\{|,)"([a-z0-9]+)"(:)/gi, "$1$2$3")
-    encodeURIComponent stringified
+    stringified.replace(/(\{|,)"([a-z0-9]+)"(:)/gi, "$1$2$3")
 
   decodeURL: (str) ->
+    try
+      str = decodeURIComponent str
+    catch e
+
     # Add back the double quotes in properties
-    str = decodeURIComponent str
     json = str.replace(/(\{|,)([a-z0-9]+)(:)/gi, "$1\"$2\"$3")
     decoded = JSON.parse(json)
     unshortened = for options in decoded.s
@@ -59,5 +62,14 @@ class URLHandler
       serialized: unshortened
       loop: decoded.l
     }
+
+  shorten: (url) ->
+    $.ajax
+      url: "https://www.googleapis.com/urlshortener/v1/url?key=#{@GOOGLE_PUBLIC_API_KEY}"
+      type: "POST"
+      data: JSON.stringify(
+        longUrl: "#{window.location.origin}##{encodeURIComponent(url)}")
+      dataType: "json"
+      contentType: "application/json; charset=utf-8"
 
 module.exports = new URLHandler

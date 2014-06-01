@@ -8,6 +8,7 @@ $body-font: "Gotham Rounded SSm A", "Gotham Rounded SSm B", Helvetica, Arial, sa
 
 @import "preference-bar";
 @import "export";
+@import "shorten";
 @import "intro-animation";
 
 * {
@@ -47,7 +48,7 @@ body {
 
   .dimmer {
     display: none;
-    position: absolute;
+    position: fixed;
     width: 100%;
     height: 100%;
     top: 0;
@@ -70,6 +71,17 @@ a, a:visited {
 label {
   user-select: none;
   cursor: pointer;
+}
+
+.modal {
+  display: none;
+  position: absolute;
+  z-index: 9999;
+
+  &.in {
+    display: block;
+    animation: modal-in 0.75s linear both;
+  }
 }
 
 .main-view {

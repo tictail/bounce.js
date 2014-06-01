@@ -1,0 +1,52 @@
+.shorten {
+  width: 400px;
+  height: 100px;
+  top: 50%;
+  left: 50%;
+  margin-left: -200px;
+  margin-top: -50px;
+  padding: 15px;
+
+  background: white;
+  color: $text-dark;
+
+  text-align: center;
+  font-weight: 500;
+  font-size: 13px;
+
+  .label {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .url {
+    border-color: #ddd;
+    width: 300px;
+    cursor: text;
+  }
+
+  .loaded {
+    display: none;
+  }
+
+  .spinner {
+    margin-top: 12px;
+    margin-left: -8px;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    background: $text-dark;
+    border-radius: 1px;
+    animation: fold-and-unfold 2s linear infinite both;
+  }
+
+  &.done {
+    .loaded { display: block; }
+    .loading { display: none; }
+  }
+
+  &.in .loading {
+    animation: fade-in 0.25s 0.3s ease both;
+  }
+}

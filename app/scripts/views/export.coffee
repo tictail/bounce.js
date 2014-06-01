@@ -1,11 +1,10 @@
 $ = require "jquery"
-_ = require "underscore"
 
-BaseView = require "scripts/views/base"
+ModalView = require "scripts/views/modal"
 
 template = require "templates/export"
 
-class ExportView extends BaseView
+class ExportView extends ModalView
   el: ".export"
   template: template
   bounceObject: null
@@ -19,20 +18,8 @@ class ExportView extends BaseView
     @$prefix = @$(".prefix-input").iCheck
       insert: "<i class=\"fa fa-check\"></i>"
 
-    @$code = $ ".code"
+    @$code = @$ ".code"
     @$code.on "click", -> @select()
-
-    @$el.on "click", (e) -> e.stopPropagation()
-
-  show: ->
-    @$el.addClass "in"
-    $("body").addClass "dimmed"
-    _.defer => $(document).one "click.export", @hide
-
-  hide: =>
-    $(document).off ".export"
-    $("body").removeClass "dimmed"
-    @$el.removeClass "in"
 
   setBounceObject: (bounce) ->
     @bounceObject = bounce
@@ -48,7 +35,7 @@ class ExportView extends BaseView
     prefixes = [""]
     prefixes.unshift "-webkit-" if prefix
 
-    infinite = $(".loop-input").prop "checked"
+    infinite = $(".loop-input").toggleButton "isOn"
 
     animations = []
     for prefix in prefixes

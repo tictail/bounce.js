@@ -9,6 +9,7 @@ BaseView = require "scripts/views/base"
 PreferencesView = require "scripts/views/preferences"
 BoxView = require "scripts/views/box"
 ExportView = require "scripts/views/export"
+ShortenView = require "scripts/views/shorten"
 Events = require "scripts/events"
 URLHandler = require "scripts/urlhandler"
 
@@ -21,6 +22,7 @@ class App extends BaseView
   events:
     "click .spin-link": "animateSpin"
     "click .play-button": "onClickPlay"
+    "click .shorten-link": "onClickShorten"
     "click .export-link": "onClickExport"
     "mousedown .box": "startBoxDrag"
     "toggle .loop-input, .slow-input": "playAnimation"
@@ -41,7 +43,7 @@ class App extends BaseView
     @preferences = new PreferencesView
     @boxView = new BoxView
     @exportView = new ExportView
-
+    @shortenView = new ShortenView
 
     @$loop = @$(".actions .loop-input").toggleButton()
     @$slow = @$(".actions .slow-input").toggleButton()
@@ -90,6 +92,15 @@ class App extends BaseView
     else
       @onPlayEmpty()
 
+  onClickShorten: (e) ->
+    e.preventDefault()
+    bounce = @preferences.getBounceObject()
+    if bounce.components.length
+      req = URLHandler.shorten @encodeURL(bounce)
+      @shortenView.show().setShortenRequest req
+    else
+      @onPlayEmpty()
+
   playAnimation: (options = {}) =>
     bounce = options.bounceObject or @preferences.getBounceObject()
     unless bounce.components.length
@@ -125,16 +136,18 @@ class App extends BaseView
     e.preventDefault()
     @preferences.selectPreset "spin"
 
+  encodeURL: (bounce) ->
+    URLHandler.encodeURL bounce.serialize(), loop: @$loop.toggleButton("isOn")
+
   updateURL: (bounce) ->
-    window.location.hash = URLHandler.encodeURL \
-      bounce.serialize(), loop: @$loop.toggleButton("isOn")
+    window.location.hash = @encodeURL bounce
 
   readURL: ->
     return unless window.location.hash
     @deserializeBounce window.location.hash[1..]
 
   onSelectPreset: (preset) =>
-    window.location.hash = encodeURIComponent(preset) if preset
+    window.location.hash = preset if preset
     @readURL()
 
   deserializeBounce: (str) =>
