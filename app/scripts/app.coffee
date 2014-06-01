@@ -10,6 +10,7 @@ PreferencesView = require "scripts/views/preferences"
 BoxView = require "scripts/views/box"
 ExportView = require "scripts/views/export"
 Events = require "scripts/events"
+URLHandler = require "scripts/urlhandler"
 
 template = require "templates/app"
 
@@ -125,14 +126,15 @@ class App extends BaseView
     @preferences.selectPreset "spin"
 
   updateURL: (bounce) ->
-    window.location.hash = @_encodeURL bounce.serialize()
+    window.location.hash = URLHandler.encodeURL \
+      bounce.serialize(), loop: @$loop.toggleButton("isOn")
 
   readURL: ->
     return unless window.location.hash
     @deserializeBounce window.location.hash[1..]
 
   onSelectPreset: (preset) =>
-    window.location.hash = preset if preset
+    window.location.hash = encodeURIComponent(preset) if preset
     @readURL()
 
   deserializeBounce: (str) =>
@@ -140,7 +142,7 @@ class App extends BaseView
     bounce = new Bounce
     options = null
     try
-      options = @_decodeURL(str)
+      options = URLHandler.decodeURL str
       bounce.deserialize options.serialized
     catch e
       return
@@ -149,61 +151,5 @@ class App extends BaseView
 
     @playAnimation bounceObject: bounce, updateURL: false
     @preferences.setFromBounceObject bounce
-
-  @_shortKeys:
-    "type": "T"
-    "easing": "e"
-    "duration": "d"
-    "delay": "D"
-    "from": "f"
-    "to": "t"
-    "bounces": "b"
-    "stiffness": "s"
-
-  @_shortValues:
-    "bounce": "b"
-    "sway": "s"
-    "hardbounce": "B"
-    "hardsway": "S"
-    "scale": "c"
-    "skew": "k"
-    "translate": "t"
-    "rotate": "r"
-
-  @_longKeys: _.invert App._shortKeys
-  @_longValues: _.invert App._shortValues
-
-  _encodeURL: (serialized) ->
-    encoded = {}
-    encoded.l = 1 if @$loop.toggleButton("isOn")
-    encoded.s = for options in serialized
-      shortKeys = {}
-      for key, value of options
-        shortKeys[App._shortKeys[key] or key] =
-          App._shortValues[value] or value
-
-      shortKeys
-
-    stringified = JSON.stringify(encoded)
-    # Remove double quotes in properties
-    stringified.replace(/(\{|,)"([a-z0-9]+)"(:)/gi, "$1$2$3")
-
-
-  _decodeURL: (str) ->
-    # Add back the double quotes in properties
-    json = str.replace(/(\{|,)([a-z0-9]+)(:)/gi, "$1\"$2\"$3")
-    decoded = JSON.parse(json)
-    unshortened = for options in decoded.s
-      longKeys = {}
-      for key, value of options
-        longKeys[App._longKeys[key] or key] =
-          App._longValues[value] or value
-
-      longKeys
-
-    {
-      serialized: unshortened
-      loop: decoded.l
-    }
 
 module.exports = App
