@@ -1,0 +1,39 @@
+.footer-bar {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 120px;
+
+  margin: 30px 40px;
+
+  text-transform: uppercase;
+  text-align: right;
+  font-size: 10px;
+  font-weight: 500;
+  color: $text-dark;
+
+  .credits {
+    line-height: 2em;
+    font-weight: 400;
+
+    a {
+      font-weight: 600;
+      text-decoration: none;
+    }
+  }
+
+  .github-link {
+    i {
+      position: relative;
+      font-size: 20px;
+      vertical-align: middle;
+      top: -1px;
+      margin-right: 3px;
+    }
+  }
+
+  .separator {
+    margin: 20px 0;
+    border-bottom: 2px solid $border-color;
+  }
+}
