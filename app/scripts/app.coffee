@@ -30,6 +30,8 @@ class App extends BaseView
   initialize: ->
     super
 
+    $("body").addClass "unsupported" unless Bounce.isSupported()
+
     @$style = @$ "#animation"
     @$result = @$ "#result"
     @$box = @$result.find ".box"
