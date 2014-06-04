@@ -44,6 +44,8 @@ class ExportView extends ModalView
         linear#{if infinite then " infinite" else ""} both;"
 
     code = """
+
+
 .animation-target {
   #{animations.join "\n  "}
 }
@@ -51,6 +53,8 @@ class ExportView extends ModalView
 /* Generated with Bounce.js. Edit at #{window.location} */
 
 #{keyframes}
+
+
 """
 
     @$code.text code
