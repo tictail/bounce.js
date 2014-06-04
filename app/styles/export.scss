@@ -11,13 +11,14 @@
   color: $text-dark;
 
   .code {
-    padding: 40px 50px;
+    padding: 0 50px;
     width: 100%;
     height: 100%;
     overflow: auto;
     border: none;
     resize: none;
     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-size: 11px;
     line-height: 1.4em;
     cursor: text;
     word-break: break-all;
