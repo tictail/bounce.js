@@ -54,6 +54,14 @@ config =
           "app/templates/**/*.hbs"
         ]
 
+    dist:
+      options: { debug: false }
+      files:
+        ".tmp/scripts/app.js": [
+          "app/scripts/**/*.coffee"
+          "app/templates/**/*.hbs"
+        ]
+
     bounce:
       options:
         debug: false
@@ -121,6 +129,26 @@ config =
       ]
       dest: ".tmp/styles/styles.css"
 
+  clean:
+    dist: ["dist"]
+
+  copy:
+    dist:
+      files: [
+        { expand: true, cwd: ".tmp/", src: "**/*", dest: "dist/" }
+        { src: "app/index.html", dest: "dist/index.html" }
+      ]
+
+  uglify:
+    dist:
+      files:
+        "dist/scripts/app.js": "dist/scripts/app.js"
+
+  cssmin:
+    dist:
+      files:
+        "dist/styles/styles.css": "dist/styles/styles.css"
+
   autoprefixer:
     options:
       browsers: ["last 2 versions"]
@@ -145,6 +173,15 @@ module.exports = (grunt) ->
     "browserify:test"
     "connect:test"
     "mocha"
+  ]
+
+  grunt.registerTask "dist", [
+    "clean:dist"
+    "browserify:dist",
+    "compileStyles",
+    "copy:dist",
+    "uglify:dist",
+    "cssmin:dist"
   ]
 
   grunt.registerTask "watch:test", ->

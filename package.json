@@ -9,6 +9,7 @@
     "grunt-contrib-copy": "~0.4.1",
     "grunt-contrib-compass": "~0.7.2",
     "grunt-contrib-cssmin": "~0.6.0",
+    "grunt-contrib-uglify": "~0.3.3",
     "grunt-contrib-connect": "~0.5.0",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-watch": "~0.5.2",
