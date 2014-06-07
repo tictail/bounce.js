@@ -54,6 +54,7 @@ class App extends BaseView
       "animationOptionsChanged": @playAnimation
       "selectedPresetAnimation": @onSelectPreset
       "componentRemoved": @playAnimation
+      "componentAdded": @playAnimation
 
     @readURL()
 

@@ -51,6 +51,9 @@ class PreferencesView extends BaseView
     @$components.append componentView.$el
     @components.push componentView
 
+    unless options.silent
+      _.defer -> Events.trigger "componentAdded"
+
     $("body").removeClass "components-empty"
 
   clearComponents: ->
@@ -98,7 +101,7 @@ class PreferencesView extends BaseView
   setFromBounceObject: (bounce) ->
     @clearComponents()
     for component in bounce.components
-      @appendComponent component, collapsed: true
+      @appendComponent component, collapsed: true, silent: true
 
   onChoosePreset: =>
     return unless @$presets.val()
