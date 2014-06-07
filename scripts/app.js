@@ -1666,7 +1666,6 @@ Component = (function(_super) {
   Component.prototype.renderInputs = function() {
     var inputViewClass, selected;
     selected = this.$type.val();
-    console.log("SELECTED", selected, this.$type);
     inputViewClass = require("scripts/views/inputs/" + selected);
     this.inputView = new inputViewClass;
     this.$inputs.html(this.inputView.$el);
