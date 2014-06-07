@@ -180,7 +180,7 @@ module.exports = (grunt) ->
     "browserify:dist",
     "compileStyles",
     "copy:dist",
-    "uglify:dist",
+    # "uglify:dist",
     "cssmin:dist"
   ]
 
