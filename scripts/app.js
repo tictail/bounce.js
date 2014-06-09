@@ -2365,7 +2365,9 @@ ShortenView = (function(_super) {
 module.exports = ShortenView;
 
 
-},{"scripts/views/modal":"UWCCbc","templates/shorten":"kbCuY3"}],"G1z9mA":[function(require,module,exports){
+},{"scripts/views/modal":"UWCCbc","templates/shorten":"kbCuY3"}],"templates/app":[function(require,module,exports){
+module.exports=require('G1z9mA');
+},{}],"G1z9mA":[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var Handlebars = require('hbsfy/runtime');
 module.exports = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
@@ -2374,12 +2376,10 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<div class=\"preferences-container\">\n  <div class=\"preference-bar\">\n    <div id=\"preferences\"></div>\n  </div>\n  <div class=\"preference-bar-separator\"></div>\n</div>\n<div class=\"main-view\">\n  <header>\n    <h1>\n      <span class=\"letter l1\">b</span><span class=\"letter l2\">o</span><span class=\"letter l3\">u</span><span class=\"letter l4\">n</span><span class=\"letter l5\">c</span><span class=\"letter l6\">e</span><span class=\"letter l7\">.</span><span class=\"letter l8\">j</span><span class=\"letter l9\">s</span>\n    </h1>\n    <h2>bounce.js lets you create tasty CSS3 powered animations in no time. <br>\n    Give it a <a class=\"spin-link\" href=\"\">spin</a>.\n    </h2>\n    <div class=\"header-actions\">\n      <a class=\"shorten-link\" href=\"\">Get Short URL</a><br><a href=\"\" class=\"export-link\">Export CSS</a>\n    </div>\n  </header>\n  <div class=\"preview-container\">\n    <div id=\"result\">\n      <div class=\"box\"></div>\n    </div>\n    <div class=\"actions\">\n      <button class=\"play-button\"><i class=\"fa fa-play\"></i>Play Animation</button>\n      <div class=\"loop-input toggle\" title=\"Loop Animation\"><i class=\"fa fa-repeat\"></i></div>\n      <div class=\"slow-input toggle\" title=\"Slow Motion\"><i class=\"fa fa-clock-o\"></i></div>\n    </div>\n  </div>\n</div>\n<div class=\"footer-bar\">\n  <a href=\"https://github.com/tictail/bounce.js\" target=\"_blank\" class=\"github-link\"><i class=\"fa fa-github\"></i> View on GitHub</a>\n  <div class=\"separator\"></div>\n  <p class=\"credits\">\n    Made by <br><a href=\"https://twitter.com/joelbesada\" target=\"_blank\">@JoelBesada</a><br> at <a href=\"https://tictail.com\" target=\"_blank\">Tictail  </a>\n  </p>\n</div>\n<style id=\"animation\"></style>\n<div class=\"export\"></div>\n<div class=\"shorten\"></div>\n<div class=\"dimmer\"></div>\n";
+  return "<div class=\"preferences-container\">\n  <div class=\"preference-bar\">\n    <div id=\"preferences\"></div>\n  </div>\n  <div class=\"preference-bar-separator\"></div>\n</div>\n<div class=\"main-view\">\n  <header>\n    <h1>\n      <span class=\"letter l1\">b</span><span class=\"letter l2\">o</span><span class=\"letter l3\">u</span><span class=\"letter l4\">n</span><span class=\"letter l5\">c</span><span class=\"letter l6\">e</span><span class=\"letter l7\">.</span><span class=\"letter l8\">j</span><span class=\"letter l9\">s</span>\n    </h1>\n    <h2>bounce.js lets you create tasty CSS3 powered animations in no time. <br>\n    Give it a <a class=\"spin-link\" href=\"\">spin</a>.\n    </h2>\n    <div class=\"header-actions\">\n      <a class=\"shorten-link\" href=\"\">Get Short URL</a><br><a href=\"\" class=\"export-link\">Export CSS</a>\n    </div>\n  </header>\n  <div class=\"preview-container\">\n    <div id=\"result\">\n      <div class=\"box\"></div>\n    </div>\n    <div class=\"actions\">\n      <button class=\"play-button\"><i class=\"fa fa-play\"></i>Play Animation</button>\n      <div class=\"loop-input toggle\" title=\"Loop Animation\"><i class=\"fa fa-repeat\"></i></div>\n      <div class=\"slow-input toggle\" title=\"Slow Motion\"><i class=\"fa fa-clock-o\"></i></div>\n    </div>\n  </div>\n</div>\n<div class=\"footer-bar\">\n  <a href=\"https://github.com/tictail/bounce.js\" target=\"_blank\" class=\"github-link\"><i class=\"fa fa-github\"></i> View on GitHub</a><br>\n  <a href=\"https://twitter.com/intent/tweet?original_referer=https%3A%2F%2Ftwitter.com%2Fabout%2Fresources%2Fbuttons&source=tweetbutton&text=bounce.js%20-%20Generate%20Tasty%20CSS3%20Animations&url=http%3A%2F%2Fbouncejs.com&via=JoelBesada\" target=\"_blank\"><i class=\"fa fa-twitter\"></i> Share on Twitter</a>\n  <div class=\"separator\"></div>\n  <p class=\"credits\">\n    Made by <br><a href=\"https://twitter.com/joelbesada\" target=\"_blank\">@JoelBesada</a><br> at <a href=\"https://tictail.com\" target=\"_blank\">Tictail  </a>\n  </p>\n</div>\n<style id=\"animation\"></style>\n<div class=\"export\"></div>\n<div class=\"shorten\"></div>\n<div class=\"dimmer\"></div>\n";
   });
 
-},{"hbsfy/runtime":100}],"templates/app":[function(require,module,exports){
-module.exports=require('G1z9mA');
-},{}],"templates/component":[function(require,module,exports){
+},{"hbsfy/runtime":100}],"templates/component":[function(require,module,exports){
 module.exports=require('bTuG/Y');
 },{}],"bTuG/Y":[function(require,module,exports){
 // hbsfy compiled Handlebars template
