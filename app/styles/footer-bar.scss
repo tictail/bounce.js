@@ -2,7 +2,7 @@
   position: absolute;
   right: 0;
   top: 0;
-  width: 120px;
+  width: 140px;
 
   margin: 30px 40px;
 
@@ -11,6 +11,7 @@
   font-size: 10px;
   font-weight: 500;
   color: $text-dark;
+  line-height: 2.5em;
 
   .credits {
     line-height: 2em;
@@ -22,7 +23,7 @@
     }
   }
 
-  .github-link {
+  a {
     i {
       position: relative;
       font-size: 20px;
