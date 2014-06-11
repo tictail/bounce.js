@@ -23,7 +23,7 @@ $width: 300px;
     }
   }
 
-  input[type="text"], .type-input, .easing-input {
+  input[type="text"], input[type="number"], .type-input, .easing-input {
     width: 186px;
   }
 
@@ -39,7 +39,7 @@ $width: 300px;
   .inputs {
     color: $text-dark;
 
-    input[type="text"] {
+    input[type="text"], input[type="number"] {
       width: 55px;
       margin: 0 5px;
       text-align: center;

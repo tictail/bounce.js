@@ -12,7 +12,7 @@ input, button {
   font-family: $body-font;
 }
 
-input[type="text"], select {
+input[type="text"], input[type="number"], select {
   @include input-styles;
   padding: $input-padding;
   font-weight: 500;
@@ -25,6 +25,16 @@ input[type="text"], select {
     border: $input-border;
     border-color: transparentize($text-dark, 0.8);
   }
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 button {
