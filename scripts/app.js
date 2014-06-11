@@ -2390,7 +2390,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<div class=\"header\">\n  <span class=\"name\">Scale</span>\n  <span class=\"arrow\"></span>\n  <i class=\"fa fa-times-circle remove\"></i>\n  <div class=\"separator\"></div>\n</div>\n<label for=\"type\">Type</label>\n<select class=\"type-input\" name=\"type\">\n  <option value=\"scale\" selected>Scale</option>\n  <option value=\"translate\">Translate</option>\n  <option value=\"rotate\">Rotate</option>\n  <option value=\"skew\">Skew</option>\n</select>\n\n<div class=\"inputs\"></div>\n\n<label for=\"type\">Easing</label>\n<select class=\"easing-input\" name=\"easing\">\n  <option value=\"bounce\" selected>Bounce</option>\n  <option value=\"sway\">Sway</option>\n  <option value=\"hardbounce\">Hard Bounce</option>\n  <option value=\"hardsway\">Hard Sway</option>\n</select>\n\n<label for=\"duration\">Duration (ms)</label>\n<input type=\"text\" value=\"1000\" name=\"duration\" class=\"duration-input\">\n\n<label for=\"delay\">Delay (ms)</label>\n<input type=\"text\" value=\"0\" name=\"delay\" class=\"delay-input\">\n\n<label for=\"bounces\">Bounces</label>\n<input type=\"text\" name=\"bounces\" class=\"bounces-input\" value=4>\n\n<label for=\"stiffness\">Stiffness</label>\n<div class=\"stiffness-input\"></div>\n<input type=\"text\" class=\"stiffness-value\">\n\n";
+  return "<div class=\"header\">\n  <span class=\"name\">Scale</span>\n  <span class=\"arrow\"></span>\n  <i class=\"fa fa-times-circle remove\"></i>\n  <div class=\"separator\"></div>\n</div>\n<label for=\"type\">Type</label>\n<select class=\"type-input\" name=\"type\">\n  <option value=\"scale\" selected>Scale</option>\n  <option value=\"translate\">Translate</option>\n  <option value=\"rotate\">Rotate</option>\n  <option value=\"skew\">Skew</option>\n</select>\n\n<div class=\"inputs\"></div>\n\n<label for=\"type\">Easing</label>\n<select class=\"easing-input\" name=\"easing\">\n  <option value=\"bounce\" selected>Bounce</option>\n  <option value=\"sway\">Sway</option>\n  <option value=\"hardbounce\">Hard Bounce</option>\n  <option value=\"hardsway\">Hard Sway</option>\n</select>\n\n<label for=\"duration\">Duration (ms)</label>\n<input type=\"number\" value=\"1000\" step=\"10\" name=\"duration\" class=\"duration-input\">\n\n<label for=\"delay\">Delay (ms)</label>\n<input type=\"number\" value=\"0\" step=\"10\" name=\"delay\" class=\"delay-input\">\n\n<label for=\"bounces\">Bounces</label>\n<input type=\"number\" name=\"bounces\" class=\"bounces-input\" value=4>\n\n<label for=\"stiffness\">Stiffness</label>\n<div class=\"stiffness-input\"></div>\n<input type=\"text\" class=\"stiffness-value\">\n\n";
   });
 
 },{"hbsfy/runtime":100}],"templates/export":[function(require,module,exports){
@@ -2418,7 +2418,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<label>Degrees</label>\nfrom <input type=\"text\" name=\"from\" value=\"0\">\nto <input type=\"text\" name=\"to\" value=\"90\">\n";
+  return "<label>Degrees</label>\nfrom <input type=\"number\" name=\"from\" value=\"0\">\nto <input type=\"number\" name=\"to\" value=\"90\">\n";
   });
 
 },{"hbsfy/runtime":100}],"templates/inputs/scale":[function(require,module,exports){
@@ -2432,7 +2432,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<label>Width (ratio)</label>\nfrom <input type=\"text\" name=\"from_x\" value=\"1\">\nto <input type=\"text\" name=\"to_x\" value=\"2\">\n\n<label>Height (ratio)</label>\nfrom <input type=\"text\" name=\"from_y\" value=\"1\">\nto <input type=\"text\" name=\"to_y\" value=\"2\">\n";
+  return "<label>Width (ratio)</label>\nfrom <input type=\"number\" step=\"0.1\" name=\"from_x\" value=\"1\">\nto <input type=\"number\" step=\"0.1\" name=\"to_x\" value=\"2\">\n\n<label>Height (ratio)</label>\nfrom <input type=\"number\" step=\"0.1\" name=\"from_y\" value=\"1\">\nto <input type=\"number\" step=\"0.1\" name=\"to_y\" value=\"2\">\n";
   });
 
 },{"hbsfy/runtime":100}],"qu4LtV":[function(require,module,exports){
@@ -2444,7 +2444,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<label>X-Axis (degrees)</label>\nfrom <input type=\"text\" name=\"from_x\" value=\"0\">\nto <input type=\"text\" name=\"to_x\" value=\"20\">\n\n<label>Y-Axis (degrees)</label>\nfrom <input type=\"text\" name=\"from_y\" value=\"0\">\nto <input type=\"text\" name=\"to_y\" value=\"0\">\n\n";
+  return "<label>X-Axis (degrees)</label>\nfrom <input type=\"number\" name=\"from_x\" value=\"0\">\nto <input type=\"number\" name=\"to_x\" value=\"20\">\n\n<label>Y-Axis (degrees)</label>\nfrom <input type=\"number\" name=\"from_y\" value=\"0\">\nto <input type=\"number\" name=\"to_y\" value=\"0\">\n\n";
   });
 
 },{"hbsfy/runtime":100}],"templates/inputs/skew":[function(require,module,exports){
@@ -2460,7 +2460,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<label>X-Axis (px)</label>\nfrom <input type=\"text\" name=\"from_x\" value=\"0\">\nto <input type=\"text\" name=\"to_x\" value=\"100\">\n\n<label>Y-Axis (px)</label>\nfrom <input type=\"text\" name=\"from_y\" value=\"0\">\nto <input type=\"text\" name=\"to_y\" value=\"0\">\n\n";
+  return "<label>X-Axis (px)</label>\nfrom <input type=\"number\" name=\"from_x\" value=\"0\">\nto <input type=\"number\" name=\"to_x\" value=\"100\">\n\n<label>Y-Axis (px)</label>\nfrom <input type=\"number\" name=\"from_y\" value=\"0\">\nto <input type=\"number\" name=\"to_y\" value=\"0\">\n\n";
   });
 
 },{"hbsfy/runtime":100}],"hTEbct":[function(require,module,exports){
