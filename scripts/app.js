@@ -1352,8 +1352,12 @@ URLHandler = (function() {
     };
   };
 
-  URLHandler.prototype.shorten = function(url) {
-    return $.ajax({
+  URLHandler.prototype.shorten = function(url, options) {
+    var ajaxOptions;
+    if (options == null) {
+      options = {};
+    }
+    ajaxOptions = {
       url: "https://www.googleapis.com/urlshortener/v1/url?key=" + this.GOOGLE_PUBLIC_API_KEY,
       type: "POST",
       data: JSON.stringify({
@@ -1361,7 +1365,8 @@ URLHandler = (function() {
       }),
       dataType: "json",
       contentType: "application/json; charset=utf-8"
-    });
+    };
+    return $.ajax($.extend(ajaxOptions, options));
   };
 
   return URLHandler;
@@ -1760,8 +1765,11 @@ Component = (function(_super) {
 module.exports = Component;
 
 
-},{"scripts/events":"jL3HsY","scripts/views/base":"/l3mMY","templates/component":"bTuG/Y","underscore":101}],"+SnGsf":[function(require,module,exports){
-var $, ExportView, ModalView, template,
+},{"scripts/events":"jL3HsY","scripts/views/base":"/l3mMY","templates/component":"bTuG/Y","underscore":101}],"scripts/views/export":[function(require,module,exports){
+module.exports=require('+SnGsf');
+},{}],"+SnGsf":[function(require,module,exports){
+var $, ExportView, ModalView, URLHandler, template,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -1769,12 +1777,15 @@ $ = require("jquery");
 
 ModalView = require("scripts/views/modal");
 
+URLHandler = require("scripts/urlhandler");
+
 template = require("templates/export");
 
 ExportView = (function(_super) {
   __extends(ExportView, _super);
 
   function ExportView() {
+    this._updateCode = __bind(this._updateCode, this);
     return ExportView.__super__.constructor.apply(this, arguments);
   }
 
@@ -1783,6 +1794,8 @@ ExportView = (function(_super) {
   ExportView.prototype.template = template;
 
   ExportView.prototype.bounceObject = null;
+
+  ExportView.prototype.url = null;
 
   ExportView.prototype.events = {
     "ifChanged .prefix-input": "updateCode"
@@ -1801,12 +1814,42 @@ ExportView = (function(_super) {
 
   ExportView.prototype.setBounceObject = function(bounce) {
     this.bounceObject = bounce;
+    this.url = null;
     return this.updateCode();
   };
 
+  ExportView.prototype.getURL = function() {
+    var deferred, encoded;
+    deferred = $.Deferred();
+    if (this.url) {
+      deferred.resolve(url);
+    } else {
+      encoded = URLHandler.encodeURL(this.bounceObject.serialize(), {
+        loop: $(".loop-input").toggleButton("isOn")
+      });
+      URLHandler.shorten(encoded, {
+        timeout: 5000
+      }).done(function(response) {
+        return this.url = response.id;
+      }).fail(function() {
+        return this.url = "" + window.location.origin + "#" + (encodeURIComponent(encoded));
+      }).always(function() {
+        return deferred.resolve(this.url);
+      });
+    }
+    return deferred;
+  };
+
   ExportView.prototype.updateCode = function() {
+    this.$el.removeClass("done");
+    return this.getURL().done(this._updateCode);
+  };
+
+  ExportView.prototype._updateCode = function(url) {
     var animations, code, infinite, keyframes, options, prefix, prefixes, _i, _len;
+    this.$el.addClass("done");
     prefix = this.$prefix.prop("checked");
+    infinite = $(".loop-input").toggleButton("isOn");
     options = {
       name: "animation"
     };
@@ -1818,13 +1861,12 @@ ExportView = (function(_super) {
     if (prefix) {
       prefixes.unshift("-webkit-");
     }
-    infinite = $(".loop-input").toggleButton("isOn");
     animations = [];
     for (_i = 0, _len = prefixes.length; _i < _len; _i++) {
       prefix = prefixes[_i];
       animations.push("" + prefix + "animation: animation " + this.bounceObject.duration + "ms linear" + (infinite ? " infinite" : "") + " both;");
     }
-    code = "\n\n.animation-target {\n  " + (animations.join("\n  ")) + "\n}\n\n/* Generated with Bounce.js. Edit at " + window.location + " */\n\n" + keyframes + "\n\n";
+    code = "\n\n.animation-target {\n  " + (animations.join("\n  ")) + "\n}\n\n/* Generated with Bounce.js. Edit at " + url + " */\n\n" + keyframes + "\n\n";
     return this.$code.text(code);
   };
 
@@ -1835,9 +1877,7 @@ ExportView = (function(_super) {
 module.exports = ExportView;
 
 
-},{"jquery":"MtfruI","scripts/views/modal":"UWCCbc","templates/export":"W1BMiS"}],"scripts/views/export":[function(require,module,exports){
-module.exports=require('+SnGsf');
-},{}],"QMi9Pf":[function(require,module,exports){
+},{"jquery":"MtfruI","scripts/urlhandler":"dSBOTS","scripts/views/modal":"UWCCbc","templates/export":"W1BMiS"}],"QMi9Pf":[function(require,module,exports){
 var BaseView, InputView, _,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = {}.hasOwnProperty,
@@ -2404,7 +2444,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<textarea readonly class=\"code\"></textarea>\n<div class=\"footer\">\n  <input id=\"prefix\" type=\"checkbox\" checked class=\"prefix-input\"> <label for=\"prefix\">Prefix CSS</label>\n  <a href=\"https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Using_CSS_animations\" target=\"_blank\" class=\"tutorial-link\">How do I use this?</a>\n</div>";
+  return "<div class=\"loaded\">\n  <textarea readonly class=\"code\"></textarea>\n  <div class=\"footer\">\n    <input id=\"prefix\" type=\"checkbox\" checked class=\"prefix-input\"> <label for=\"prefix\">Prefix CSS</label>\n    <a href=\"https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Using_CSS_animations\" target=\"_blank\" class=\"tutorial-link\">How do I use this?</a>\n  </div>\n</div>\n<div class=\"loading\">\n  <div class=\"spinner\"></div>\n</div>\n";
   });
 
 },{"hbsfy/runtime":100}],"templates/inputs/rotate":[function(require,module,exports){
