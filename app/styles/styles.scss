@@ -107,3 +107,13 @@ label {
     animation: modal-in 0.65s linear both;
   }
 }
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background: $text-dark;
+  border-radius: 1px;
+  animation: fold-and-unfold 2s linear infinite both;
+}
+

@@ -62,4 +62,27 @@
     margin-right: 10px;
     margin-top: 7px;
   }
+
+  .spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -8px;
+  }
+
+  .loaded {
+    display: none;
+    height: 100%;
+  }
+
+
+  &.done {
+    .loaded { display: block; }
+    .loading { display: none; }
+  }
+
+  &.in .loading {
+    animation: fade-in 0.25s 0.3s ease both;
+  }
 }
+

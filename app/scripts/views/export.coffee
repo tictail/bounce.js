@@ -1,6 +1,7 @@
 $ = require "jquery"
 
 ModalView = require "scripts/views/modal"
+URLHandler = require "scripts/urlhandler"
 
 template = require "templates/export"
 
@@ -8,6 +9,7 @@ class ExportView extends ModalView
   el: ".export"
   template: template
   bounceObject: null
+  url: null
 
   events:
     "ifChanged .prefix-input": "updateCode"
@@ -23,10 +25,34 @@ class ExportView extends ModalView
 
   setBounceObject: (bounce) ->
     @bounceObject = bounce
+    @url = null
     @updateCode()
 
+  getURL: ->
+    deferred = $.Deferred()
+
+    if @url
+      deferred.resolve(url)
+    else
+      encoded = URLHandler.encodeURL @bounceObject.serialize(),
+        loop: $(".loop-input").toggleButton "isOn"
+
+      URLHandler.shorten encoded, timeout: 5000
+        .done (response) -> @url = response.id
+        .fail -> @url = "#{window.location.origin}##{encodeURIComponent(encoded)}"
+        .always -> deferred.resolve @url
+
+    deferred
+
   updateCode: ->
+    @$el.removeClass "done"
+    @getURL().done @_updateCode
+
+  _updateCode: (url) =>
+    @$el.addClass "done"
+
     prefix = @$prefix.prop "checked"
+    infinite = $(".loop-input").toggleButton "isOn"
 
     options = name: "animation"
     options.forcePrefix = true if prefix
@@ -34,8 +60,6 @@ class ExportView extends ModalView
 
     prefixes = [""]
     prefixes.unshift "-webkit-" if prefix
-
-    infinite = $(".loop-input").toggleButton "isOn"
 
     animations = []
     for prefix in prefixes
@@ -50,7 +74,7 @@ class ExportView extends ModalView
   #{animations.join "\n  "}
 }
 
-/* Generated with Bounce.js. Edit at #{window.location} */
+/* Generated with Bounce.js. Edit at #{url} */
 
 #{keyframes}
 

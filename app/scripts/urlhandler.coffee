@@ -63,13 +63,15 @@ class URLHandler
       loop: decoded.l
     }
 
-  shorten: (url) ->
-    $.ajax
+  shorten: (url, options = {}) ->
+    ajaxOptions =
       url: "https://www.googleapis.com/urlshortener/v1/url?key=#{@GOOGLE_PUBLIC_API_KEY}"
       type: "POST"
       data: JSON.stringify(
         longUrl: "#{window.location.origin}##{encodeURIComponent(url)}")
       dataType: "json"
       contentType: "application/json; charset=utf-8"
+
+    $.ajax $.extend(ajaxOptions, options)
 
 module.exports = new URLHandler

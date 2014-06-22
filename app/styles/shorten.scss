@@ -33,12 +33,6 @@
   .spinner {
     margin-top: 12px;
     margin-left: -8px;
-    width: 16px;
-    height: 16px;
-    display: inline-block;
-    background: $text-dark;
-    border-radius: 1px;
-    animation: fold-and-unfold 2s linear infinite both;
   }
 
   &.done {
