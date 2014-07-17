@@ -7,7 +7,7 @@ ComponentClasses =
   skew: require "./components/skew"
 
 class Bounce
-  @FPS: 60
+  @FPS: 30
   @counter: 1
 
   components: null
