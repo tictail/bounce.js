@@ -748,7 +748,7 @@ ComponentClasses = {
 };
 
 Bounce = (function() {
-  Bounce.FPS = 60;
+  Bounce.FPS = 30;
 
   Bounce.counter = 1;
 
