@@ -143,11 +143,4 @@ class Bounce
 
     true
 
-  _unique: (list) ->
-    seen = {}
-    list.filter (i) ->
-      isUnique = not seen[i]
-      seen[i] = true
-      isUnique
-
 module.exports = Bounce
