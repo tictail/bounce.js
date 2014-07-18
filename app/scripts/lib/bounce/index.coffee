@@ -57,6 +57,25 @@ class Bounce
     document.body.appendChild @styleElement
     this
 
+  applyTo: (elements, options = {}) ->
+    @define()
+    elements = [elements] unless elements.length
+    prefixes = @getPrefixes()
+
+    for element in elements
+      for prefix in prefixes.animation
+        css = [@name, "#{@duration}ms", "linear", "both"]
+        css.push("infinite") if options.loop
+        element.style["#{prefix}animation"] = css.join " "
+
+    unless options.loop
+      setTimeout (=>
+        @remove() if options.remove
+        options.onComplete?()
+      ), @duration
+
+    this
+
   remove: ->
     @styleElement?.remove()
 
