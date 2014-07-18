@@ -131,9 +131,10 @@ class Bounce
     style = document.createElement("dummy").style
 
     propertyLists = [
-      ["transform", "webkitTransform"],
+      ["transform", "webkitTransform"]
       ["animation", "webkitAnimation"]
     ]
+
     for propertyList in propertyLists
       propertyIsSupported = false
       for property in propertyList
