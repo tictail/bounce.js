@@ -143,6 +143,9 @@ config =
     dist:
       files:
         "dist/scripts/app.js": "dist/scripts/app.js"
+    bounce:
+      files:
+        ".tmp/bounce.min.js": ".tmp/bounce.js"
 
   cssmin:
     dist:
@@ -182,6 +185,11 @@ module.exports = (grunt) ->
     "copy:dist",
     # "uglify:dist",
     "cssmin:dist"
+  ]
+
+  grunt.registerTask "package", [
+    "browserify:bounce",
+    "uglify:bounce"
   ]
 
   grunt.registerTask "watch:test", ->
