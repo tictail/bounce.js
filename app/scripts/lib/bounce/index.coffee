@@ -62,6 +62,10 @@ class Bounce
     elements = [elements] unless elements.length
     prefixes = @getPrefixes()
 
+    deferred = null
+    if window.jQuery and window.jQuery.Deferred
+      deferred = new window.jQuery.Deferred()
+
     for element in elements
       for prefix in prefixes.animation
         css = [@name, "#{@duration}ms", "linear", "both"]
@@ -72,9 +76,10 @@ class Bounce
       setTimeout (=>
         @remove() if options.remove
         options.onComplete?()
+        deferred.resolve() if deferred
       ), @duration
 
-    this
+    deferred
 
   remove: ->
     @styleElement?.remove()
