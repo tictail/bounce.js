@@ -4,9 +4,11 @@
 to generate these on the fly, you can use the Bounce.js library.   
 
 ## Installation
-The library is available to install from Bower:
+The library is available to install from Bower or NPM:
 ```
 $ bower install bounce.js 
+# OR
+$ npm install bounce.js
 ```
 You can also view and download all releases [from here](https://github.com/tictail/bounce.js/releases).
 
