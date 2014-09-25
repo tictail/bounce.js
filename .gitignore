@@ -6,3 +6,7 @@ dist/
 
 npm-debug.log
 .sass-cache/
+
+TODO
+bounce.sublime-project
+bounce.sublime-workspace
