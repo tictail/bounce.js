@@ -1,0 +1,9 @@
+{
+  "name": "bounce.js",
+  "version": "0.8.0",
+  "description": "Generate beautiful CSS3 powered animations",
+  "author": "Joel Besada",
+  "license": "MIT",
+  "licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
+  "dependencies": {}
+}
