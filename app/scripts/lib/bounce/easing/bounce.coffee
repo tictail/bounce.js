@@ -13,13 +13,16 @@ class BounceEasing extends Easing
 
     threshold = 0.005 / Math.pow(10, @stiffness)
     @limit = Math.floor(Math.log(threshold) / -@alpha)
-    @omega = @bounces * Math.PI / @limit
+    @omega = @calculateOmega @bounces, @limit
 
   calculate: (ratio) ->
     return 1 if ratio >= 1
 
     t = ratio * @limit
     1 - @exponent(t) * @oscillation(t)
+
+  calculateOmega: (bounces, limit) ->
+    (@bounces + 0.5) * Math.PI / @limit
 
   exponent: (t) ->
     Math.pow(Math.E, -@alpha * t)
