@@ -119,7 +119,7 @@ class Bounce
         transforms.push "#{prefix}transform: #{transformString};"
 
       keyframeList.push \
-        "#{Math.round(key * 100 * 1e6) / 1e6}% { #{transforms.join " "} }"
+        "#{Math.round(key * 100 * 100) / 100}% { #{transforms.join " "} }"
 
     animations = []
     for prefix in prefixes.animation
