@@ -54,7 +54,7 @@ class ExportView extends ModalView
     prefix = @$prefix.prop "checked"
     infinite = $(".loop-input").toggleButton "isOn"
 
-    options = name: "animation"
+    options = name: "animation", optimized: true
     options.forcePrefix = true if prefix
     keyframes = @bounceObject.getKeyframeCSS options
 
