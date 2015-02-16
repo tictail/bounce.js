@@ -82,12 +82,12 @@ class Bounce
     deferred
 
   remove: ->
-    do ->
-      w = window
-      w.Element::remove ?= () ->
-        @?.parentNode?.removeChild(@);
+    return unless @styleElement
 
-    @styleElement?.remove()
+    if @styleElement.remove
+      @styleElement.remove()
+    else
+      @styleElement.parentNode?.removeChild @styleElement
 
   getPrefixes: (force) ->
     prefixes =
