@@ -136,6 +136,9 @@ class Bounce
         componentKeys = component.easingObject.findOptimalKeyPoints().map (key) =>
           (key * component.duration / @duration) + (component.delay / @duration)
 
+        if component.delay
+          componentKeys.push((component.delay / @duration) - 0.001)
+
         keys = keys.concat componentKeys
     else
       frames = Math.round((@duration / 1000) * Bounce.FPS)
