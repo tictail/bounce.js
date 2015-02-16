@@ -1,4 +1,6 @@
-require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"4PCcoK":[function(require,module,exports){
+require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"scripts/app":[function(require,module,exports){
+module.exports=require('4PCcoK');
+},{}],"4PCcoK":[function(require,module,exports){
 var App, BaseView, Bounce, BoxView, Events, ExportView, PreferencesView, PrefixFree, ShortenView, URLHandler, template, _,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = {}.hasOwnProperty,
@@ -170,7 +172,8 @@ App = (function(_super) {
       properties.push("animation-iteration-count: infinite");
     }
     css = ".box.animate {\n  " + (properties.join(";\n  ")) + ";\n}\n" + (bounce.getKeyframeCSS({
-      name: "animation"
+      name: "animation",
+      optimized: true
     }));
     this.$style.text(PrefixFree.prefixCSS(css, true));
     this.$box.removeClass("animate");
@@ -241,9 +244,7 @@ App = (function(_super) {
 module.exports = App;
 
 
-},{"bounce":"c1he0F","prefixfree":"NGk3jQ","scripts/events":"jL3HsY","scripts/setup":"xdNEL6","scripts/urlhandler":"dSBOTS","scripts/views/base":"/l3mMY","scripts/views/box":"FpVIhp","scripts/views/export":"+SnGsf","scripts/views/preferences":"D05IS4","scripts/views/shorten":"wpiY4R","templates/app":"G1z9mA","underscore":101}],"scripts/app":[function(require,module,exports){
-module.exports=require('4PCcoK');
-},{}],"scripts/events":[function(require,module,exports){
+},{"bounce":"c1he0F","prefixfree":"NGk3jQ","scripts/events":"jL3HsY","scripts/setup":"xdNEL6","scripts/urlhandler":"dSBOTS","scripts/views/base":"/l3mMY","scripts/views/box":"FpVIhp","scripts/views/export":"+SnGsf","scripts/views/preferences":"D05IS4","scripts/views/shorten":"wpiY4R","templates/app":"G1z9mA","underscore":103}],"scripts/events":[function(require,module,exports){
 module.exports=require('jL3HsY');
 },{}],"jL3HsY":[function(require,module,exports){
 var Backbone, Events, _;
@@ -264,7 +265,7 @@ Events = (function() {
 module.exports = new Events;
 
 
-},{"backbone":"KDJVm1","underscore":101}],"t42j+F":[function(require,module,exports){
+},{"backbone":"KDJVm1","underscore":103}],"t42j+F":[function(require,module,exports){
 var Component, EasingClasses, Matrix4D;
 
 Matrix4D = require("../math/matrix4d");
@@ -586,7 +587,7 @@ BounceEasing = (function(_super) {
     this.alpha = this.stiffness / 100;
     threshold = 0.005 / Math.pow(10, this.stiffness);
     this.limit = Math.floor(Math.log(threshold) / -this.alpha);
-    this.omega = this.bounces * Math.PI / this.limit;
+    this.omega = this.calculateOmega(this.bounces, this.limit);
   }
 
   BounceEasing.prototype.calculate = function(ratio) {
@@ -596,6 +597,10 @@ BounceEasing = (function(_super) {
     }
     t = ratio * this.limit;
     return 1 - this.exponent(t) * this.oscillation(t);
+  };
+
+  BounceEasing.prototype.calculateOmega = function(bounces, limit) {
+    return (this.bounces + 0.5) * Math.PI / this.limit;
   };
 
   BounceEasing.prototype.exponent = function(t) {
@@ -674,10 +679,10 @@ module.exports = HardSwayEasing;
 
 },{"./sway":"EwwsAM"}],"scripts/lib/bounce/easing/hardsway":[function(require,module,exports){
 module.exports=require('QP+fRn');
-},{}],"scripts/lib/bounce/easing/index":[function(require,module,exports){
-module.exports=require('Up4a/o');
 },{}],"Up4a/o":[function(require,module,exports){
-var Easing;
+var Easing, MathHelpers;
+
+MathHelpers = require("../math/helpers");
 
 Easing = (function() {
   function Easing() {}
@@ -690,6 +695,53 @@ Easing = (function() {
     return {};
   };
 
+  Easing.prototype.findOptimalKeyPoints = function(threshold, resolution) {
+    var area, halfway, i, keyPoint, keyPoints, loops, result, values;
+    if (threshold == null) {
+      threshold = 1.0;
+    }
+    if (resolution == null) {
+      resolution = 1000;
+    }
+    keyPoints = [0];
+    values = (function() {
+      var _i, _results;
+      _results = [];
+      for (i = _i = 0; 0 <= resolution ? _i < resolution : _i > resolution; i = 0 <= resolution ? ++_i : --_i) {
+        _results.push(this.calculate(i / resolution));
+      }
+      return _results;
+    }).call(this);
+    keyPoints = keyPoints.concat(MathHelpers.findTurningPoints(values));
+    keyPoints.push(resolution - 1);
+    i = 0;
+    loops = 1000;
+    while (loops--) {
+      if (i === keyPoints.length - 1) {
+        break;
+      }
+      area = MathHelpers.areaBetweenLineAndCurve(values, keyPoints[i], keyPoints[i + 1]);
+      if (area <= threshold) {
+        i++;
+      } else {
+        halfway = Math.round(keyPoints[i] + (keyPoints[i + 1] - keyPoints[i]) / 2);
+        keyPoints.splice(i + 1, 0, halfway);
+      }
+    }
+    if (loops === 0) {
+      return [];
+    }
+    return result = (function() {
+      var _i, _len, _results;
+      _results = [];
+      for (_i = 0, _len = keyPoints.length; _i < _len; _i++) {
+        keyPoint = keyPoints[_i];
+        _results.push(keyPoint / (resolution - 1));
+      }
+      return _results;
+    })();
+  };
+
   return Easing;
 
 })();
@@ -697,8 +749,8 @@ Easing = (function() {
 module.exports = Easing;
 
 
-},{}],"scripts/lib/bounce/easing/sway":[function(require,module,exports){
-module.exports=require('EwwsAM');
+},{"../math/helpers":"ZsH7jN"}],"scripts/lib/bounce/easing/index":[function(require,module,exports){
+module.exports=require('Up4a/o');
 },{}],"EwwsAM":[function(require,module,exports){
 var BounceEasing, SwayEasing,
   __hasProp = {}.hasOwnProperty,
@@ -722,6 +774,10 @@ SwayEasing = (function(_super) {
     return this.exponent(t) * this.oscillation(t);
   };
 
+  SwayEasing.prototype.calculateOmega = function(bounces, limit) {
+    return this.bounces * Math.PI / this.limit;
+  };
+
   SwayEasing.prototype.oscillation = function(t) {
     return Math.sin(this.omega * t);
   };
@@ -733,7 +789,9 @@ SwayEasing = (function(_super) {
 module.exports = SwayEasing;
 
 
-},{"./bounce":"YYToEi"}],"scripts/lib/bounce/index":[function(require,module,exports){
+},{"./bounce":"YYToEi"}],"scripts/lib/bounce/easing/sway":[function(require,module,exports){
+module.exports=require('EwwsAM');
+},{}],"scripts/lib/bounce/index":[function(require,module,exports){
 module.exports=require('c1he0F');
 },{}],"c1he0F":[function(require,module,exports){
 var Bounce, ComponentClasses, Matrix4D;
@@ -900,7 +958,7 @@ Bounce = (function() {
       prefixes = this.getPrefixes(options.forcePrefix);
     }
     keyframeList = [];
-    keyframes = this.getKeyframes();
+    keyframes = this.getKeyframes(options);
     _ref = this.keys;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       key = _ref[_i];
@@ -912,7 +970,7 @@ Bounce = (function() {
         prefix = _ref1[_j];
         transforms.push("" + prefix + "transform: " + transformString + ";");
       }
-      keyframeList.push("" + (Math.round(key * 100 * 1e6) / 1e6) + "% { " + (transforms.join(" ")) + " }");
+      keyframeList.push("" + (Math.round(key * 100 * 100) / 100) + "% { " + (transforms.join(" ")) + " }");
     }
     animations = [];
     _ref2 = prefixes.animation;
@@ -923,21 +981,46 @@ Bounce = (function() {
     return animations.join("\n\n");
   };
 
-  Bounce.prototype.getKeyframes = function() {
-    var component, currentTime, frames, i, key, keyframes, matrix, ratio, _i, _j, _k, _len, _len1, _ref, _ref1;
-    frames = Math.round((this.duration / 1000) * Bounce.FPS);
-    this.keys = [];
-    for (i = _i = 0; 0 <= frames ? _i <= frames : _i >= frames; i = 0 <= frames ? ++_i : --_i) {
-      this.keys.push(i / frames);
+  Bounce.prototype.getKeyframes = function(options) {
+    var component, componentKeys, currentTime, frames, i, key, keyframes, keys, matrix, ratio, _i, _j, _k, _l, _len, _len1, _len2, _ref, _ref1;
+    if (options == null) {
+      options = {};
     }
+    keys = [0, 1];
+    if (options.optimized) {
+      _ref = this.components;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        component = _ref[_i];
+        componentKeys = component.easingObject.findOptimalKeyPoints().map((function(_this) {
+          return function(key) {
+            return (key * component.duration / _this.duration) + (component.delay / _this.duration);
+          };
+        })(this));
+        if (component.delay) {
+          componentKeys.push((component.delay / this.duration) - 0.001);
+        }
+        keys = keys.concat(componentKeys);
+      }
+    } else {
+      frames = Math.round((this.duration / 1000) * Bounce.FPS);
+      for (i = _j = 0; 0 <= frames ? _j <= frames : _j >= frames; i = 0 <= frames ? ++_j : --_j) {
+        keys.push(i / frames);
+      }
+    }
+    keys = keys.sort(function(a, b) {
+      return a - b;
+    });
+    this.keys = [];
     keyframes = {};
-    _ref = this.keys;
-    for (_j = 0, _len = _ref.length; _j < _len; _j++) {
-      key = _ref[_j];
+    for (_k = 0, _len1 = keys.length; _k < _len1; _k++) {
+      key = keys[_k];
+      if (keyframes[key]) {
+        continue;
+      }
       matrix = new Matrix4D().identity();
       _ref1 = this.components;
-      for (_k = 0, _len1 = _ref1.length; _k < _len1; _k++) {
-        component = _ref1[_k];
+      for (_l = 0, _len2 = _ref1.length; _l < _len2; _l++) {
+        component = _ref1[_l];
         currentTime = key * this.duration;
         if ((component.delay - currentTime) > 1e-8) {
           continue;
@@ -945,7 +1028,8 @@ Bounce = (function() {
         ratio = (key - component.delay / this.duration) / (component.duration / this.duration);
         matrix.multiply(component.getEasedMatrix(ratio));
       }
-      keyframes[key] = matrix.transpose().toFixed(5);
+      this.keys.push(key);
+      keyframes[key] = matrix.transpose().toFixed(3);
     }
     return keyframes;
   };
@@ -979,7 +1063,56 @@ Bounce = (function() {
 module.exports = Bounce;
 
 
-},{"./components/rotate":"NE9Tvp","./components/scale":"1BqU+7","./components/skew":"xBMRcD","./components/translate":"Yi8bvd","./math/matrix4d":"HpNQed"}],"HpNQed":[function(require,module,exports){
+},{"./components/rotate":"NE9Tvp","./components/scale":"1BqU+7","./components/skew":"xBMRcD","./components/translate":"Yi8bvd","./math/matrix4d":"HpNQed"}],"ZsH7jN":[function(require,module,exports){
+var MathHelpers;
+
+MathHelpers = (function() {
+  function MathHelpers() {}
+
+  MathHelpers.prototype.sign = function(value) {
+    if (value < 0) {
+      return -1;
+    }
+    return 1;
+  };
+
+  MathHelpers.prototype.findTurningPoints = function(values) {
+    var i, signA, signB, turningPoints, _i, _ref;
+    turningPoints = [];
+    for (i = _i = 1, _ref = values.length - 1; 1 <= _ref ? _i < _ref : _i > _ref; i = 1 <= _ref ? ++_i : --_i) {
+      signA = this.sign(values[i] - values[i - 1]);
+      signB = this.sign(values[i + 1] - values[i]);
+      if (signA !== signB) {
+        turningPoints.push(i);
+      }
+    }
+    return turningPoints;
+  };
+
+  MathHelpers.prototype.areaBetweenLineAndCurve = function(values, start, end) {
+    var area, curveValue, i, length, lineValue, yEnd, yStart, _i;
+    length = end - start;
+    yStart = values[start];
+    yEnd = values[end];
+    area = 0;
+    for (i = _i = 0; 0 <= length ? _i <= length : _i >= length; i = 0 <= length ? ++_i : --_i) {
+      curveValue = values[start + i];
+      lineValue = yStart + (i / length) * (yEnd - yStart);
+      area += Math.abs(lineValue - curveValue);
+    }
+    return area;
+  };
+
+  return MathHelpers;
+
+})();
+
+module.exports = new MathHelpers;
+
+
+},{}],"scripts/lib/bounce/math/helpers":[function(require,module,exports){
+module.exports=require('ZsH7jN');
+},{}],"HpNQed":[function(require,module,exports){
 var Matrix4D;
 
 Matrix4D = (function() {
@@ -1409,7 +1542,7 @@ URLHandler = (function() {
 module.exports = new URLHandler;
 
 
-},{"jquery":"MtfruI","underscore":101}],"/l3mMY":[function(require,module,exports){
+},{"jquery":"MtfruI","underscore":103}],"/l3mMY":[function(require,module,exports){
 var Backbone, BaseView,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -1592,7 +1725,7 @@ BoxView = (function(_super) {
 module.exports = BoxView;
 
 
-},{"bounce":"c1he0F","scripts/views/base":"/l3mMY","underscore":101}],"scripts/views/box":[function(require,module,exports){
+},{"bounce":"c1he0F","scripts/views/base":"/l3mMY","underscore":103}],"scripts/views/box":[function(require,module,exports){
 module.exports=require('FpVIhp');
 },{}],"scripts/views/component":[function(require,module,exports){
 module.exports=require('iwEgR8');
@@ -1798,9 +1931,7 @@ Component = (function(_super) {
 module.exports = Component;
 
 
-},{"scripts/events":"jL3HsY","scripts/views/base":"/l3mMY","templates/component":"bTuG/Y","underscore":101}],"scripts/views/export":[function(require,module,exports){
-module.exports=require('+SnGsf');
-},{}],"+SnGsf":[function(require,module,exports){
+},{"scripts/events":"jL3HsY","scripts/views/base":"/l3mMY","templates/component":"bTuG/Y","underscore":103}],"+SnGsf":[function(require,module,exports){
 var $, ExportView, ModalView, URLHandler, template,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = {}.hasOwnProperty,
@@ -1884,7 +2015,8 @@ ExportView = (function(_super) {
     prefix = this.$prefix.prop("checked");
     infinite = $(".loop-input").toggleButton("isOn");
     options = {
-      name: "animation"
+      name: "animation",
+      optimized: true
     };
     if (prefix) {
       options.forcePrefix = true;
@@ -1910,7 +2042,9 @@ ExportView = (function(_super) {
 module.exports = ExportView;
 
 
-},{"jquery":"MtfruI","scripts/urlhandler":"dSBOTS","scripts/views/modal":"UWCCbc","templates/export":"W1BMiS"}],"QMi9Pf":[function(require,module,exports){
+},{"jquery":"MtfruI","scripts/urlhandler":"dSBOTS","scripts/views/modal":"UWCCbc","templates/export":"W1BMiS"}],"scripts/views/export":[function(require,module,exports){
+module.exports=require('+SnGsf');
+},{}],"QMi9Pf":[function(require,module,exports){
 var BaseView, InputView, _,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = {}.hasOwnProperty,
@@ -1956,7 +2090,7 @@ InputView = (function(_super) {
 module.exports = InputView;
 
 
-},{"scripts/views/base":"/l3mMY","underscore":101}],"scripts/views/inputs/index":[function(require,module,exports){
+},{"scripts/views/base":"/l3mMY","underscore":103}],"scripts/views/inputs/index":[function(require,module,exports){
 module.exports=require('QMi9Pf');
 },{}],"scripts/views/inputs/rotate":[function(require,module,exports){
 module.exports=require('O4fej5');
@@ -1989,7 +2123,7 @@ RotateInputView = (function(_super) {
 module.exports = RotateInputView;
 
 
-},{"./index":"QMi9Pf","templates/inputs/rotate":"9Zwbqa","underscore":101}],"gN18R1":[function(require,module,exports){
+},{"./index":"QMi9Pf","templates/inputs/rotate":"9Zwbqa","underscore":103}],"gN18R1":[function(require,module,exports){
 var ScaleInputView, VectorInputView, template,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -2122,7 +2256,7 @@ VectorInputView = (function(_super) {
 module.exports = VectorInputView;
 
 
-},{"./index":"QMi9Pf","underscore":101}],"scripts/views/modal":[function(require,module,exports){
+},{"./index":"QMi9Pf","underscore":103}],"scripts/views/modal":[function(require,module,exports){
 module.exports=require('UWCCbc');
 },{}],"UWCCbc":[function(require,module,exports){
 var $, BaseView, ModalView, _,
@@ -2178,7 +2312,7 @@ ModalView = (function(_super) {
 module.exports = ModalView;
 
 
-},{"jquery":"MtfruI","scripts/views/base":"/l3mMY","underscore":101}],"D05IS4":[function(require,module,exports){
+},{"jquery":"MtfruI","scripts/views/base":"/l3mMY","underscore":103}],"D05IS4":[function(require,module,exports){
 var BaseView, Bounce, ComponentView, Events, PreferencesView, template, _,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = {}.hasOwnProperty,
@@ -2386,7 +2520,7 @@ PreferencesView = (function(_super) {
 module.exports = PreferencesView;
 
 
-},{"bounce":"c1he0F","scripts/events":"jL3HsY","scripts/views/base":"/l3mMY","scripts/views/component":"iwEgR8","templates/preferences":"hTEbct","underscore":101}],"scripts/views/preferences":[function(require,module,exports){
+},{"bounce":"c1he0F","scripts/events":"jL3HsY","scripts/views/base":"/l3mMY","scripts/views/component":"iwEgR8","templates/preferences":"hTEbct","underscore":103}],"scripts/views/preferences":[function(require,module,exports){
 module.exports=require('D05IS4');
 },{}],"scripts/views/shorten":[function(require,module,exports){
 module.exports=require('wpiY4R');
@@ -2452,7 +2586,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return "<div class=\"preferences-container\">\n  <div class=\"preference-bar\">\n    <div id=\"preferences\"></div>\n  </div>\n  <div class=\"preference-bar-separator\"></div>\n</div>\n<div class=\"main-view\">\n  <header>\n    <h1>\n      <span class=\"letter l1\">B</span><span class=\"letter l2\">o</span><span class=\"letter l3\">u</span><span class=\"letter l4\">n</span><span class=\"letter l5\">c</span><span class=\"letter l6\">e</span><span class=\"letter l7\">.</span><span class=\"letter l8\">j</span><span class=\"letter l9\">s</span>\n    </h1>\n    <h2>Bounce.js is a tool and JS library that lets you create beautiful CSS3 powered animations. <br>\n    Give it a <a class=\"spin-link\" href=\"\">spin</a>.\n    </h2>\n    <div class=\"header-actions\">\n      <a class=\"shorten-link\" href=\"\">Get Short URL</a><br><a href=\"\" class=\"export-link\">Export CSS</a>\n    </div>\n  </header>\n  <div class=\"preview-container\">\n    <div id=\"result\">\n      <div class=\"box\"></div>\n    </div>\n    <div class=\"actions\">\n      <button class=\"play-button\"><i class=\"fa fa-play\"></i>Play Animation</button>\n      <div class=\"loop-input toggle\" title=\"Loop Animation\"><i class=\"fa fa-repeat\"></i></div>\n      <div class=\"slow-input toggle\" title=\"Slow Motion\"><i class=\"fa fa-clock-o\"></i></div>\n    </div>\n  </div>\n</div>\n<div class=\"footer-bar\">\n  <a href=\"https://github.com/tictail/bounce.js\" target=\"_blank\" class=\"github-link\"><i class=\"fa fa-github\"></i> View on GitHub</a><br>\n  <a href=\"https://twitter.com/intent/tweet?original_referer=https%3A%2F%2Ftwitter.com%2Fabout%2Fresources%2Fbuttons&source=tweetbutton&text=Bounce.js%20-%20Generate%20Beautiful%20CSS3%20Animations&url=http%3A%2F%2Fbouncejs.com&via=JoelBesada\" target=\"_blank\"><i class=\"fa fa-twitter\"></i> Share on Twitter</a>\n  <div class=\"separator\"></div>\n  <p class=\"credits\">\n    Made by <br><a href=\"https://twitter.com/joelbesada\" target=\"_blank\">@JoelBesada</a><br> at <a href=\"https://tictail.com\" target=\"_blank\">Tictail  </a>\n  </p>\n</div>\n<style id=\"animation\"></style>\n<div class=\"export\"></div>\n<div class=\"shorten\"></div>\n<div class=\"dimmer\"></div>\n";
   });
 
-},{"hbsfy/runtime":100}],"templates/component":[function(require,module,exports){
+},{"hbsfy/runtime":102}],"templates/component":[function(require,module,exports){
 module.exports=require('bTuG/Y');
 },{}],"bTuG/Y":[function(require,module,exports){
 // hbsfy compiled Handlebars template
@@ -2466,7 +2600,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return "<div class=\"header\">\n  <span class=\"name\">Scale</span>\n  <span class=\"arrow\"></span>\n  <i class=\"fa fa-times-circle remove\"></i>\n  <div class=\"separator\"></div>\n</div>\n<label for=\"type\">Type</label>\n<select class=\"type-input\" name=\"type\">\n  <option value=\"scale\" selected>Scale</option>\n  <option value=\"translate\">Translate</option>\n  <option value=\"rotate\">Rotate</option>\n  <option value=\"skew\">Skew</option>\n</select>\n\n<div class=\"inputs\"></div>\n\n<label for=\"type\">Easing</label>\n<select class=\"easing-input\" name=\"easing\">\n  <option value=\"bounce\" selected>Bounce</option>\n  <option value=\"sway\">Sway</option>\n  <option value=\"hardbounce\">Hard Bounce</option>\n  <option value=\"hardsway\">Hard Sway</option>\n</select>\n\n<label for=\"duration\">Duration (ms)</label>\n<input type=\"number\" value=\"1000\" step=\"10\" name=\"duration\" class=\"duration-input\">\n\n<label for=\"delay\">Delay (ms)</label>\n<input type=\"number\" value=\"0\" step=\"10\" name=\"delay\" class=\"delay-input\">\n\n<label for=\"bounces\">Bounces</label>\n<input type=\"number\" name=\"bounces\" class=\"bounces-input\" value=4>\n\n<label for=\"stiffness\">Stiffness</label>\n<div class=\"stiffness-input\"></div>\n<input type=\"text\" class=\"stiffness-value\">\n\n";
   });
 
-},{"hbsfy/runtime":100}],"templates/export":[function(require,module,exports){
+},{"hbsfy/runtime":102}],"templates/export":[function(require,module,exports){
 module.exports=require('W1BMiS');
 },{}],"W1BMiS":[function(require,module,exports){
 // hbsfy compiled Handlebars template
@@ -2480,7 +2614,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return "<div class=\"loaded\">\n  <textarea readonly class=\"code\"></textarea>\n  <div class=\"footer\">\n    <input id=\"prefix\" type=\"checkbox\" checked class=\"prefix-input\"> <label for=\"prefix\">Prefix CSS</label>\n    <a href=\"https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Using_CSS_animations\" target=\"_blank\" class=\"tutorial-link\">How do I use this?</a>\n  </div>\n</div>\n<div class=\"loading\">\n  <div class=\"spinner\"></div>\n</div>\n";
   });
 
-},{"hbsfy/runtime":100}],"templates/inputs/rotate":[function(require,module,exports){
+},{"hbsfy/runtime":102}],"templates/inputs/rotate":[function(require,module,exports){
 module.exports=require('9Zwbqa');
 },{}],"9Zwbqa":[function(require,module,exports){
 // hbsfy compiled Handlebars template
@@ -2494,7 +2628,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return "<label>Degrees</label>\nfrom <input type=\"number\" name=\"from\" value=\"0\">\nto <input type=\"number\" name=\"to\" value=\"90\">\n";
   });
 
-},{"hbsfy/runtime":100}],"templates/inputs/scale":[function(require,module,exports){
+},{"hbsfy/runtime":102}],"templates/inputs/scale":[function(require,module,exports){
 module.exports=require('VloDe9');
 },{}],"VloDe9":[function(require,module,exports){
 // hbsfy compiled Handlebars template
@@ -2508,7 +2642,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return "<label>Width (ratio)</label>\nfrom <input type=\"number\" step=\"0.1\" name=\"from_x\" value=\"1\">\nto <input type=\"number\" step=\"0.1\" name=\"to_x\" value=\"2\">\n\n<label>Height (ratio)</label>\nfrom <input type=\"number\" step=\"0.1\" name=\"from_y\" value=\"1\">\nto <input type=\"number\" step=\"0.1\" name=\"to_y\" value=\"2\">\n";
   });
 
-},{"hbsfy/runtime":100}],"qu4LtV":[function(require,module,exports){
+},{"hbsfy/runtime":102}],"qu4LtV":[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var Handlebars = require('hbsfy/runtime');
 module.exports = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
@@ -2520,7 +2654,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return "<label>X-Axis (degrees)</label>\nfrom <input type=\"number\" name=\"from_x\" value=\"0\">\nto <input type=\"number\" name=\"to_x\" value=\"20\">\n\n<label>Y-Axis (degrees)</label>\nfrom <input type=\"number\" name=\"from_y\" value=\"0\">\nto <input type=\"number\" name=\"to_y\" value=\"0\">\n\n";
   });
 
-},{"hbsfy/runtime":100}],"templates/inputs/skew":[function(require,module,exports){
+},{"hbsfy/runtime":102}],"templates/inputs/skew":[function(require,module,exports){
 module.exports=require('qu4LtV');
 },{}],"templates/inputs/translate":[function(require,module,exports){
 module.exports=require('ottZS9');
@@ -2536,7 +2670,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return "<label>X-Axis (px)</label>\nfrom <input type=\"number\" name=\"from_x\" value=\"0\">\nto <input type=\"number\" name=\"to_x\" value=\"100\">\n\n<label>Y-Axis (px)</label>\nfrom <input type=\"number\" name=\"from_y\" value=\"0\">\nto <input type=\"number\" name=\"to_y\" value=\"0\">\n\n";
   });
 
-},{"hbsfy/runtime":100}],"hTEbct":[function(require,module,exports){
+},{"hbsfy/runtime":102}],"hTEbct":[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var Handlebars = require('hbsfy/runtime');
 module.exports = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
@@ -2548,7 +2682,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return "<button id=\"add\">Add Component<i class=\"fa fa-plus-square\"></i></button>\n<div class=\"or\"><span>or</span></div>\n<div class=\"presets\">\n  <select data-placeholder=\"Select Preset\" name=\"preset\" class=\"preset-input\">\n    <option value=''></option>\n    <option value='{s:[{T:\"r\",e:\"b\",d:1000,D:0,f:0,t:90,s:3,b:4},{T:\"k\",e:\"s\",d:1000,D:0,f:{x:0,y:0},t:{x:20,y:20},s:3,b:4}]}' data-name=\"spin\">Spin</option>\n    <option value='{s:[{T:\"c\",e:\"b\",d:1000,D:0,f:{x:1,y:1},t:{x:2,y:1},s:1,b:4},{T:\"c\",e:\"b\",d:1000,D:0,f:{x:1,y:1},t:{x:1,y:2},s:1,b:6}]}' data-name=\"jelly\">Jelly</option>\n    <option value='{l:1,s:[{T:\"t\",e:\"b\",d:1000,D:0,f:{x:-50,y:0},t:{x:50,y:0},s:3,b:4},{T:\"c\",e:\"s\",d:1000,D:0,f:{x:1,y:1},t:{x:1.5,y:1.5},s:3,b:4},{T:\"t\",e:\"b\",d:1000,D:500,f:{x:0,y:0},t:{x:-100,y:0},s:3,b:4},{T:\"c\",e:\"s\",d:1000,D:500,f:{x:1,y:1},t:{x:0.5,y:0.5},s:3,b:4}]}' data-name=\"back-and-forth\">Back &amp; Forth</option>\n    <option value='{l:1,s:[{T:\"r\",e:\"b\",d:1000,D:500,f:0,t:90,s:3,b:4},{T:\"c\",e:\"b\",d:1000,D:0,f:{x:1,y:1},t:{x:0.2,y:2},s:3,b:4},{T:\"c\",e:\"b\",d:1000,D:1000,f:{x:1,y:1},t:{x:5,y:0.5},s:3,b:4}]}' data-name=\"clock\">Clock</option>\n    <option value='{s:[{T:\"t\",e:\"b\",d:600,D:0,f:{x:-300,y:0},t:{x:0,y:0},s:4,b:4},{T:\"c\",e:\"s\",d:800,D:65,f:{x:1,y:1},t:{x:0.1,y:2.3},s:2,b:4},{T:\"c\",e:\"s\",d:300,D:30,f:{x:1,y:1},t:{x:5,y:1},s:3,b:4}]}' data-name=\"splat\">Splat</option>\n    <option value='{l:1,s:[{T:\"t\",e:\"b\",d:1000,D:0,f:{x:-500,y:0},t:{x:0,y:0},s:5,b:2},{T:\"k\",e:\"s\",d:1000,D:0,f:{x:0,y:0},t:{x:120,y:0},s:3,b:4},{T:\"t\",e:\"S\",d:1000,D:800,f:{x:0,y:0},t:{x:0,y:-50},s:2,b:4},{T:\"t\",e:\"b\",d:1000,D:1800,f:{x:0,y:0},t:{x:500,y:0},s:3,b:4},{T:\"k\",e:\"b\",d:1000,D:1750,f:{x:0,y:0},t:{x:40,y:0},s:3,b:4}]}' data-name=\"road-runner\">Road Runner</option>\n    <option value='{l:1,s:[{T:\"t\",e:\"b\",d:1000,D:0,f:{x:-260,y:0},t:{x:-160,y:0},s:4,b:4},{T:\"t\",e:\"b\",d:1000,D:500,f:{x:0,y:0},t:{x:100,y:0},s:4,b:4},{T:\"t\",e:\"b\",d:1000,D:1000,f:{x:0,y:0},t:{x:100,y:0},s:3,b:4},{T:\"t\",e:\"b\",d:1000,D:1500,f:{x:0,y:0},t:{x:100,y:0},s:3,b:4},{T:\"t\",e:\"b\",d:1000,D:2000,f:{x:0,y:0},t:{x:100,y:0},s:3,b:4},{T:\"t\",e:\"b\",d:1000,D:2500,f:{x:0,y:0},t:{x:100,y:0},s:3,b:4},{T:\"t\",e:\"s\",d:1000,D:0,f:{x:0,y:0},t:{x:0,y:-100},s:3,b:4},{T:\"t\",e:\"s\",d:1000,D:500,f:{x:0,y:0},t:{x:0,y:-100},s:3,b:4},{T:\"t\",e:\"s\",d:1000,D:1000,f:{x:0,y:0},t:{x:0,y:-100},s:3,b:4},{T:\"t\",e:\"s\",d:1000,D:1500,f:{x:0,y:0},t:{x:0,y:-100},s:3,b:4},{T:\"t\",e:\"s\",d:1000,D:2000,f:{x:0,y:0},t:{x:0,y:-100},s:3,b:4},{T:\"t\",e:\"b\",d:1000,D:2500,f:{x:0,y:0},t:{x:0,y:-100},s:3,b:4},{T:\"r\",e:\"b\",d:1000,D:0,f:0,t:90,s:3,b:4},{T:\"r\",e:\"b\",d:1000,D:500,f:0,t:90,s:3,b:4},{T:\"r\",e:\"b\",d:1000,D:1000,f:0,t:90,s:3,b:4},{T:\"r\",e:\"b\",d:1000,D:1500,f:0,t:90,s:3,b:4},{T:\"r\",e:\"b\",d:1000,D:2000,f:0,t:90,s:3,b:4},{T:\"r\",e:\"b\",d:1000,D:2500,f:0,t:90,s:3,b:4}]}' data-name=\"slinky\">Slinky</option>\n    <option value='{s:[{T:\"k\",e:\"s\",d:750,D:0,f:{x:0,y:0},t:{x:40,y:60},s:3,b:4},{T:\"c\",e:\"b\",d:750,D:0,f:{x:1,y:1},t:{x:2,y:2},s:2,b:4}]}' data-name=\"smack\">Smack</option>\n    <option value='{s:[{T:\"t\",e:\"b\",d:1000,D:0,f:{x:-300,y:0},t:{x:0,y:0},s:5,b:4},{T:\"c\",e:\"s\",d:500,D:0,f:{x:1,y:1},t:{x:15,y:1},s:5,b:4}]}' data-name=\"swoosh\">Swoosh</option>\n    <option value='{l:1,s:[{T:\"c\",e:\"b\",d:1000,D:0,f:{x:1,y:1},t:{x:0.2,y:1},s:3,b:4},{T:\"c\",e:\"b\",d:1000,D:500,f:{x:1,y:1},t:{x:1,y:0.2},s:3,b:4},{T:\"c\",e:\"b\",d:1000,D:1000,f:{x:1,y:1},t:{x:5,y:1},s:3,b:4},{T:\"c\",e:\"b\",d:500,D:1500,f:{x:1,y:1},t:{x:1,y:5},s:1,b:2}]}' data-name=\"fold-and-unfold\">Fold &amp; Unfold</option>\n  </select>\n</div>\n<div class=\"empty-message\">\n    <i class=\"fa fa-arrow-circle-o-up\"></i>\n    <p>\n        Add a component or select a preset\n    </p>\n</div>\n<div class=\"components\">\n</div>\n";
   });
 
-},{"hbsfy/runtime":100}],"templates/preferences":[function(require,module,exports){
+},{"hbsfy/runtime":102}],"templates/preferences":[function(require,module,exports){
 module.exports=require('hTEbct');
 },{}],"templates/shorten":[function(require,module,exports){
 module.exports=require('kbCuY3');
@@ -2564,7 +2698,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return "<div class=\"loaded\">\n  <span class=\"label\">Shortened URL</span>\n  <input type=\"text\" readonly class=\"url\">\n</div>\n<div class=\"loading\">\n  <span class=\"label\">Shortening URL</span>\n  <div class=\"spinner\"></div>\n</div>\n\n";
   });
 
-},{"hbsfy/runtime":100}],"backbone":[function(require,module,exports){
+},{"hbsfy/runtime":102}],"backbone":[function(require,module,exports){
 module.exports=require('KDJVm1');
 },{}],"KDJVm1":[function(require,module,exports){
 //     Backbone.js 1.1.0
@@ -4149,7 +4283,7 @@ module.exports=require('KDJVm1');
 
 }).call(this);
 
-},{"underscore":101}],"Zvq4H4":[function(require,module,exports){
+},{"underscore":103}],"Zvq4H4":[function(require,module,exports){
 /*!
 Chosen, a Select Box Enhancer for jQuery and Prototype
 by Patrick Filler for Harvest, http://getharvest.com
@@ -14763,7 +14897,7 @@ module.exports=require('NGk3jQ');
 }).call(global, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],93:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 "use strict";
 /*globals Handlebars: true */
 var base = require("./handlebars/base");
@@ -14796,7 +14930,7 @@ var Handlebars = create();
 Handlebars.create = create;
 
 exports["default"] = Handlebars;
-},{"./handlebars/base":94,"./handlebars/exception":95,"./handlebars/runtime":96,"./handlebars/safe-string":97,"./handlebars/utils":98}],94:[function(require,module,exports){
+},{"./handlebars/base":96,"./handlebars/exception":97,"./handlebars/runtime":98,"./handlebars/safe-string":99,"./handlebars/utils":100}],96:[function(require,module,exports){
 "use strict";
 var Utils = require("./utils");
 var Exception = require("./exception")["default"];
@@ -14977,7 +15111,7 @@ exports.log = log;var createFrame = function(object) {
   return obj;
 };
 exports.createFrame = createFrame;
-},{"./exception":95,"./utils":98}],95:[function(require,module,exports){
+},{"./exception":97,"./utils":100}],97:[function(require,module,exports){
 "use strict";
 
 var errorProps = ['description', 'fileName', 'lineNumber', 'message', 'name', 'number', 'stack'];
@@ -15006,7 +15140,7 @@ function Exception(message, node) {
 Exception.prototype = new Error();
 
 exports["default"] = Exception;
-},{}],96:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 "use strict";
 var Utils = require("./utils");
 var Exception = require("./exception")["default"];
@@ -15144,7 +15278,7 @@ exports.program = program;function invokePartial(partial, name, context, helpers
 exports.invokePartial = invokePartial;function noop() { return ""; }
 
 exports.noop = noop;
-},{"./base":94,"./exception":95,"./utils":98}],97:[function(require,module,exports){
+},{"./base":96,"./exception":97,"./utils":100}],99:[function(require,module,exports){
 "use strict";
 // Build out our basic SafeString type
 function SafeString(string) {
@@ -15156,7 +15290,7 @@ SafeString.prototype.toString = function() {
 };
 
 exports["default"] = SafeString;
-},{}],98:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 "use strict";
 /*jshint -W004 */
 var SafeString = require("./safe-string")["default"];
@@ -15233,15 +15367,15 @@ exports.escapeExpression = escapeExpression;function isEmpty(value) {
 }
 
 exports.isEmpty = isEmpty;
-},{"./safe-string":97}],99:[function(require,module,exports){
+},{"./safe-string":99}],101:[function(require,module,exports){
 // Create a simple path alias to allow browserify to resolve
 // the runtime on a supported path.
 module.exports = require('./dist/cjs/handlebars.runtime');
 
-},{"./dist/cjs/handlebars.runtime":93}],100:[function(require,module,exports){
+},{"./dist/cjs/handlebars.runtime":95}],102:[function(require,module,exports){
 module.exports = require("handlebars/runtime")["default"];
 
-},{"handlebars/runtime":99}],101:[function(require,module,exports){
+},{"handlebars/runtime":101}],103:[function(require,module,exports){
 //     Underscore.js 1.5.2
 //     http://underscorejs.org
 //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -16519,4 +16653,4 @@ module.exports = require("handlebars/runtime")["default"];
 
 }).call(this);
 
-},{}]},{},["4PCcoK","jL3HsY","t42j+F","NE9Tvp","1BqU+7","xBMRcD","Yi8bvd","YYToEi","PioQnB","QP+fRn","Up4a/o","EwwsAM","c1he0F","HpNQed","LO/pyS","BFH2vT","xdNEL6","dSBOTS","/l3mMY","FpVIhp","iwEgR8","+SnGsf","QMi9Pf","O4fej5","gN18R1","NVh/Q+","abfBP3","Azn1fi","UWCCbc","D05IS4","wpiY4R","G1z9mA","bTuG/Y","W1BMiS","9Zwbqa","VloDe9","qu4LtV","ottZS9","hTEbct","kbCuY3"])
+},{}]},{},["4PCcoK","jL3HsY","t42j+F","NE9Tvp","1BqU+7","xBMRcD","Yi8bvd","YYToEi","PioQnB","QP+fRn","Up4a/o","EwwsAM","c1he0F","ZsH7jN","HpNQed","LO/pyS","BFH2vT","xdNEL6","dSBOTS","/l3mMY","FpVIhp","iwEgR8","+SnGsf","QMi9Pf","O4fej5","gN18R1","NVh/Q+","abfBP3","Azn1fi","UWCCbc","D05IS4","wpiY4R","G1z9mA","bTuG/Y","W1BMiS","9Zwbqa","VloDe9","qu4LtV","ottZS9","hTEbct","kbCuY3"])
