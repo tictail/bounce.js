@@ -7,6 +7,9 @@ class SwayEasing extends BounceEasing
     t = ratio * @limit
     @exponent(t) * @oscillation(t)
 
+  calculateOmega: (bounces, limit) ->
+    @bounces * Math.PI / @limit
+
   oscillation: (t) ->
     Math.sin @omega * t
 

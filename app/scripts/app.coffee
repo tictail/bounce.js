@@ -124,7 +124,7 @@ class App extends BaseView
     .box.animate {
       #{properties.join(";\n  ")};
     }
-    #{bounce.getKeyframeCSS(name: "animation")}
+    #{bounce.getKeyframeCSS(name: "animation", optimized: true)}
     """
 
     @$style.text PrefixFree.prefixCSS(css, true)

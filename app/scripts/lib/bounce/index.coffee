@@ -110,7 +110,7 @@ class Bounce
       prefixes = @getPrefixes(options.forcePrefix)
 
     keyframeList = []
-    keyframes = @getKeyframes()
+    keyframes = @getKeyframes options
     for key in @keys
       matrix = keyframes[key]
       transformString = "matrix3d#{matrix}"
@@ -119,7 +119,7 @@ class Bounce
         transforms.push "#{prefix}transform: #{transformString};"
 
       keyframeList.push \
-        "#{Math.round(key * 100 * 1e6) / 1e6}% { #{transforms.join " "} }"
+        "#{Math.round(key * 100 * 100) / 100}% { #{transforms.join " "} }"
 
     animations = []
     for prefix in prefixes.animation
@@ -128,13 +128,28 @@ class Bounce
 
     animations.join "\n\n"
 
-  getKeyframes: ->
-    frames = Math.round((@duration / 1000) * Bounce.FPS)
-    @keys = []
-    @keys.push(i / frames) for i in [0..frames]
+  getKeyframes: (options = {}) ->
+    keys = [0, 1]
 
+    if options.optimized
+      for component in @components
+        componentKeys = component.easingObject.findOptimalKeyPoints().map (key) =>
+          (key * component.duration / @duration) + (component.delay / @duration)
+
+        if component.delay
+          componentKeys.push((component.delay / @duration) - 0.001)
+
+        keys = keys.concat componentKeys
+    else
+      frames = Math.round((@duration / 1000) * Bounce.FPS)
+      keys.push(i / frames) for i in [0..frames]
+
+    keys = keys.sort (a, b) -> a - b
+
+    @keys = []
     keyframes = {}
-    for key in @keys
+    for key in keys
+      continue if keyframes[key]
       matrix = new Matrix4D().identity()
 
       for component in @components
@@ -144,7 +159,9 @@ class Bounce
         matrix.multiply \
           component.getEasedMatrix(ratio)
 
-      keyframes[key] = matrix.transpose().toFixed 5
+      @keys.push key
+      keyframes[key] = matrix.transpose().toFixed 3
+
 
     keyframes
 
