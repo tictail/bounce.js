@@ -1,5 +1,5 @@
 /**
- * Bounce.js 0.8.0
+ * Bounce.js 0.8.2
  * MIT license
  */
 !function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.Bounce=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
@@ -82,7 +82,7 @@ Component = (function() {
 module.exports = Component;
 
 
-},{"../easing/bounce":6,"../easing/hardbounce":7,"../easing/hardsway":8,"../easing/sway":10,"../math/matrix4d":12}],2:[function(_dereq_,module,exports){
+},{"../easing/bounce":6,"../easing/hardbounce":7,"../easing/hardsway":8,"../easing/sway":10,"../math/matrix4d":13}],2:[function(_dereq_,module,exports){
 var Component, Matrix4D, Rotate, Vector2D,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -127,7 +127,7 @@ Rotate = (function(_super) {
 module.exports = Rotate;
 
 
-},{"../math/matrix4d":12,"../math/vector2d":13,"./index":1}],3:[function(_dereq_,module,exports){
+},{"../math/matrix4d":13,"../math/vector2d":14,"./index":1}],3:[function(_dereq_,module,exports){
 var Component, Matrix4D, Scale, Vector2D,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -178,7 +178,7 @@ Scale = (function(_super) {
 module.exports = Scale;
 
 
-},{"../math/matrix4d":12,"../math/vector2d":13,"./index":1}],4:[function(_dereq_,module,exports){
+},{"../math/matrix4d":13,"../math/vector2d":14,"./index":1}],4:[function(_dereq_,module,exports){
 var Component, Matrix4D, Skew, Vector2D,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -232,7 +232,7 @@ Skew = (function(_super) {
 module.exports = Skew;
 
 
-},{"../math/matrix4d":12,"../math/vector2d":13,"./index":1}],5:[function(_dereq_,module,exports){
+},{"../math/matrix4d":13,"../math/vector2d":14,"./index":1}],5:[function(_dereq_,module,exports){
 var Component, Matrix4D, Translate, Vector2D,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -283,7 +283,7 @@ Translate = (function(_super) {
 module.exports = Translate;
 
 
-},{"../math/matrix4d":12,"../math/vector2d":13,"./index":1}],6:[function(_dereq_,module,exports){
+},{"../math/matrix4d":13,"../math/vector2d":14,"./index":1}],6:[function(_dereq_,module,exports){
 var BounceEasing, Easing,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -312,7 +312,7 @@ BounceEasing = (function(_super) {
     this.alpha = this.stiffness / 100;
     threshold = 0.005 / Math.pow(10, this.stiffness);
     this.limit = Math.floor(Math.log(threshold) / -this.alpha);
-    this.omega = this.bounces * Math.PI / this.limit;
+    this.omega = this.calculateOmega(this.bounces, this.limit);
   }
 
   BounceEasing.prototype.calculate = function(ratio) {
@@ -322,6 +322,10 @@ BounceEasing = (function(_super) {
     }
     t = ratio * this.limit;
     return 1 - this.exponent(t) * this.oscillation(t);
+  };
+
+  BounceEasing.prototype.calculateOmega = function(bounces, limit) {
+    return (this.bounces + 0.5) * Math.PI / this.limit;
   };
 
   BounceEasing.prototype.exponent = function(t) {
@@ -397,7 +401,9 @@ module.exports = HardSwayEasing;
 
 
 },{"./sway":10}],9:[function(_dereq_,module,exports){
-var Easing;
+var Easing, MathHelpers;
+
+MathHelpers = _dereq_("../math/helpers");
 
 Easing = (function() {
   function Easing() {}
@@ -410,6 +416,53 @@ Easing = (function() {
     return {};
   };
 
+  Easing.prototype.findOptimalKeyPoints = function(threshold, resolution) {
+    var area, halfway, i, keyPoint, keyPoints, loops, result, values;
+    if (threshold == null) {
+      threshold = 1.0;
+    }
+    if (resolution == null) {
+      resolution = 1000;
+    }
+    keyPoints = [0];
+    values = (function() {
+      var _i, _results;
+      _results = [];
+      for (i = _i = 0; 0 <= resolution ? _i < resolution : _i > resolution; i = 0 <= resolution ? ++_i : --_i) {
+        _results.push(this.calculate(i / resolution));
+      }
+      return _results;
+    }).call(this);
+    keyPoints = keyPoints.concat(MathHelpers.findTurningPoints(values));
+    keyPoints.push(resolution - 1);
+    i = 0;
+    loops = 1000;
+    while (loops--) {
+      if (i === keyPoints.length - 1) {
+        break;
+      }
+      area = MathHelpers.areaBetweenLineAndCurve(values, keyPoints[i], keyPoints[i + 1]);
+      if (area <= threshold) {
+        i++;
+      } else {
+        halfway = Math.round(keyPoints[i] + (keyPoints[i + 1] - keyPoints[i]) / 2);
+        keyPoints.splice(i + 1, 0, halfway);
+      }
+    }
+    if (loops === 0) {
+      return [];
+    }
+    return result = (function() {
+      var _i, _len, _results;
+      _results = [];
+      for (_i = 0, _len = keyPoints.length; _i < _len; _i++) {
+        keyPoint = keyPoints[_i];
+        _results.push(keyPoint / (resolution - 1));
+      }
+      return _results;
+    })();
+  };
+
   return Easing;
 
 })();
@@ -417,7 +470,7 @@ Easing = (function() {
 module.exports = Easing;
 
 
-},{}],10:[function(_dereq_,module,exports){
+},{"../math/helpers":12}],10:[function(_dereq_,module,exports){
 var BounceEasing, SwayEasing,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -438,6 +491,10 @@ SwayEasing = (function(_super) {
     }
     t = ratio * this.limit;
     return this.exponent(t) * this.oscillation(t);
+  };
+
+  SwayEasing.prototype.calculateOmega = function(bounces, limit) {
+    return this.bounces * Math.PI / this.limit;
   };
 
   SwayEasing.prototype.oscillation = function(t) {
@@ -583,7 +640,14 @@ Bounce = (function() {
 
   Bounce.prototype.remove = function() {
     var _ref;
-    return (_ref = this.styleElement) != null ? _ref.remove() : void 0;
+    if (!this.styleElement) {
+      return;
+    }
+    if (this.styleElement.remove) {
+      return this.styleElement.remove();
+    } else {
+      return (_ref = this.styleElement.parentNode) != null ? _ref.removeChild(this.styleElement) : void 0;
+    }
   };
 
   Bounce.prototype.getPrefixes = function(force) {
@@ -616,7 +680,7 @@ Bounce = (function() {
       prefixes = this.getPrefixes(options.forcePrefix);
     }
     keyframeList = [];
-    keyframes = this.getKeyframes();
+    keyframes = this.getKeyframes(options);
     _ref = this.keys;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       key = _ref[_i];
@@ -628,7 +692,7 @@ Bounce = (function() {
         prefix = _ref1[_j];
         transforms.push("" + prefix + "transform: " + transformString + ";");
       }
-      keyframeList.push("" + (Math.round(key * 100 * 1e6) / 1e6) + "% { " + (transforms.join(" ")) + " }");
+      keyframeList.push("" + (Math.round(key * 100 * 100) / 100) + "% { " + (transforms.join(" ")) + " }");
     }
     animations = [];
     _ref2 = prefixes.animation;
@@ -639,21 +703,46 @@ Bounce = (function() {
     return animations.join("\n\n");
   };
 
-  Bounce.prototype.getKeyframes = function() {
-    var component, currentTime, frames, i, key, keyframes, matrix, ratio, _i, _j, _k, _len, _len1, _ref, _ref1;
-    frames = Math.round((this.duration / 1000) * Bounce.FPS);
-    this.keys = [];
-    for (i = _i = 0; 0 <= frames ? _i <= frames : _i >= frames; i = 0 <= frames ? ++_i : --_i) {
-      this.keys.push(i / frames);
+  Bounce.prototype.getKeyframes = function(options) {
+    var component, componentKeys, currentTime, frames, i, key, keyframes, keys, matrix, ratio, _i, _j, _k, _l, _len, _len1, _len2, _ref, _ref1;
+    if (options == null) {
+      options = {};
     }
+    keys = [0, 1];
+    if (options.optimized) {
+      _ref = this.components;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        component = _ref[_i];
+        componentKeys = component.easingObject.findOptimalKeyPoints().map((function(_this) {
+          return function(key) {
+            return (key * component.duration / _this.duration) + (component.delay / _this.duration);
+          };
+        })(this));
+        if (component.delay) {
+          componentKeys.push((component.delay / this.duration) - 0.001);
+        }
+        keys = keys.concat(componentKeys);
+      }
+    } else {
+      frames = Math.round((this.duration / 1000) * Bounce.FPS);
+      for (i = _j = 0; 0 <= frames ? _j <= frames : _j >= frames; i = 0 <= frames ? ++_j : --_j) {
+        keys.push(i / frames);
+      }
+    }
+    keys = keys.sort(function(a, b) {
+      return a - b;
+    });
+    this.keys = [];
     keyframes = {};
-    _ref = this.keys;
-    for (_j = 0, _len = _ref.length; _j < _len; _j++) {
-      key = _ref[_j];
+    for (_k = 0, _len1 = keys.length; _k < _len1; _k++) {
+      key = keys[_k];
+      if (keyframes[key]) {
+        continue;
+      }
       matrix = new Matrix4D().identity();
       _ref1 = this.components;
-      for (_k = 0, _len1 = _ref1.length; _k < _len1; _k++) {
-        component = _ref1[_k];
+      for (_l = 0, _len2 = _ref1.length; _l < _len2; _l++) {
+        component = _ref1[_l];
         currentTime = key * this.duration;
         if ((component.delay - currentTime) > 1e-8) {
           continue;
@@ -661,7 +750,8 @@ Bounce = (function() {
         ratio = (key - component.delay / this.duration) / (component.duration / this.duration);
         matrix.multiply(component.getEasedMatrix(ratio));
       }
-      keyframes[key] = matrix.transpose().toFixed(5);
+      this.keys.push(key);
+      keyframes[key] = matrix.transpose().toFixed(3);
     }
     return keyframes;
   };
@@ -695,7 +785,54 @@ Bounce = (function() {
 module.exports = Bounce;
 
 
-},{"./components/rotate":2,"./components/scale":3,"./components/skew":4,"./components/translate":5,"./math/matrix4d":12}],12:[function(_dereq_,module,exports){
+},{"./components/rotate":2,"./components/scale":3,"./components/skew":4,"./components/translate":5,"./math/matrix4d":13}],12:[function(_dereq_,module,exports){
+var MathHelpers;
+
+MathHelpers = (function() {
+  function MathHelpers() {}
+
+  MathHelpers.prototype.sign = function(value) {
+    if (value < 0) {
+      return -1;
+    }
+    return 1;
+  };
+
+  MathHelpers.prototype.findTurningPoints = function(values) {
+    var i, signA, signB, turningPoints, _i, _ref;
+    turningPoints = [];
+    for (i = _i = 1, _ref = values.length - 1; 1 <= _ref ? _i < _ref : _i > _ref; i = 1 <= _ref ? ++_i : --_i) {
+      signA = this.sign(values[i] - values[i - 1]);
+      signB = this.sign(values[i + 1] - values[i]);
+      if (signA !== signB) {
+        turningPoints.push(i);
+      }
+    }
+    return turningPoints;
+  };
+
+  MathHelpers.prototype.areaBetweenLineAndCurve = function(values, start, end) {
+    var area, curveValue, i, length, lineValue, yEnd, yStart, _i;
+    length = end - start;
+    yStart = values[start];
+    yEnd = values[end];
+    area = 0;
+    for (i = _i = 0; 0 <= length ? _i <= length : _i >= length; i = 0 <= length ? ++_i : --_i) {
+      curveValue = values[start + i];
+      lineValue = yStart + (i / length) * (yEnd - yStart);
+      area += Math.abs(lineValue - curveValue);
+    }
+    return area;
+  };
+
+  return MathHelpers;
+
+})();
+
+module.exports = new MathHelpers;
+
+
+},{}],13:[function(_dereq_,module,exports){
 var Matrix4D;
 
 Matrix4D = (function() {
@@ -787,7 +924,7 @@ Matrix4D = (function() {
 module.exports = Matrix4D;
 
 
-},{}],13:[function(_dereq_,module,exports){
+},{}],14:[function(_dereq_,module,exports){
 var Vector2D;
 
 Vector2D = (function() {
